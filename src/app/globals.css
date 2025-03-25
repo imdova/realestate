@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+:root {
+  --main-color: #283593;
+  --foreground: #171717;
+}
+
+@theme {
+  --color-main: var(--main-color);
+  --color-foreground: var(--foreground);
+  --font-raleway: var(--font-raleway);
+}
+
+@layer components {
+  .card {
+    background-color: white;
+    border-radius: 25px;
+    padding: 6px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --backgroundk: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+@keyframes spinSlow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Tailwind-compatible utility class */
+.spin-slow {
+  @apply animate-spin;
+  animation-duration: 10s; /* Slow spin */
+}
+body {
+  font-family: var(--font-raleway);
+}
+
+.box {
+  @apply rounded-md bg-white p-4 shadow;
+}
+.elementskit-dropdown {
+  @apply invisible absolute top-[170%] w-full min-w-[200px] rounded-md bg-white p-4 opacity-0 shadow transition-all duration-500;
+}
+
+.group:hover .elementskit-dropdown {
+  @apply visible top-[140%] opacity-100;
+}
