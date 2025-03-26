@@ -4,15 +4,15 @@ import Link from "next/link";
 interface DynamicButtonProps {
   href: string;
   label: string;
-  width?: string;
+  className?: string;
   variant?: "primary" | "secondary" | "outline" | "white";
 }
 
 const DynamicButton: React.FC<DynamicButtonProps> = ({
   href,
   label,
-  width = "auto",
   variant = "primary",
+  className,
 }) => {
   const baseStyles =
     "inline-block px-4 py-2 rounded-lg font-semibold transition-all duration-200 text-center";
@@ -26,7 +26,7 @@ const DynamicButton: React.FC<DynamicButtonProps> = ({
 
   return (
     <Link href={href}>
-      <div className={`${baseStyles} ${variants[variant]}`} style={{ width }}>
+      <div className={`${className} ${baseStyles} ${variants[variant]}`}>
         {label}
       </div>
     </Link>

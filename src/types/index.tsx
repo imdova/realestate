@@ -35,3 +35,18 @@ export type Slide = {
   url: string;
   label: string;
 };
+
+// Products and card Product type
+export interface products {
+  id: number;
+  name: string;
+  brand: string;
+  description: string;
+  price: string;
+  priceDel?: string;
+  image: string;
+  isNew?: boolean;
+  discount?: number;
+  rating?: number;
+  reviewCount?: number;
+}

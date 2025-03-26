@@ -179,7 +179,7 @@ const CategorySlider = () => {
   const [transitionEnabled, setTransitionEnabled] = useState(true);
   const [displayData, setDisplayData] = useState([...data]);
 
-  const cardWidth = 200;
+  const cardWidth = 190;
 
   // Handle window resize
   useEffect(() => {
@@ -217,9 +217,9 @@ const CategorySlider = () => {
 
   return (
     <div className="group relative w-full overflow-hidden">
-      <div className="mx-auto max-w-[90vw] overflow-hidden py-10">
+      <div className="mx-auto max-w-[1200px] overflow-hidden py-10">
         <div
-          className="flex items-center gap-3"
+          className="flex items-center justify-center gap-3"
           style={{
             transform: `translateX(-${currentIndex * cardWidth}px)`,
             transition: transitionEnabled
@@ -230,7 +230,7 @@ const CategorySlider = () => {
           {displayData.map((category, index) => (
             <Link
               href={category.url}
-              className="flex w-[200px] shrink-0 flex-col items-center"
+              className="flex w-[190px] shrink-0 flex-col items-center"
               key={`${category.id}-${index}`}
             >
               <div className="mb-4 flex h-[120px] w-[120px] items-center justify-center rounded-full bg-[#c1cae982]">
@@ -242,7 +242,7 @@ const CategorySlider = () => {
         </div>
       </div>
 
-      <div className="!absolute top-1/2 right-0 flex h-full w-[70px] -translate-y-1/2 items-center justify-center opacity-0 transition group-hover:opacity-100">
+      <div className="!absolute top-1/2 right-0 hidden h-full w-[70px] -translate-y-1/2 items-center justify-center sm:flex">
         <IconButton
           className=""
           Icon={ArrowRight}
@@ -250,7 +250,7 @@ const CategorySlider = () => {
           size={40}
         />
       </div>
-      <div className="!absolute top-1/2 left-0 flex h-full w-[70px] -translate-y-1/2 items-center justify-center opacity-0 transition group-hover:opacity-100">
+      <div className="!absolute top-1/2 left-0 hidden h-full w-[70px] -translate-y-1/2 items-center justify-center sm:flex">
         <IconButton Icon={ArrowLeft} onClick={handlePrev} size={40} />
       </div>
     </div>
