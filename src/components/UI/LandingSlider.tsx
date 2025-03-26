@@ -60,7 +60,7 @@ const LandingSlider = ({ slides }: sliderLandingProps) => {
           >
             <div className="flex items-center">
               <CircularTextButton />
-              <span className="text-sm italic sm:text-lg">
+              <span className="text-xs italic sm:text-lg">
                 {slides[currentIndex].subTitle}
               </span>
             </div>

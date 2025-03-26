@@ -24,7 +24,7 @@ const ProductCard: React.FC<{ product: products }> = ({ product }) => {
         <Image
           src={product.image}
           alt={product.name}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+          className="h-full w-full object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
           width={300}
           height={300}
         />
@@ -48,25 +48,27 @@ const ProductCard: React.FC<{ product: products }> = ({ product }) => {
           className={`absolute right-0 bottom-0 left-0 flex justify-center space-x-2 p-3 transition-all duration-300 ${isHovered ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}`}
         >
           <button
-            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-50 text-gray-800 transition hover:bg-gray-100"
+            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-50 text-gray-800 transition hover:bg-gray-200"
             onClick={() => setIsWishlisted(!isWishlisted)}
           >
             <Heart
-              className={`h-5 w-5 ${isWishlisted ? "fill-red-500 stroke-red-500" : "text-gray-700"}`}
+              size={15}
+              className={`${isWishlisted ? "fill-red-500 stroke-red-500" : "text-gray-700"}`}
             />
           </button>
 
           <button
-            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-50 text-gray-800 transition hover:bg-gray-100"
+            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-50 text-gray-800 transition hover:bg-gray-200"
             onClick={() => setIsInCart(!isInCart)}
           >
             <ShoppingCart
-              className={`h-5 w-5 ${isInCart ? "stroke-main" : "text-gray-700"}`}
+              size={15}
+              className={`${isInCart ? "stroke-main" : "text-gray-700"}`}
             />
           </button>
 
-          <button className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-50 text-gray-800 transition hover:bg-gray-100">
-            <Eye className="h-5 w-5 text-gray-700" />
+          <button className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-50 text-gray-800 transition hover:bg-gray-200">
+            <Eye size={15} className="text-gray-700" />
           </button>
         </div>
       </Link>

@@ -3,7 +3,7 @@ const CircularTextButton = () => {
     <div className="relative flex h-24 w-24 items-center justify-center">
       {/* Rotating Circular Text */}
       <div className="spin-slow absolute">
-        <svg width="80" height="80" viewBox="0 0 100 100">
+        <svg width="75" height="75" viewBox="0 0 100 100">
           <defs>
             <path
               id="circlePath"
@@ -22,7 +22,7 @@ const CircularTextButton = () => {
       </div>
 
       {/* Play Button */}
-      <button className="bg-main flex h-8 w-8 items-center justify-center rounded-full shadow-lg">
+      <button className="bg-main flex h-6 w-6 items-center justify-center rounded-full shadow-lg sm:h-8 sm:w-8">
         <svg
           width="14"
           height="14"

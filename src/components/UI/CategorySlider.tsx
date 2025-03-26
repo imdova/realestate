@@ -20,8 +20,8 @@ const data: dataType[] = [
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="47"
-        height="46"
+        width="30"
+        height="30"
         viewBox="0 0 47 46"
         fill="none"
       >
@@ -43,8 +43,8 @@ const data: dataType[] = [
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="47"
-        height="46"
+        width="30"
+        height="30"
         viewBox="0 0 47 46"
         fill="none"
       >
@@ -66,8 +66,8 @@ const data: dataType[] = [
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="47"
-        height="46"
+        width="30"
+        height="30"
         viewBox="0 0 47 46"
         fill="none"
       >
@@ -101,8 +101,8 @@ const data: dataType[] = [
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="47"
-        height="46"
+        width="30"
+        height="30"
         viewBox="0 0 47 46"
         fill="none"
       >
@@ -120,8 +120,8 @@ const data: dataType[] = [
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="44"
-        height="43"
+        width="30"
+        height="30"
         viewBox="0 0 44 43"
         fill="none"
       >
@@ -147,8 +147,8 @@ const data: dataType[] = [
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="47"
-        height="46"
+        width="30"
+        height="30"
         viewBox="0 0 47 46"
         fill="none"
       >
@@ -233,7 +233,7 @@ const CategorySlider = () => {
               className="flex w-[190px] shrink-0 flex-col items-center"
               key={`${category.id}-${index}`}
             >
-              <div className="mb-4 flex h-[120px] w-[120px] items-center justify-center rounded-full bg-[#c1cae982]">
+              <div className="mb-4 flex h-[80px] w-[80px] items-center justify-center rounded-full bg-[#c1cae982] sm:h-[100px] sm:w-[100px]">
                 {category.icon}
               </div>
               <h3 className="font-semibold transition">{category.title}</h3>
