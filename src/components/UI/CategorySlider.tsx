@@ -1,9 +1,7 @@
 "use client";
 
-import { JSX, useEffect, useState } from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import IconButton from "./Buttons/IconButton";
+import { JSX, useState, useRef } from "react";
 
 type dataType = {
   id: number;
@@ -174,86 +172,169 @@ const data: dataType[] = [
 ];
 
 const CategorySlider = () => {
+  const sliderRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [visibleCards, setVisibleCards] = useState(5);
-  const [transitionEnabled, setTransitionEnabled] = useState(true);
-  const [displayData, setDisplayData] = useState([...data]);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
 
-  const cardWidth = 190;
-
-  // Handle window resize
-  useEffect(() => {
-    const updateVisibleCards = () => {
-      if (window.innerWidth >= 1280) return 5;
-      if (window.innerWidth >= 1024) return 4;
-      if (window.innerWidth >= 768) return 3;
-      if (window.innerWidth >= 640) return 2;
-      return 1;
-    };
-
-    const handleResize = () => setVisibleCards(updateVisibleCards());
-    setVisibleCards(updateVisibleCards());
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  // Add more cards when reaching near the end
-  useEffect(() => {
-    const threshold = displayData.length - 2 * visibleCards;
-    if (currentIndex >= threshold) {
-      setDisplayData((prev) => [...prev, ...data]);
-    }
-  }, [currentIndex, displayData.length, visibleCards]);
-
-  const handleNext = () => {
-    setTransitionEnabled(true);
-    setCurrentIndex((prev) => prev + 1);
+  // Calculate how many cards are visible based on screen size
+  const getVisibleCardsCount = () => {
+    if (typeof window === "undefined") return 4;
+    if (window.innerWidth < 640) return 1;
+    if (window.innerWidth < 768) return 2;
+    if (window.innerWidth < 1024) return 3;
+    return 4;
   };
 
-  const handlePrev = () => {
-    setTransitionEnabled(true);
-    setCurrentIndex((prev) => Math.max(0, prev - 1));
+  const visibleCards = getVisibleCardsCount();
+
+  const scrollToIndex = (index: number) => {
+    if (!sliderRef.current) return;
+
+    const cardWidth = sliderRef.current.scrollWidth / data.length;
+    const newScrollPosition = index * cardWidth * visibleCards;
+
+    sliderRef.current.scrollTo({
+      left: newScrollPosition,
+      behavior: "smooth",
+    });
+
+    setCurrentIndex(index);
+  };
+
+  const nextSlide = () => {
+    const maxIndex = Math.ceil(data.length / visibleCards) - 1;
+    const newIndex = currentIndex >= maxIndex ? 0 : currentIndex + 1;
+    scrollToIndex(newIndex);
+  };
+
+  const prevSlide = () => {
+    const maxIndex = Math.ceil(data.length / visibleCards) - 1;
+    const newIndex = currentIndex <= 0 ? maxIndex : currentIndex - 1;
+    scrollToIndex(newIndex);
+  };
+
+  // Touch and mouse event handlers for drag scrolling
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!sliderRef.current) return;
+    setIsDragging(true);
+    setStartX(e.pageX - sliderRef.current.offsetLeft);
+    setScrollLeft(sliderRef.current.scrollLeft);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !sliderRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - sliderRef.current.offsetLeft;
+    const walk = (x - startX) * 2; // Scroll-fastness
+    sliderRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  // Touch event handlers
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!sliderRef.current) return;
+    setIsDragging(true);
+    setStartX(e.touches[0].pageX - sliderRef.current.offsetLeft);
+    setScrollLeft(sliderRef.current.scrollLeft);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging || !sliderRef.current) return;
+    const x = e.touches[0].pageX - sliderRef.current.offsetLeft;
+    const walk = (x - startX) * 2;
+    sliderRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
   };
 
   return (
-    <div className="group relative w-full overflow-hidden">
-      <div className="mx-auto max-w-[1200px] overflow-hidden py-10">
-        <div
-          className="flex items-center justify-center gap-3"
-          style={{
-            transform: `translateX(-${currentIndex * cardWidth}px)`,
-            transition: transitionEnabled
-              ? "transform 500ms ease-in-out"
-              : "none",
-          }}
+    <div className="relative py-12">
+      <div className="group mx-auto max-w-[1300px]">
+        {/* Previous button */}
+        <button
+          onClick={prevSlide}
+          className="absolute top-1/2 left-0 z-10 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white opacity-0 shadow-md transition-colors group-hover:opacity-100 hover:bg-gray-100"
+          aria-label="Previous categories"
         >
-          {displayData.map((category, index) => (
-            <Link
-              href={category.url}
-              className="flex w-[190px] shrink-0 flex-col items-center"
-              key={`${category.id}-${index}`}
-            >
-              <div className="mb-4 flex h-[80px] w-[80px] items-center justify-center rounded-full bg-[#c1cae982] sm:h-[100px] sm:w-[100px]">
-                {category.icon}
-              </div>
-              <h3 className="font-semibold transition">{category.title}</h3>
-            </Link>
-          ))}
-        </div>
-      </div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6 text-gray-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </button>
 
-      <div className="!absolute top-1/2 right-0 hidden h-full w-[70px] -translate-y-1/2 items-center justify-center sm:flex">
-        <IconButton
-          className=""
-          Icon={ArrowRight}
-          onClick={handleNext}
-          size={40}
-        />
-      </div>
-      <div className="!absolute top-1/2 left-0 hidden h-full w-[70px] -translate-y-1/2 items-center justify-center sm:flex">
-        <IconButton Icon={ArrowLeft} onClick={handlePrev} size={40} />
+        {/* Next button */}
+        <button
+          onClick={nextSlide}
+          className="absolute top-1/2 right-0 z-10 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white opacity-0 shadow-md transition-colors group-hover:opacity-100 hover:bg-gray-100"
+          aria-label="Next categories"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6 text-gray-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </button>
+
+        {/* Slider container */}
+        <div
+          ref={sliderRef}
+          className="cursor-grab overflow-x-hidden scroll-smooth py-2 whitespace-nowrap active:cursor-grabbing"
+          onMouseDown={handleMouseDown}
+          onMouseLeave={handleMouseLeave}
+          onMouseUp={handleMouseUp}
+          onMouseMove={handleMouseMove}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          <div className="inline-flex justify-center space-x-7">
+            {data.map((category) => (
+              <Link
+                href={category.url}
+                className="flex w-[160px] shrink-0 flex-col items-center sm:w-[190px]"
+                key={`${category.id}`}
+              >
+                <div className="mb-4 flex h-[80px] w-[80px] items-center justify-center rounded-full bg-[#c1cae982] sm:h-[100px] sm:w-[100px]">
+                  {category.icon}
+                </div>
+                <h3 className="font-semibold transition">{category.title}</h3>
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
 };
+
 export default CategorySlider;

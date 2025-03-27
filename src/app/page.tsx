@@ -1,8 +1,9 @@
-import LandingSlider from "@/components/UI/LandingSlider";
 import LandingImg_1 from "@/assets/images/home(1)-1.png";
 import LandingImg_2 from "@/assets/images/home(1)-2.png";
 import LandingImg_3 from "@/assets/images/home(1)-3.png";
 import LandingImg_4 from "@/assets/images/home(1)-4.png";
+import LandingImg_5 from "@/assets/images/home(1)-5.png";
+import LandingSlider from "@/components/UI/LandingSlider";
 import { Slide } from "@/types";
 import { ArrowRight, Flame } from "lucide-react";
 import { Products } from "@/constants/products.data";
@@ -64,12 +65,12 @@ export default function Home() {
             ))}
           </div>
         </div>
-        <div className="flex flex-col gap-4 py-12 md:flex-row">
-          <div className="relative h-[500px] w-full overflow-hidden rounded-2xl p-8 md:h-[800px]">
+        <div className="flex flex-col gap-4 py-12 md:flex-row md:gap-8">
+          <div className="relative h-[600px] w-full overflow-hidden rounded-2xl p-8 md:h-[800px]">
             <Image
-              className="absolute top-0 left-0 h-full w-full object-cover brightness-95"
+              className="absolute top-0 left-0 h-full w-full object-cover brightness-75"
               src={LandingImg_3}
-              alt=""
+              alt="Landing image"
             />
             <div className="relative flex h-full flex-col justify-between">
               <h2 className="text-4xl font-bold text-white">
@@ -83,11 +84,11 @@ export default function Home() {
             </div>
           </div>
           <div className="flex w-full flex-col">
-            <div className="relative mb-4 h-full w-full overflow-hidden rounded-2xl">
+            <div className="relative mb-4 h-full w-full overflow-hidden rounded-2xl md:mb-8">
               <Image
-                className="absolute top-0 left-0 h-full w-full object-cover brightness-95"
+                className="absolute top-0 left-0 h-full w-full object-cover brightness-90"
                 src={LandingImg_4}
-                alt=""
+                alt="Landing image"
               />
               <div className="relative flex h-full flex-col justify-center p-8">
                 <div className="mb-4">
@@ -95,7 +96,9 @@ export default function Home() {
                     Weekend{" "}
                     <span className="text-4xl text-white"> Discount 20%</span>
                   </h1>
-                  <p className="text-gray-700">Low Priced Medical Products</p>
+                  <p className="text-xs text-gray-700 sm:text-lg">
+                    Low Priced Medical Products
+                  </p>
                 </div>
                 <DynamicButton
                   className="!bg-black !text-white"
@@ -104,7 +107,26 @@ export default function Home() {
                 />
               </div>
             </div>
-            <div className="h-full w-full rounded-2xl bg-green-400"></div>
+            <div className="relative h-full w-full overflow-hidden rounded-2xl">
+              <Image
+                className="absolute top-0 left-0 h-full w-full object-cover brightness-90"
+                src={LandingImg_5}
+                alt="Landing image"
+              />
+              <div className="relative flex h-full flex-col justify-center p-8">
+                <div className="mb-4">
+                  <h1 className="mb-2 max-w-[300px] text-4xl font-bold">
+                    Save {""}
+                    <span className="text-4xl text-white">50% Off </span>
+                    Pathway Health.
+                  </h1>
+                  <p className="text-xs text-gray-700 sm:text-lg">
+                    Shop the hotest products.
+                  </p>
+                </div>
+                <DynamicButton variant="white" href={"/"} label={"Shop Now"} />
+              </div>
+            </div>
           </div>
         </div>
       </div>
