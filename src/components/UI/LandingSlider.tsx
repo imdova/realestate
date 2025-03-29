@@ -38,7 +38,7 @@ const LandingSlider = ({ slides }: sliderLandingProps) => {
 
   return (
     <section>
-      <div className="relative flex h-[600px] items-center justify-center overflow-hidden rounded-4xl bg-gradient-to-tr from-[#c1cae9] to-[#f9d6d9] lg:h-[700px]">
+      <div className="relative flex h-[600px] items-center justify-center overflow-hidden rounded-4xl bg-gradient-to-tr from-[#c1cae9] to-[#f9d6d9] lg:h-[640px]">
         {/* Molecular Pattern Background */}
         <div className="absolute inset-0 h-full w-full opacity-15">
           <div className="absolute top-20 left-10 h-8 w-8 rounded-full bg-white"></div>

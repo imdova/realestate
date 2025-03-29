@@ -40,7 +40,7 @@ export type Slide = {
 export interface products {
   id: number;
   name: string;
-  brand: string;
+  category: string;
   description: string;
   price: string;
   priceDel?: string;
@@ -49,4 +49,5 @@ export interface products {
   discount?: number;
   rating?: number;
   reviewCount?: number;
+  isOnSale?: boolean;
 }

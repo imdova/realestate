@@ -79,7 +79,7 @@ const ProductCard: React.FC<{ product: products }> = ({ product }) => {
           href={"#"}
           className="hover:text-main text-xs font-medium text-gray-500 uppercase"
         >
-          {product.brand}
+          {product.category}
         </Link>
 
         <Link

@@ -1,3 +1,4 @@
+"use client";
 import LandingImg_1 from "@/assets/images/home(1)-1.png";
 import LandingImg_2 from "@/assets/images/home(1)-2.png";
 import LandingImg_3 from "@/assets/images/home(1)-3.png";
@@ -13,6 +14,9 @@ import FlashSaleCounter from "@/components/UI/Counter";
 import Link from "next/link";
 import Image from "next/image";
 import DynamicButton from "@/components/UI/Buttons/DynamicButton";
+import ProductFilter from "@/components/UI/ProductFilter";
+import { useState } from "react";
+import TestimonialSlider from "@/components/UI/TestimonialSlider";
 
 const slides: Slide[] = [
   {
@@ -33,6 +37,14 @@ const slides: Slide[] = [
   },
 ];
 export default function Home() {
+  const [filter, setFilter] = useState<string>("all");
+
+  // Filter products based on selected filter
+  const filteredProducts = Products.filter((product) => {
+    if (filter === "all") return true;
+    if (filter === "sale") return product.isOnSale;
+    return product.category.toLowerCase() === filter.toLowerCase();
+  });
   return (
     <div>
       <div className="container mx-auto px-6 lg:max-w-[1440px]">
@@ -128,6 +140,37 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>
+        <div className="px-4 py-12 sm:px-6 lg:px-8">
+          {/* Flash Sale Header with Counter */}
+          <div className="mb-12 flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center lg:gap-8">
+            <div className="flex flex-col items-center gap-3 sm:flex-row">
+              <h2 className="flex items-center gap-2 text-3xl font-bold md:text-4xl">
+                Best Seller Products
+              </h2>
+            </div>
+            {/* View More Button*/}
+            <div className="text-center">
+              <ProductFilter onFilterChange={setFilter} />
+            </div>
+          </div>
+          {/* Products Grid */}
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {filteredProducts.length > 0 ? (
+              filteredProducts.map((product) => (
+                <ProductCard product={product} key={product.id} />
+              ))
+            ) : (
+              <div className="col-span-full py-12 text-center">
+                <div className="text-sm font-medium text-gray-500">
+                  No products found matching your filter
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="px-4 py-12 sm:px-6 lg:px-8">
+          <TestimonialSlider />
         </div>
       </div>
     </div>
