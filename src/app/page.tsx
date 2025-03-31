@@ -1,6 +1,6 @@
 "use client";
-import LandingImg_1 from "@/assets/images/home(1)-1.png";
-import LandingImg_2 from "@/assets/images/home(1)-2.png";
+import LandingImg_1 from "@/assets/images/landing-1.jpg";
+import LandingImg_2 from "@/assets/images/landing-2.jpg";
 import LandingImg_3 from "@/assets/images/home(1)-3.png";
 import LandingImg_4 from "@/assets/images/home(1)-4.png";
 import LandingImg_5 from "@/assets/images/home(1)-5.png";
@@ -17,6 +17,7 @@ import DynamicButton from "@/components/UI/Buttons/DynamicButton";
 import ProductFilter from "@/components/UI/ProductFilter";
 import { useState } from "react";
 import TestimonialSlider from "@/components/UI/TestimonialSlider";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const slides: Slide[] = [
   {
@@ -45,6 +46,7 @@ export default function Home() {
     if (filter === "sale") return product.isOnSale;
     return product.category.toLowerCase() === filter.toLowerCase();
   });
+  useScrollAnimation();
   return (
     <div>
       <div className="container mx-auto px-6 lg:max-w-[1440px]">
@@ -53,7 +55,7 @@ export default function Home() {
         <CategorySlider />
         <div className="px-4 py-12 sm:px-6 lg:px-8">
           {/* Flash Sale Header with Counter */}
-          <div className="mb-12 flex flex-col items-start justify-between gap-8 sm:flex-row sm:items-center sm:gap-8">
+          <div className="animate-on-scroll slide-up mb-12 flex translate-y-10 flex-col items-center justify-between gap-8 opacity-0 transition-all duration-700 ease-in-out sm:flex-row sm:gap-8">
             <div className="flex flex-col items-center gap-3 sm:flex-row">
               <h2 className="flex items-center gap-2 text-3xl font-bold md:text-4xl">
                 <Flame size={30} className="text-red-500" /> Flash Sale
@@ -71,14 +73,15 @@ export default function Home() {
             </div>
           </div>
           {/* Products Grid */}
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <div className="animate-on-scroll slide-up grid translate-y-10 grid-cols-1 gap-6 opacity-0 transition-all duration-700 ease-in-out sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {Products.map((product) => (
               <ProductCard product={product} key={product.id} />
             ))}
           </div>
         </div>
+        {/* Banners  */}
         <div className="flex flex-col gap-4 py-12 md:flex-row md:gap-8">
-          <div className="relative h-[600px] w-full overflow-hidden rounded-2xl p-8 md:h-[800px]">
+          <div className="animate-on-scroll zoom-in relative h-[600px] w-full scale-75 overflow-hidden rounded-2xl p-8 opacity-0 transition-all duration-700 ease-in-out md:h-[800px]">
             <Image
               className="absolute top-0 left-0 h-full w-full object-cover brightness-75"
               src={LandingImg_3}
@@ -96,7 +99,7 @@ export default function Home() {
             </div>
           </div>
           <div className="flex w-full flex-col">
-            <div className="relative mb-4 h-full w-full overflow-hidden rounded-2xl md:mb-8">
+            <div className="animate-on-scroll zoom-in relative mb-4 h-full w-full scale-75 overflow-hidden rounded-2xl opacity-0 transition-all duration-700 ease-in-out md:mb-8">
               <Image
                 className="absolute top-0 left-0 h-full w-full object-cover brightness-90"
                 src={LandingImg_4}
@@ -119,7 +122,7 @@ export default function Home() {
                 />
               </div>
             </div>
-            <div className="relative h-full w-full overflow-hidden rounded-2xl">
+            <div className="animate-on-scroll zoom-in relative h-full w-full scale-75 overflow-hidden rounded-2xl opacity-0 transition-all duration-700 ease-in-out">
               <Image
                 className="absolute top-0 left-0 h-full w-full object-cover brightness-90"
                 src={LandingImg_5}
@@ -143,7 +146,7 @@ export default function Home() {
         </div>
         <div className="px-4 py-12 sm:px-6 lg:px-8">
           {/* Flash Sale Header with Counter */}
-          <div className="mb-12 flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center lg:gap-8">
+          <div className="animate-on-scroll slide-up mb-12 flex translate-y-10 flex-col items-center justify-between gap-8 opacity-0 transition-all duration-700 ease-in-out lg:flex-row lg:gap-8">
             <div className="flex flex-col items-center gap-3 sm:flex-row">
               <h2 className="flex items-center gap-2 text-3xl font-bold md:text-4xl">
                 Best Seller Products
@@ -155,7 +158,7 @@ export default function Home() {
             </div>
           </div>
           {/* Products Grid */}
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <div className="animate-on-scroll slide-up grid min-h-[400px] translate-y-10 grid-cols-1 gap-6 opacity-0 transition-all duration-700 ease-in-out sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {filteredProducts.length > 0 ? (
               filteredProducts.map((product) => (
                 <ProductCard product={product} key={product.id} />

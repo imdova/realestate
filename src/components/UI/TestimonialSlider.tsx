@@ -94,10 +94,10 @@ export default function TestimonialSlider() {
     visibleTestimonials.push(...dummyTestimonials.slice(0, needed));
   }
   return (
-    <div className="rounded-2xl bg-[#e6d5c6a0] px-4 py-16 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl">
+    <div className="animate-on-scroll fade-in rounded-2xl bg-[#e6d5c6a0] px-4 py-16 opacity-0 transition-all duration-700 ease-in-out sm:px-6 lg:px-8">
+      <div className="mx-auto">
         <div className="relative mx-auto max-w-6xl">
-          <div className="flex flex-col items-center justify-between gap-3 pb-12 sm:flex-row">
+          <div className="flex flex-col items-center justify-between gap-3 pb-16 sm:flex-row">
             <h2 className="flex items-center gap-2 text-3xl font-bold md:text-4xl">
               Happy Clients Say
             </h2>

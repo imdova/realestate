@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 
-export function useScrollAnimation(currentIndex: number) {
+export function useScrollAnimation() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -30,7 +30,7 @@ export function useScrollAnimation(currentIndex: number) {
     elements.forEach((el) => observer.observe(el));
 
     return () => elements.forEach((el) => observer.unobserve(el));
-  }, [currentIndex]); // ✅ Hook re-triggers when currentIndex changes
+  }, []);
 }
 
 // Example Component

@@ -45,10 +45,10 @@ const ProductCard: React.FC<{ product: products }> = ({ product }) => {
 
         {/* Action Buttons (shown on hover) */}
         <div
-          className={`absolute right-0 bottom-0 left-0 flex justify-center space-x-2 p-3 transition-all duration-300 ${isHovered ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}`}
+          className={`absolute right-0 bottom-3 left-0 mx-auto flex w-fit justify-center space-x-2 rounded-xl bg-white px-6 py-2 transition-all duration-300 ${isHovered ? "translate-y-0 opacity-100" : "translate-y-0 opacity-100 sm:translate-y-full sm:opacity-0"}`}
         >
           <button
-            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-50 text-gray-800 transition hover:bg-gray-200"
+            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-gray-800 transition hover:bg-gray-200"
             onClick={() => setIsWishlisted(!isWishlisted)}
           >
             <Heart
@@ -58,7 +58,7 @@ const ProductCard: React.FC<{ product: products }> = ({ product }) => {
           </button>
 
           <button
-            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-50 text-gray-800 transition hover:bg-gray-200"
+            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-gray-800 transition hover:bg-gray-200"
             onClick={() => setIsInCart(!isInCart)}
           >
             <ShoppingCart
@@ -67,12 +67,11 @@ const ProductCard: React.FC<{ product: products }> = ({ product }) => {
             />
           </button>
 
-          <button className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-50 text-gray-800 transition hover:bg-gray-200">
+          <button className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-gray-800 transition hover:bg-gray-200">
             <Eye size={15} className="text-gray-700" />
           </button>
         </div>
       </Link>
-
       {/* Product Info */}
       <div className="p-4">
         <Link
@@ -81,18 +80,15 @@ const ProductCard: React.FC<{ product: products }> = ({ product }) => {
         >
           {product.category}
         </Link>
-
         <Link
           href={"#"}
           className="hover:text-main mt-1 line-clamp-1 text-lg font-semibold text-gray-800"
         >
           {product.name}
         </Link>
-
         <p className="mt-1 line-clamp-2 text-sm text-gray-600">
           {product.description}
         </p>
-
         <div className="mt-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <p className="text-main text-lg font-bold">${product.price}</p>
@@ -103,7 +99,6 @@ const ProductCard: React.FC<{ product: products }> = ({ product }) => {
             )}
           </div>
         </div>
-
         {/* Rating */}
         {product.rating && (
           <div className="mt-2 flex items-center">

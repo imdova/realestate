@@ -1,3 +1,6 @@
+"use client";
+
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { Star } from "lucide-react";
 import Image from "next/image";
 
@@ -10,10 +13,10 @@ interface Testimonial {
   date: string;
   rating: number;
 }
-
 function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
+  useScrollAnimation();
   return (
-    <div className="relative w-full max-w-md rounded-2xl bg-white p-8 text-center shadow-md">
+    <div className="animate-on-scroll zoom-in relative w-full max-w-md scale-75 rounded-2xl bg-white p-8 text-center opacity-0 shadow-md transition-all duration-700 ease-in-out">
       {/* Profile Image */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 transform">
         <Image

@@ -18,10 +18,21 @@ export type link = {
   title: string;
   url: string;
 };
+export type gridLink = {
+  heading: string;
+  subLinks: link[];
+};
 export type linksHeader = {
   title: string;
   url: string;
   subLinks?: link[];
+  gridLinks?: gridLink[];
+  banner?: {
+    active: boolean;
+    title: string;
+    details: string;
+    image: string | StaticImageData;
+  };
 };
 
 // Glopal types

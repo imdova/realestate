@@ -25,7 +25,7 @@ const DynamicButton: React.FC<DynamicButtonProps> = ({
   };
 
   return (
-    <Link href={href}>
+    <Link className="w-fit" href={href}>
       <div className={`${className} ${baseStyles} ${variants[variant]}`}>
         {label}
       </div>

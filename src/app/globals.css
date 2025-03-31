@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --main-color: #283593;
+  --main-color: #42a5f5;
   --foreground: #171717;
 }
 
@@ -49,9 +49,9 @@ body {
   @apply rounded-md bg-white p-4 shadow;
 }
 .elementskit-dropdown {
-  @apply invisible absolute top-[170%] w-full min-w-[200px] rounded-md bg-white p-4 opacity-0 shadow transition-all duration-500;
+  @apply invisible absolute top-[100%] rounded-md bg-white p-4 opacity-0 shadow transition-all duration-500;
 }
 
 .group:hover .elementskit-dropdown {
-  @apply visible top-[140%] opacity-100;
+  @apply visible opacity-100;
 }
