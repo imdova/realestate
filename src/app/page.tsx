@@ -1,6 +1,6 @@
 "use client";
-import LandingImg_1 from "@/assets/images/landing-1.jpg";
-import LandingImg_2 from "@/assets/images/landing-2.jpg";
+import LandingImg_1 from "@/assets/images/landing-1.jpeg";
+import LandingImg_2 from "@/assets/images/landing-2.jpeg";
 import LandingImg_3 from "@/assets/images/home(1)-3.png";
 import LandingImg_4 from "@/assets/images/home(1)-4.png";
 import LandingImg_5 from "@/assets/images/home(1)-5.png";

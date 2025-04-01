@@ -28,12 +28,12 @@ const ProductFilter = ({
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-4">
+    <div className="flex flex-wrap items-center justify-center gap-4 lg:justify-start">
       {filters.map((filter) => (
         <button
           key={filter.id}
           onClick={() => handleFilterClick(filter.id)}
-          className={`rounded-full px-4 py-2 text-xs font-medium transition-colors duration-200 md:text-sm ${
+          className={`cursor-pointer rounded-full px-4 py-2 text-xs font-medium transition-colors duration-200 md:text-sm ${
             activeFilter === filter.id
               ? "bg-main text-white"
               : "bg-gray-100 text-gray-700 hover:bg-gray-200"

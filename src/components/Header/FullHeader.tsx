@@ -26,8 +26,12 @@ const FullHeader: React.FC = () => {
           <div className="flex h-[80px] items-center justify-between">
             {/* Logo */}
             <div className="flex items-center">
-              <Link href="/" className="text-xl font-bold text-gray-800">
-                Omga
+              <Link
+                href="/"
+                className="flex items-end gap-1 text-xl font-bold text-gray-800"
+              >
+                Omga{" "}
+                <span className="bg-main block h-[5px] w-[5px] rounded-full"></span>
               </Link>
             </div>
 

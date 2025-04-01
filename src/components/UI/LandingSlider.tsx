@@ -1,25 +1,24 @@
 "use client";
 import { useState, useEffect } from "react";
-import Image from "next/image";
-
 import CircularTextButton from "./Buttons/CircularTextButton";
 import DynamicButton from "./Buttons/DynamicButton";
 import { Slide } from "@/types";
 
-type sliderLandingProps = {
+type SliderLandingProps = {
   slides: Slide[];
 };
-const LandingSlider = ({ slides }: sliderLandingProps) => {
+
+const LandingSlider = ({ slides }: SliderLandingProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [animating, setAnimating] = useState(false);
-  const [loaded, setLoaded] = useState(false);
+  const [pageLoading, setPageLoading] = useState(true); // Show loader on page reload
 
-  // Ensure animation runs on page load
+  // Show loader only on page reload
   useEffect(() => {
-    setTimeout(() => setLoaded(true), 100);
+    setTimeout(() => setPageLoading(false), 600); // Simulate loading time
   }, []);
 
-  // Auto-slide every 5 seconds
+  // Auto-slide every 10 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       changeSlide((currentIndex + 1) % slides.length);
@@ -27,7 +26,7 @@ const LandingSlider = ({ slides }: sliderLandingProps) => {
     return () => clearInterval(interval);
   }, [currentIndex, slides.length]);
 
-  // Function to change slides with slideInUp animation
+  // Function to change slides
   const changeSlide = (index: number) => {
     setAnimating(true);
     setTimeout(() => {
@@ -37,26 +36,38 @@ const LandingSlider = ({ slides }: sliderLandingProps) => {
   };
 
   return (
-    <section>
-      <div className="relative flex h-[600px] items-center justify-center overflow-hidden rounded-4xl md:h-[640px]">
-        {/* Image - SlideInUp Animation */}
-        <div className="absolute top-0 left-0 h-full w-full">
-          <Image
-            className={`h-full w-full object-cover object-center transition-opacity duration-500 ${
-              !loaded || animating ? "opacity-0" : "opacity-100"
-            }`}
-            src={slides[currentIndex].image}
-            alt={slides[currentIndex].title}
-            width={700}
-            height={700}
-            priority
-          />
+    <section className="relative">
+      {/* Loader (only on page reload) */}
+      {pageLoading && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center">
+          <div className="border-main h-12 w-12 animate-spin rounded-full border-4 border-t-transparent"></div>
         </div>
-        {/* Text Content - SlideInUp Animation */}
+      )}
+
+      <div
+        className={`relative flex h-[600px] items-center justify-center overflow-hidden rounded-4xl transition-opacity duration-500 md:h-[640px] ${
+          pageLoading ? "opacity-0" : "opacity-100"
+        }`}
+      >
+        {/* Background Image */}
+        <div
+          className={`absolute inset-0 h-full w-full bg-cover bg-[78%] transition-opacity duration-500 sm:bg-center ${
+            animating ? "opacity-0" : "opacity-100"
+          }`}
+          style={{
+            backgroundImage: `url(${
+              typeof slides[currentIndex].image === "string"
+                ? slides[currentIndex].image
+                : slides[currentIndex].image.src
+            })`,
+          }}
+        ></div>
+
+        {/* Text Content */}
         <div className="relative flex h-full w-full text-white transition-transform duration-500 ease-in-out">
           <div
             className={`flex w-full max-w-[600px] flex-col items-center justify-center p-4 transition-all duration-500 md:items-start md:p-6 ${
-              !loaded || animating
+              animating
                 ? "translate-y-10 opacity-0"
                 : "translate-y-0 opacity-100"
             }`}
