@@ -49,7 +49,7 @@ export type Slide = {
 
 // Products and card Product type
 export interface products {
-  id: number;
+  id: string;
   name: string;
   category: string;
   description: string;

@@ -2,7 +2,7 @@ import { products } from "@/types";
 
 export const Products: products[] = [
   {
-    id: 1,
+    id: "1",
     name: "Teethstr8 Max Vitamizzin 230 Rustic Plastic Knife",
     category: "Pulse Oximeters",
     description:
@@ -18,7 +18,7 @@ export const Products: products[] = [
     isOnSale: true,
   },
   {
-    id: 2,
+    id: "2",
     name: "Gorgeous Linen Small1104",
     category: "Patient Care",
     description:
@@ -32,7 +32,7 @@ export const Products: products[] = [
     reviewCount: 89,
   },
   {
-    id: 3,
+    id: "3",
     name: "Lightweight Bronze Hat",
     category: " Patient Care",
     description:
@@ -45,7 +45,7 @@ export const Products: products[] = [
     reviewCount: 42,
   },
   {
-    id: 4,
+    id: " 4",
     name: "Fuzalin 300 Pills Synergistic Silk Small1104",
     category: "Wound Care",
     description:
@@ -59,7 +59,7 @@ export const Products: products[] = [
     reviewCount: 56,
   },
   {
-    id: 5,
+    id: "5",
     name: "Practical Wool Computer",
     category: "PPE Protection",
     description:
