@@ -9,8 +9,12 @@ export const Products: products[] = [
       "Et esse velit totam sint repudiandae. Similique architecto qui exercitationem aut ut. Dolores quam eligendi unde omnis. Excepturi aliquam nam delectus consequatur. Et aut asperiores et atque.",
     price: "89.99",
     priceDel: "129.99",
-    image:
+    images: [
       "https://demo2.pavothemes.com/pharmo/wp-content/uploads/2024/05/product-18-1.jpg",
+      "https://demo2.pavothemes.com/pharmo/wp-content/uploads/2024/05/product-18-2-768x768.jpg",
+      "https://demo2.pavothemes.com/pharmo/wp-content/uploads/2024/05/product-18-3-768x768.jpg",
+      "https://demo2.pavothemes.com/pharmo/wp-content/uploads/2024/05/product-18-4-768x768.jpg",
+    ],
     isNew: true,
     discount: 30,
     rating: 4,
@@ -25,8 +29,9 @@ export const Products: products[] = [
       "Alias dolorem blanditiis quasi ullam corrupti assumenda aut. Qui facere sapiente et voluptate id. Vel facere eos esse ut fugit. Qui quae in facilis suscipit amet quia sed quia.",
     price: "24.99",
     priceDel: "34.99",
-    image:
+    images: [
       "https://demo2.pavothemes.com/pharmo/wp-content/uploads/2024/05/product-10-1.jpg",
+    ],
     discount: 25,
     rating: 5,
     reviewCount: 89,
@@ -38,8 +43,9 @@ export const Products: products[] = [
     description:
       "Alias dolorem blanditiis quasi ullam corrupti assumenda aut. Qui facere sapiente et voluptate id. Vel facere eos esse ut fugit. Qui quae in facilis suscipit amet quia sed quia.",
     price: "19.99",
-    image:
+    images: [
       "https://demo2.pavothemes.com/pharmo/wp-content/uploads/2024/05/product-7-1.jpg",
+    ],
     isNew: true,
     rating: 4,
     reviewCount: 42,
@@ -52,8 +58,9 @@ export const Products: products[] = [
       "Quia enim dignissimos occaecati corporis rerum dolore. Sed quae amet placeat suscipit. Nostrum eum laborum aperiam alias nobis soluta aliquid ut.",
     price: "59.99",
     priceDel: "79.99",
-    image:
+    images: [
       "https://demo2.pavothemes.com/pharmo/wp-content/uploads/2024/05/product-17-1.jpg",
+    ],
     discount: 20,
     rating: 3,
     reviewCount: 56,
@@ -65,8 +72,9 @@ export const Products: products[] = [
     description:
       "Alias dolorem blanditiis quasi ullam corrupti assumenda aut. Qui facere sapiente et voluptate id. Vel facere eos esse ut fugit. Qui quae in facilis suscipit amet quia sed quia.",
     price: "45.00",
-    image:
+    images: [
       "https://demo2.pavothemes.com/pharmo/wp-content/uploads/2024/05/product-11-1.jpg",
+    ],
     rating: 4,
     reviewCount: 31,
   },

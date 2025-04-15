@@ -22,7 +22,7 @@ const ProductCard: React.FC<{ product: products }> = ({ product }) => {
         className="relative block h-[250px] w-full overflow-hidden rounded-2xl"
       >
         <Image
-          src={product.image}
+          src={product.images[0]}
           alt={product.name}
           className="h-full w-full object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
           width={300}

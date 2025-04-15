@@ -55,7 +55,7 @@ export interface products {
   description: string;
   price: string;
   priceDel?: string;
-  image: string;
+  images: string[];
   isNew?: boolean;
   discount?: number;
   rating?: number;
