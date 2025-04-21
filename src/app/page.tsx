@@ -44,7 +44,10 @@ export default function Home() {
   const filteredProducts = Products.filter((product) => {
     if (filter === "all") return true;
     if (filter === "sale") return product.isOnSale;
-    return product.category.toLowerCase() === filter.toLowerCase();
+
+    return product.categories.some(
+      (category: string) => category.toLowerCase() === filter.toLowerCase(),
+    );
   });
   useScrollAnimation();
   return (

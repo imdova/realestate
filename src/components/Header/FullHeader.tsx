@@ -17,7 +17,7 @@ const FullHeader: React.FC = () => {
 
   return (
     <header
-      className={`-top-12 left-0 z-[1000] w-full bg-white transition-all duration-700 ${
+      className={`-top-12 left-0 z-40 w-full bg-white transition-all duration-700 ${
         isScrolled ? "fixed top-0 shadow-lg" : "sticky"
       }`}
     >

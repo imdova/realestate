@@ -2,18 +2,23 @@
 import { Products } from "@/constants/products.data";
 import {
   Check,
+  Fullscreen,
   Heart,
   MessagesSquare,
   Minus,
   Plus,
   RefreshCcw,
+  RotateCcw,
   ShoppingCart,
   Star,
+  Truck,
 } from "lucide-react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { use, useRef, useState } from "react";
 import CheckoutImage from "@/assets/images/checkout.jpg";
+import Link from "next/link";
+import ImageViewer from "@/components/UI/ImageViewer";
 
 // type ProductPageProps = {
 //   product: products;
@@ -36,7 +41,10 @@ export default function ProductPage({ params }: SingleProductsProps) {
   const [scale, setScale] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const imgRef = useRef<HTMLDivElement | null>(null);
-
+  const [activeTab, setActiveTab] = useState<"description" | "information">(
+    "description",
+  );
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
   // Mouse move handler to update scale and position
   const handleMouseMove = (e: React.MouseEvent) => {
     if (imgRef.current) {
@@ -64,6 +72,7 @@ export default function ProductPage({ params }: SingleProductsProps) {
     setScale(1); // Reset scale on focus
     setPosition({ x: 0, y: 0 }); // Reset position
   };
+
   const { productId } = use(params);
 
   const Product = Products.find((product) => product.id === productId);
@@ -93,6 +102,21 @@ export default function ProductPage({ params }: SingleProductsProps) {
                   transform: `scale(${scale}) translateX(${position.x}%) translateY(${position.y}%)`,
                 }}
               />
+              <button
+                onClick={() => {
+                  setIsViewerOpen(true);
+                }}
+                className="absolute top-4 right-4 cursor-pointer text-gray-500"
+              >
+                <Fullscreen size={25} />
+              </button>
+              {isViewerOpen && (
+                <ImageViewer
+                  images={Product.images}
+                  initialIndex={currentIndex}
+                  onClose={() => setIsViewerOpen(false)}
+                />
+              )}
             </div>
 
             {/* Thumbnail Navigation */}
@@ -101,10 +125,10 @@ export default function ProductPage({ params }: SingleProductsProps) {
                 <button
                   key={index}
                   onClick={() => setCurrentIndex(index)}
-                  className={`cursor-pointer rounded-lg border-2 ${
+                  className={`cursor-pointer rounded-lg border transition-transform duration-300 ${
                     currentIndex === index
-                      ? "border-blue-500"
-                      : "border-gray-300"
+                      ? "border-main scale-105"
+                      : "scale-90 border-gray-300"
                   }`}
                 >
                   <Image
@@ -119,14 +143,14 @@ export default function ProductPage({ params }: SingleProductsProps) {
             </div>
           </div>
           <div className="flex w-full flex-col max-lg:mx-auto max-lg:max-w-[608px] lg:order-none">
-            <h2 className="font-manrope mb-2 text-4xl leading-10 font-bold text-gray-900">
+            <h2 className="font-manrope mb-2 text-center text-4xl leading-10 font-bold text-gray-900 lg:text-start">
               {Product.name}
             </h2>
             <div className="flex flex-col items-center gap-3 py-5 sm:flex-row">
               <div className="flex gap-3">
                 <div className="flex gap-1 border-r border-r-gray-200 pr-3">
                   <span className="text-sm text-gray-600">Brand:</span>
-                  <span className="text-sm">{Product.category}</span>
+                  <span className="text-sm">{Product.brands.join(",")}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   {/* Rating */}
@@ -148,7 +172,7 @@ export default function ProductPage({ params }: SingleProductsProps) {
                 In Stock
               </span>
             </div>
-            <div className="mb-6 flex items-end gap-3">
+            <div className="mb-6 flex items-end justify-center gap-3 lg:justify-start">
               <h6 className="text-main text-4xl leading-9 font-bold">
                 ${Product.price}
               </h6>
@@ -202,7 +226,7 @@ export default function ProductPage({ params }: SingleProductsProps) {
                     </button>
                   </div>
                 </div>
-                <div className="relative mb-6 flex items-center justify-center rounded-2xl border border-gray-300 p-6">
+                <div className="relative mb-8 flex items-center justify-center rounded-2xl border border-gray-300 p-6">
                   <Image
                     className="w-[350px] object-cover"
                     src={CheckoutImage}
@@ -216,13 +240,148 @@ export default function ProductPage({ params }: SingleProductsProps) {
                     </span>
                   </div>
                 </div>
-                <div className="flex gap-4 p-4">
-                  <div className="flex">
-                    <span className="flex"></span>
+                <div className="flex flex-col justify-between gap-4 border-b border-gray-200 pb-6 sm:flex-row">
+                  <div className="flex items-center gap-2 font-semibold uppercase">
+                    <Truck size={20} />
+                    <span>
+                      Free delivery {""}
+                      <span className="text-gray-500">over $100</span>
+                    </span>
                   </div>
+                  <div className="flex items-center gap-2 font-semibold uppercase">
+                    <RotateCcw size={20} />
+                    <span>
+                      30 Days Return {""}
+                      <span className="text-gray-500">Period</span>
+                    </span>
+                  </div>
+                </div>
+                <div className="my-8">
+                  {Product.categories?.length > 0 && (
+                    <p className="mb-1 font-semibold text-gray-500">
+                      Categories:{" "}
+                      <span className="text-black">
+                        {Product.categories.map((category, index) => (
+                          <span key={index}>
+                            <Link
+                              className="hover:text-main transition"
+                              href="#"
+                            >
+                              {category}
+                            </Link>
+                            {index < Product.categories.length - 1 && ", "}
+                          </span>
+                        ))}
+                      </span>
+                    </p>
+                  )}
+
+                  {Product.tags?.length > 0 && (
+                    <p className="mb-1 font-semibold text-gray-500">
+                      Tags:{" "}
+                      <span className="text-black">
+                        {Product.tags.map((tag, index) => (
+                          <span key={index}>
+                            <Link
+                              className="hover:text-main transition"
+                              href="#"
+                            >
+                              {tag}
+                            </Link>
+                            {index < Product.tags.length - 1 && ", "}
+                          </span>
+                        ))}
+                      </span>
+                    </p>
+                  )}
+
+                  {Product.sku && (
+                    <p className="mb-1 font-semibold text-gray-500">
+                      SKU: <span className="text-black">{Product.sku}</span>
+                    </p>
+                  )}
+
+                  {Product.brands?.length > 0 && (
+                    <p className="mb-1 font-semibold text-gray-500">
+                      Brands:{" "}
+                      <span className="text-black">
+                        {Product.brands.map((brand, index) => (
+                          <span key={index}>
+                            <Link
+                              className="hover:text-main transition"
+                              href="#"
+                            >
+                              {brand}
+                            </Link>
+                            {index < Product.brands.length - 1 && ", "}
+                          </span>
+                        ))}
+                      </span>
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+        <div className="mt-16">
+          {/* Tabs */}
+          <div className="mb-7 flex justify-center gap-8 border-b border-gray-200">
+            <button
+              onClick={() => setActiveTab("description")}
+              className={`cursor-pointer px-4 py-2 transition-all sm:text-xl ${
+                activeTab === "description"
+                  ? "text-primary border-primary border-b-2 font-semibold"
+                  : "text-gray-500"
+              }`}
+            >
+              Description
+            </button>
+            <button
+              onClick={() => setActiveTab("information")}
+              className={`cursor-pointer px-4 py-2 transition-all sm:text-xl ${
+                activeTab === "information"
+                  ? "text-primary border-primary border-b-2 font-semibold"
+                  : "text-gray-500"
+              }`}
+            >
+              Additional information
+            </button>
+          </div>
+
+          {/* Content */}
+          <div className="min-h-52">
+            {activeTab === "description" && Product.description && (
+              <p className="prose max-w-none text-gray-600 sm:text-lg">
+                {Product.description}
+              </p>
+            )}
+
+            {activeTab === "information" && (
+              // <div className="prose max-w-none">{Product.information}</div>
+              <div>
+                <h2 className="mb-6 text-2xl font-bold">
+                  Additional information
+                </h2>
+                <ul className="flex flex-col gap-6">
+                  {Product.additional_information.map((information, index) => {
+                    return (
+                      <li
+                        className="flex flex-col items-center justify-between md:flex-row"
+                        key={index}
+                      >
+                        <h4 className="w-full text-lg font-semibold">
+                          {information.label}
+                        </h4>
+                        <p className="w-full text-gray-600">
+                          {information.content}
+                        </p>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -46,12 +46,18 @@ export type Slide = {
   url: string;
   label: string;
 };
-
+type information = {
+  label: string;
+  content: string;
+};
 // Products and card Product type
 export interface products {
   id: string;
   name: string;
-  category: string;
+  categories: string[];
+  tags: string[];
+  sku: string;
+  brands: string[];
   description: string;
   price: string;
   priceDel?: string;
@@ -61,4 +67,5 @@ export interface products {
   rating?: number;
   reviewCount?: number;
   isOnSale?: boolean;
+  additional_information: information[];
 }

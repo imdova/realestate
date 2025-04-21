@@ -78,7 +78,7 @@ const ProductCard: React.FC<{ product: products }> = ({ product }) => {
           href={"#"}
           className="hover:text-main text-xs font-medium text-gray-500 uppercase"
         >
-          {product.category}
+          {product.categories[0]}
         </Link>
         <Link
           href={"#"}
