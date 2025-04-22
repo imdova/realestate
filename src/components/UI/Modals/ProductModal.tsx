@@ -142,7 +142,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
                     e.stopPropagation();
                     prevImage();
                   }}
-                  className="absolute top-1/2 left-2 z-10 flex h-10 w-10 -translate-y-1/2 scale-0 transform cursor-pointer items-center justify-center rounded-full bg-white/80 opacity-0 shadow-md transition-all duration-500 group-hover:scale-100 group-hover:opacity-100 group-focus:scale-100 group-focus:opacity-100 hover:scale-110 hover:bg-white"
+                  className="absolute top-1/2 left-2 z-10 flex h-10 w-10 -translate-y-1/2 scale-0 transform cursor-pointer items-center justify-center rounded-full bg-white/80 opacity-0 shadow-md transition-all duration-500 group-hover:scale-100 group-hover:opacity-100 group-active:scale-100 group-active:opacity-100 hover:scale-110 hover:bg-white"
                   disabled={isTransitioning}
                 >
                   <ChevronLeft size={24} />
