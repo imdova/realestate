@@ -39,7 +39,7 @@ const LandingSlider = ({ slides }: SliderLandingProps) => {
     <section className="relative">
       {/* Loader (only on page reload) */}
       {pageLoading && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center">
+        <div className="absolute inset-0 z-10 flex items-center justify-center">
           <div className="border-main h-12 w-12 animate-spin rounded-full border-4 border-t-transparent"></div>
         </div>
       )}

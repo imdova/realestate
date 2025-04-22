@@ -2,7 +2,8 @@
 import { Products } from "@/constants/products.data";
 import {
   Check,
-  Fullscreen,
+  CirclePlay,
+  Expand,
   Heart,
   MessagesSquare,
   Minus,
@@ -90,7 +91,7 @@ export default function ProductPage({ params }: SingleProductsProps) {
               onMouseLeave={handleMouseLeave} // Reset on mouse leave
               onFocus={handleFocus} // Reset on focus
               tabIndex={0} // Make div focusable to trigger onFocus
-              className="relative mx-auto w-full overflow-hidden rounded-lg"
+              className="relative mx-auto w-full overflow-hidden rounded-lg outline-none"
             >
               <Image
                 src={Product.images[currentIndex]}
@@ -102,14 +103,26 @@ export default function ProductPage({ params }: SingleProductsProps) {
                   transform: `scale(${scale}) translateX(${position.x}%) translateY(${position.y}%)`,
                 }}
               />
-              <button
-                onClick={() => {
-                  setIsViewerOpen(true);
-                }}
-                className="absolute top-4 right-4 cursor-pointer text-gray-500"
-              >
-                <Fullscreen size={25} />
-              </button>
+
+              <div className="absolute top-4 right-4 flex items-center gap-3">
+                {Product.link_preview && (
+                  <Link
+                    target="_blank"
+                    href={Product.link_preview}
+                    className="hover:text-main cursor-pointer text-[#404247] transition"
+                  >
+                    <CirclePlay size={25} />
+                  </Link>
+                )}
+                <button
+                  onClick={() => {
+                    setIsViewerOpen(true);
+                  }}
+                  className="hover:text-main cursor-pointer text-[#404247] transition"
+                >
+                  <Expand size={22} />
+                </button>
+              </div>
               {isViewerOpen && (
                 <ImageViewer
                   images={Product.images}
@@ -142,11 +155,11 @@ export default function ProductPage({ params }: SingleProductsProps) {
               ))}
             </div>
           </div>
-          <div className="flex w-full flex-col max-lg:mx-auto max-lg:max-w-[608px] lg:order-none">
-            <h2 className="font-manrope mb-2 text-center text-4xl leading-10 font-bold text-gray-900 lg:text-start">
+          <div className="flex w-full flex-col lg:order-none">
+            <h2 className="font-manrope mb-2 text-4xl leading-10 font-bold text-gray-900">
               {Product.name}
             </h2>
-            <div className="flex flex-col items-center gap-3 py-5 sm:flex-row">
+            <div className="flex flex-col items-start gap-3 py-5 sm:flex-row lg:items-center">
               <div className="flex gap-3">
                 <div className="flex gap-1 border-r border-r-gray-200 pr-3">
                   <span className="text-sm text-gray-600">Brand:</span>
@@ -172,7 +185,7 @@ export default function ProductPage({ params }: SingleProductsProps) {
                 In Stock
               </span>
             </div>
-            <div className="mb-6 flex items-end justify-center gap-3 lg:justify-start">
+            <div className="mb-6 flex items-end gap-3">
               <h6 className="text-main text-4xl leading-9 font-bold">
                 ${Product.price}
               </h6>
@@ -181,7 +194,7 @@ export default function ProductPage({ params }: SingleProductsProps) {
               </del>
             </div>
             <p className="mb-8 text-base font-normal text-gray-500">
-              {Product.description}
+              {Product.details}
             </p>
             <div className="block w-full">
               <div className="text">
@@ -329,7 +342,7 @@ export default function ProductPage({ params }: SingleProductsProps) {
           <div className="mb-7 flex justify-center gap-8 border-b border-gray-200">
             <button
               onClick={() => setActiveTab("description")}
-              className={`cursor-pointer px-4 py-2 transition-all sm:text-xl ${
+              className={`cursor-pointer px-4 py-2 text-sm transition-all sm:text-xl ${
                 activeTab === "description"
                   ? "text-primary border-primary border-b-2 font-semibold"
                   : "text-gray-500"
@@ -339,7 +352,7 @@ export default function ProductPage({ params }: SingleProductsProps) {
             </button>
             <button
               onClick={() => setActiveTab("information")}
-              className={`cursor-pointer px-4 py-2 transition-all sm:text-xl ${
+              className={`cursor-pointer px-4 py-2 text-sm transition-all sm:text-xl ${
                 activeTab === "information"
                   ? "text-primary border-primary border-b-2 font-semibold"
                   : "text-gray-500"

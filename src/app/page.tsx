@@ -5,7 +5,7 @@ import LandingImg_3 from "@/assets/images/home(1)-3.png";
 import LandingImg_4 from "@/assets/images/home(1)-4.png";
 import LandingImg_5 from "@/assets/images/home(1)-5.png";
 import LandingSlider from "@/components/UI/LandingSlider";
-import { Slide } from "@/types";
+import { products, Slide } from "@/types";
 import { ArrowRight, Flame } from "lucide-react";
 import { Products } from "@/constants/products.data";
 import CategorySlider from "@/components/UI/CategorySlider";
@@ -18,6 +18,7 @@ import ProductFilter from "@/components/UI/ProductFilter";
 import { useState } from "react";
 import TestimonialSlider from "@/components/UI/TestimonialSlider";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import ProductModal from "@/components/UI/Modals/ProductModal";
 
 const slides: Slide[] = [
   {
@@ -39,6 +40,8 @@ const slides: Slide[] = [
 ];
 export default function Home() {
   const [filter, setFilter] = useState<string>("all");
+  const [productView, setProductView] = useState<products>(Products[0]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Filter products based on selected filter
   const filteredProducts = Products.filter((product) => {
@@ -51,7 +54,7 @@ export default function Home() {
   });
   useScrollAnimation();
   return (
-    <div>
+    <div className="relative">
       <div className="container mx-auto px-6 lg:max-w-[1440px]">
         {/* landing content  */}
         <LandingSlider slides={slides} />
@@ -78,7 +81,12 @@ export default function Home() {
           {/* Products Grid */}
           <div className="animate-on-scroll slide-up grid translate-y-10 grid-cols-1 gap-6 opacity-0 transition-all duration-700 ease-in-out sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {Products.map((product) => (
-              <ProductCard product={product} key={product.id} />
+              <ProductCard
+                setProductView={setProductView}
+                setIsModalOpen={setIsModalOpen}
+                product={product}
+                key={product.id}
+              />
             ))}
           </div>
         </div>
@@ -164,7 +172,12 @@ export default function Home() {
           <div className="animate-on-scroll slide-up grid min-h-[400px] translate-y-10 grid-cols-1 gap-6 opacity-0 transition-all duration-700 ease-in-out sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {filteredProducts.length > 0 ? (
               filteredProducts.map((product) => (
-                <ProductCard product={product} key={product.id} />
+                <ProductCard
+                  setProductView={setProductView}
+                  setIsModalOpen={setIsModalOpen}
+                  product={product}
+                  key={product.id}
+                />
               ))
             ) : (
               <div className="col-span-full py-12 text-center">
@@ -178,6 +191,13 @@ export default function Home() {
         <div className="px-4 py-12 sm:px-6 lg:px-8">
           <TestimonialSlider />
         </div>
+
+        {/* The Modal */}
+        <ProductModal
+          product={productView}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
       </div>
     </div>
   );

@@ -99,19 +99,21 @@ export default function ImageViewer({
 
   return (
     <div className="bg-opacity-90 fixed inset-0 z-50 flex flex-col items-center justify-center bg-black p-4">
-      {/* Close button */}
-      <button
-        onClick={onClose}
-        className="absolute top-4 right-4 z-10 cursor-pointer text-2xl text-white hover:text-gray-300"
-        aria-label="Close image viewer"
-      >
-        <X size={18} />
-      </button>
+      <div className="flex w-full justify-end">
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="z-10 mb-4 cursor-pointer text-2xl text-white hover:text-gray-300"
+          aria-label="Close image viewer"
+        >
+          <X size={18} />
+        </button>
+      </div>
 
       {/* Main image container */}
       <div
         ref={imageRef}
-        className="relative flex h-full w-full flex-grow cursor-zoom-in items-center justify-center overflow-hidden"
+        className="relative flex h-full max-h-[470px] w-full flex-grow cursor-zoom-in items-center justify-center overflow-hidden lg:max-h-full"
         onClick={handleZoom}
         onMouseMove={handleMouseMove}
         onWheel={handleWheel}

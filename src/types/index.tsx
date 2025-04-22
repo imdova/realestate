@@ -59,8 +59,9 @@ export interface products {
   sku: string;
   brands: string[];
   description: string;
-  price: string;
-  priceDel?: string;
+  details: string;
+  price: number;
+  priceDel?: number;
   images: string[];
   isNew?: boolean;
   discount?: number;
@@ -68,4 +69,5 @@ export interface products {
   reviewCount?: number;
   isOnSale?: boolean;
   additional_information: information[];
+  link_preview?: string;
 }

@@ -8,10 +8,12 @@ export const Products: products[] = [
     tags: ["Novelties", "Sandwiches"],
     sku: "rustic-plastic-knife-30177512",
     brands: ["Pulse Oximeters"],
-    description:
+    details:
       "Et esse velit totam sint repudiandae. Similique architecto qui exercitationem aut ut. Dolores quam eligendi unde omnis. Excepturi aliquam nam delectus consequatur. Et aut asperiores et atque.",
-    price: "89.99",
-    priceDel: "129.99",
+    description:
+      "Eos in quidem saepe consequatur. Doloribus vel consequatur hic consequatur. Deserunt eos saepe quasi nam alias.Nihil eos deserunt quod. Illo animi sit est ut. Id laboriosam debitis repellendus inventore sunt. Possimus vero laboriosam dolores ut voluptatem. autem enim omnis debitis suscipit voluptatem. Suscipit aut nam quibusdam perferendis. Sunt nihil officiis perspiciatis.",
+    price: 89.99,
+    priceDel: 129.99,
     images: [
       "https://demo2.pavothemes.com/pharmo/wp-content/uploads/2024/05/product-18-1.jpg",
       "https://demo2.pavothemes.com/pharmo/wp-content/uploads/2024/05/product-18-2-768x768.jpg",
@@ -43,15 +45,18 @@ export const Products: products[] = [
       { label: "color", content: "Black, Purple, Turmeric, Yellow" },
       { label: "Size", content: "100ml, 400ml" },
     ],
+    link_preview: "https://www.youtube.com/watch?v=g07sRCEYTrw",
   },
   {
     id: "2",
     name: "Gorgeous Linen Small1104",
     categories: ["Patient Care"],
-    description:
+    details:
       "Alias dolorem blanditiis quasi ullam corrupti assumenda aut. Qui facere sapiente et voluptate id. Vel facere eos esse ut fugit. Qui quae in facilis suscipit amet quia sed quia.",
-    price: "24.99",
-    priceDel: "34.99",
+    description:
+      "Eos in quidem saepe consequatur. Doloribus vel consequatur hic consequatur. Deserunt eos saepe quasi nam alias.Nihil eos deserunt quod. Illo animi sit est ut. Id laboriosam debitis repellendus inventore sunt. Possimus vero laboriosam dolores ut voluptatem. autem enim omnis debitis suscipit voluptatem. Suscipit aut nam quibusdam perferendis. Sunt nihil officiis perspiciatis.",
+    price: 24.99,
+    priceDel: 34.99,
     images: [
       "https://demo2.pavothemes.com/pharmo/wp-content/uploads/2024/05/product-10-1.jpg",
     ],
@@ -81,14 +86,17 @@ export const Products: products[] = [
       { label: "color", content: "Black, Purple, Turmeric, Yellow" },
       { label: "Size", content: "100ml, 400ml" },
     ],
+    isNew: true,
   },
   {
     id: "3",
     name: "Lightweight Bronze Hat",
     categories: [" Patient Care"],
-    description:
+    details:
       "Alias dolorem blanditiis quasi ullam corrupti assumenda aut. Qui facere sapiente et voluptate id. Vel facere eos esse ut fugit. Qui quae in facilis suscipit amet quia sed quia.",
-    price: "19.99",
+    description:
+      "Eos in quidem saepe consequatur. Doloribus vel consequatur hic consequatur. Deserunt eos saepe quasi nam alias.Nihil eos deserunt quod. Illo animi sit est ut. Id laboriosam debitis repellendus inventore sunt. Possimus vero laboriosam dolores ut voluptatem. autem enim omnis debitis suscipit voluptatem. Suscipit aut nam quibusdam perferendis. Sunt nihil officiis perspiciatis.",
+    price: 19.99,
     images: [
       "https://demo2.pavothemes.com/pharmo/wp-content/uploads/2024/05/product-7-1.jpg",
     ],
@@ -123,10 +131,12 @@ export const Products: products[] = [
     id: " 4",
     name: "Fuzalin 300 Pills Synergistic Silk Small1104",
     categories: ["Wound Care"],
-    description:
+    details:
       "Quia enim dignissimos occaecati corporis rerum dolore. Sed quae amet placeat suscipit. Nostrum eum laborum aperiam alias nobis soluta aliquid ut.",
-    price: "59.99",
-    priceDel: "79.99",
+    description:
+      "Eos in quidem saepe consequatur. Doloribus vel consequatur hic consequatur. Deserunt eos saepe quasi nam alias.Nihil eos deserunt quod. Illo animi sit est ut. Id laboriosam debitis repellendus inventore sunt. Possimus vero laboriosam dolores ut voluptatem. autem enim omnis debitis suscipit voluptatem. Suscipit aut nam quibusdam perferendis. Sunt nihil officiis perspiciatis.",
+    price: 59.99,
+    priceDel: 79.99,
     images: [
       "https://demo2.pavothemes.com/pharmo/wp-content/uploads/2024/05/product-17-1.jpg",
     ],
@@ -161,9 +171,11 @@ export const Products: products[] = [
     id: "5",
     name: "Practical Wool Computer",
     categories: ["PPE Protection"],
-    description:
+    details:
       "Alias dolorem blanditiis quasi ullam corrupti assumenda aut. Qui facere sapiente et voluptate id. Vel facere eos esse ut fugit. Qui quae in facilis suscipit amet quia sed quia.",
-    price: "45.00",
+    description:
+      "Eos in quidem saepe consequatur. Doloribus vel consequatur hic consequatur. Deserunt eos saepe quasi nam alias.Nihil eos deserunt quod. Illo animi sit est ut. Id laboriosam debitis repellendus inventore sunt. Possimus vero laboriosam dolores ut voluptatem. autem enim omnis debitis suscipit voluptatem. Suscipit aut nam quibusdam perferendis. Sunt nihil officiis perspiciatis.",
+    price: 45.0,
     images: [
       "https://demo2.pavothemes.com/pharmo/wp-content/uploads/2024/05/product-11-1.jpg",
     ],
