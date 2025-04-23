@@ -104,7 +104,7 @@ export default function ProductPage({ params }: SingleProductsProps) {
                 }}
               />
 
-              <div className="absolute top-4 right-4 flex items-center gap-3">
+              <div className="absolute right-4 top-4 flex items-center gap-3">
                 {Product.link_preview && (
                   <Link
                     target="_blank"
@@ -156,7 +156,7 @@ export default function ProductPage({ params }: SingleProductsProps) {
             </div>
           </div>
           <div className="flex w-full flex-col lg:order-none">
-            <h2 className="font-manrope mb-2 text-4xl leading-10 font-bold text-gray-900">
+            <h2 className="font-manrope mb-2 text-4xl font-bold leading-10 text-gray-900">
               {Product.name}
             </h2>
             <div className="flex flex-col items-start gap-3 py-5 sm:flex-row lg:items-center">
@@ -186,7 +186,7 @@ export default function ProductPage({ params }: SingleProductsProps) {
               </span>
             </div>
             <div className="mb-6 flex items-end gap-3">
-              <h6 className="text-main text-4xl leading-9 font-bold">
+              <h6 className="text-main text-4xl font-bold leading-9">
                 ${Product.price}
               </h6>
               <del className="text-2xl leading-9 text-gray-400">

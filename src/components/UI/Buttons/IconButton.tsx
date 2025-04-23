@@ -35,7 +35,7 @@ const IconButton: React.FC<IconButtonProps> = ({
     >
       <Icon size={size * 0.6} /> {/* Icon size is 60% of button size */}
       {tooltip && hovered && (
-        <div className="absolute top-9 rounded-md bg-black px-2 py-1 text-[8px] whitespace-nowrap text-white shadow-lg">
+        <div className="absolute top-9 whitespace-nowrap rounded-md bg-black px-2 py-1 text-[8px] text-white shadow-lg">
           {tooltip}
         </div>
       )}

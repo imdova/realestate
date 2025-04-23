@@ -45,7 +45,7 @@ const LandingSlider = ({ slides }: SliderLandingProps) => {
       )}
 
       <div
-        className={`relative flex h-[600px] items-center justify-center overflow-hidden rounded-4xl transition-opacity duration-500 md:h-[640px] ${
+        className={`rounded-4xl relative flex h-[600px] items-center justify-center overflow-hidden transition-opacity duration-500 md:h-[640px] ${
           pageLoading ? "opacity-0" : "opacity-100"
         }`}
       >
@@ -78,7 +78,7 @@ const LandingSlider = ({ slides }: SliderLandingProps) => {
                 {slides[currentIndex].subTitle}
               </span>
             </div>
-            <h2 className="mb-12 w-full text-center text-4xl leading-tight font-semibold capitalize md:text-start md:text-6xl">
+            <h2 className="mb-12 w-full text-center text-4xl font-semibold capitalize leading-tight md:text-start md:text-6xl">
               {slides[currentIndex].title}
             </h2>
             <DynamicButton
