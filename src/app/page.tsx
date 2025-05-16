@@ -42,7 +42,6 @@ export default function Home() {
   const [filter, setFilter] = useState<string>("all");
   const [productView, setProductView] = useState<products>(Products[0]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   // Filter products based on selected filter
   const filteredProducts = Products.filter((product) => {
     if (filter === "all") return true;
@@ -94,7 +93,7 @@ export default function Home() {
         <div className="flex flex-col gap-4 py-12 md:flex-row md:gap-8">
           <div className="animate-on-scroll zoom-in relative h-[600px] w-full scale-75 overflow-hidden rounded-2xl p-8 opacity-0 transition-all duration-700 ease-in-out md:h-[800px]">
             <Image
-              className="absolute top-0 left-0 h-full w-full object-cover brightness-75"
+              className="absolute left-0 top-0 h-full w-full object-cover brightness-75"
               src={LandingImg_3}
               alt="Landing image"
             />
@@ -112,7 +111,7 @@ export default function Home() {
           <div className="flex w-full flex-col">
             <div className="animate-on-scroll zoom-in relative mb-4 h-full w-full scale-75 overflow-hidden rounded-2xl opacity-0 transition-all duration-700 ease-in-out md:mb-8">
               <Image
-                className="absolute top-0 left-0 h-full w-full object-cover brightness-90"
+                className="absolute left-0 top-0 h-full w-full object-cover brightness-90"
                 src={LandingImg_4}
                 alt="Landing image"
               />
@@ -135,7 +134,7 @@ export default function Home() {
             </div>
             <div className="animate-on-scroll zoom-in relative h-full w-full scale-75 overflow-hidden rounded-2xl opacity-0 transition-all duration-700 ease-in-out">
               <Image
-                className="absolute top-0 left-0 h-full w-full object-cover brightness-90"
+                className="absolute left-0 top-0 h-full w-full object-cover brightness-90"
                 src={LandingImg_5}
                 alt="Landing image"
               />

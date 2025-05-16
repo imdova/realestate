@@ -45,7 +45,7 @@ const LandingSlider = ({ slides }: SliderLandingProps) => {
       )}
 
       <div
-        className={`rounded-4xl relative flex h-[600px] items-center justify-center overflow-hidden transition-opacity duration-500 md:h-[640px] ${
+        className={`relative flex h-[600px] items-center justify-center overflow-hidden rounded-3xl transition-opacity duration-500 md:h-[640px] ${
           pageLoading ? "opacity-0" : "opacity-100"
         }`}
       >

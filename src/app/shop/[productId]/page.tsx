@@ -21,18 +21,6 @@ import CheckoutImage from "@/assets/images/checkout.jpg";
 import Link from "next/link";
 import ImageViewer from "@/components/UI/ImageViewer";
 
-// type ProductPageProps = {
-//   product: products;
-// };
-
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//   const { id } = context.params!;
-//   // Replace with your API endpoint or database query
-//   const res = await fetch(`https://api.example.com/products/${id}`);
-//   const product: products = await res.json();
-
-//   return { props: { product } };
-// };
 interface SingleProductsProps {
   params: Promise<{ productId: string }>;
 }

@@ -1,9 +1,14 @@
-"use client";
-
 import { Raleway } from "next/font/google";
 import "./globals.css";
-import DynamicHeader from "@/components/Header/DynamicHeader";
-import useScrollDetection from "@/hooks/useScrollDetection";
+import DynamicHeaderWrapper from "@/components/Header/DynamicHeaderWrapper";
+
+// export const metadata = {
+//   title: {
+//     default: "Home | Omga e-pharmacy",
+//     template: "%s | Omga e-pharmacy",
+//   },
+//   description: "Omga Omga",
+// };
 
 const raleway = Raleway({
   variable: "--font-raleway",
@@ -12,21 +17,13 @@ const raleway = Raleway({
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
-  const isScrolled = useScrollDetection();
-
+}) {
   return (
-    <html lang="en">
-      <body className={`${raleway.variable} antialiased`}>
-        <DynamicHeader />
-        <main
-          style={{ paddingTop: isScrolled ? "70px" : 0 }}
-          className="h-[1000px]"
-        >
-          {children}
-        </main>
+    <html lang="en" className={raleway.variable}>
+      <body className="antialiased">
+        <DynamicHeaderWrapper>{children}</DynamicHeaderWrapper>
       </body>
     </html>
   );
