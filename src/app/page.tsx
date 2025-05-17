@@ -4,11 +4,11 @@ import LandingImg_2 from "@/assets/images/landing-2.jpeg";
 import LandingImg_3 from "@/assets/images/home(1)-3.png";
 import LandingImg_4 from "@/assets/images/home(1)-4.png";
 import LandingImg_5 from "@/assets/images/home(1)-5.png";
-import LandingSlider from "@/components/UI/LandingSlider";
+import LandingSlider from "@/components/UI/sliders/LandingSlider";
 import { products, Slide } from "@/types";
 import { ArrowRight, Flame } from "lucide-react";
 import { Products } from "@/constants/products.data";
-import CategorySlider from "@/components/UI/CategorySlider";
+import CategorySlider from "@/components/UI/sliders/CategorySlider";
 import ProductCard from "@/components/UI/cards/ProductCard";
 import FlashSaleCounter from "@/components/UI/Counter";
 import Link from "next/link";
@@ -16,7 +16,7 @@ import Image from "next/image";
 import DynamicButton from "@/components/UI/Buttons/DynamicButton";
 import ProductFilter from "@/components/UI/ProductFilter";
 import { useState } from "react";
-import TestimonialSlider from "@/components/UI/TestimonialSlider";
+import TestimonialSlider from "@/components/UI/sliders/TestimonialSlider";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import ProductModal from "@/components/UI/Modals/ProductModal";
 
@@ -54,7 +54,7 @@ export default function Home() {
   useScrollAnimation();
   return (
     <div className="relative">
-      <div className="container mx-auto px-6 lg:max-w-[1440px]">
+      <div className="container mx-auto px-6 lg:max-w-[1500px]">
         {/* landing content  */}
         <LandingSlider slides={slides} />
         <CategorySlider />
@@ -71,7 +71,7 @@ export default function Home() {
             <div className="text-center">
               <Link
                 href={"#"}
-                className="hover:text-main flex items-center gap-3 font-bold transition"
+                className="flex items-center gap-3 font-bold transition hover:text-main"
               >
                 View All <ArrowRight size={18} />
               </Link>

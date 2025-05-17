@@ -2,7 +2,7 @@
 
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useState } from "react";
-import TestimonialCard from "./cards/TestimonialCard";
+import TestimonialCard from "../cards/TestimonialCard";
 
 interface Testimonial {
   id: number;
