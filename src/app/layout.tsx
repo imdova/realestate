@@ -1,18 +1,12 @@
-import { Raleway } from "next/font/google";
+import { Cairo } from "next/font/google";
 import "./globals.css";
 import DynamicHeaderWrapper from "@/components/Header/DynamicHeaderWrapper";
 
-// export const metadata = {
-//   title: {
-//     default: "Home | Omga e-pharmacy",
-//     template: "%s | Omga e-pharmacy",
-//   },
-//   description: "Omga Omga",
-// };
-
-const raleway = Raleway({
-  variable: "--font-raleway",
-  subsets: ["latin"],
+const cairo = Cairo({
+  subsets: ["arabic", "latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-cairo",
+  display: "swap",
 });
 
 export default function RootLayout({
@@ -21,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={raleway.variable}>
+    <html lang="ar" dir="rtl" className={cairo.variable}>
       <body className="antialiased">
         <DynamicHeaderWrapper>{children}</DynamicHeaderWrapper>
       </body>

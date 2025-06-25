@@ -1,5 +1,5 @@
 {
-  "name": "omga",
+  "name": "realestate",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "autoprefixer": "^10.4.21",
-    "framer-motion": "^12.12.1",
+    "framer-motion": "^12.16.0",
     "lucide-react": "^0.482.0",
     "next": "15.2.3",
     "postcss": "^8.0.0",

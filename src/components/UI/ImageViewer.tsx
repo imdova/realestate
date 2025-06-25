@@ -53,6 +53,15 @@ export default function ImageViewer({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleNext, handlePrev, onClose]);
 
+  // Disable body scroll when this mounts, re‑enable on unmount
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, []);
+
   const handleZoom = useCallback(() => {
     setIsZoomed((prev) => {
       if (!prev) {
@@ -98,7 +107,7 @@ export default function ImageViewer({
   );
 
   return (
-    <div className="bg-opacity-90 fixed inset-0 z-50 flex flex-col items-center justify-center bg-black p-4">
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black p-4">
       <div className="flex w-full justify-end">
         {/* Close button */}
         <button
@@ -142,7 +151,7 @@ export default function ImageViewer({
       <div className="mt-4 flex w-full max-w-4xl items-center justify-center gap-4 lg:justify-between">
         <button
           onClick={handlePrev}
-          className="bg-opacity-20 hover:bg-opacity-30 cursor-pointer rounded-full bg-white p-2 text-black transition-all"
+          className="cursor-pointer rounded-full bg-white bg-opacity-30 p-2 text-black transition-all hover:bg-opacity-100"
           aria-label="Previous image"
         >
           <svg
@@ -190,7 +199,7 @@ export default function ImageViewer({
 
         <button
           onClick={handleNext}
-          className="bg-opacity-20 hover:bg-opacity-30 cursor-pointer rounded-full bg-white p-2 text-black transition-all"
+          className="cursor-pointer rounded-full bg-white bg-opacity-30 p-2 text-black transition-all hover:bg-opacity-100"
           aria-label="Next image"
         >
           <svg
@@ -216,10 +225,10 @@ export default function ImageViewer({
       </div>
 
       {/* Zoom controls */}
-      <div className="absolute right-4 bottom-4 flex flex-col space-y-2">
+      <div className="absolute bottom-4 right-4 flex flex-col space-y-2">
         <button
           onClick={() => setScale((prev) => Math.min(prev + 0.5, 5))}
-          className="bg-opacity-20 hover:bg-opacity-30 cursor-pointer rounded-full bg-white p-2 text-black"
+          className="cursor-pointer rounded-full bg-white bg-opacity-30 p-2 text-black hover:bg-opacity-100"
           aria-label="Zoom in"
         >
           <svg
@@ -239,7 +248,7 @@ export default function ImageViewer({
         </button>
         <button
           onClick={() => setScale((prev) => Math.max(prev - 0.5, 1))}
-          className="bg-opacity-20 hover:bg-opacity-30 cursor-pointer rounded-full bg-white p-2 text-black"
+          className="cursor-pointer rounded-full bg-white bg-opacity-30 p-2 text-black hover:bg-opacity-100"
           aria-label="Zoom out"
         >
           <svg
@@ -259,7 +268,7 @@ export default function ImageViewer({
         </button>
         <button
           onClick={resetZoom}
-          className="bg-opacity-20 hover:bg-opacity-30 cursor-pointer rounded-full bg-white p-2 text-black"
+          className="cursor-pointer rounded-full bg-white bg-opacity-30 p-2 text-black hover:bg-opacity-100"
           aria-label="Reset zoom"
         >
           <svg

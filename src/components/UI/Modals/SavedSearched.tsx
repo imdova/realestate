@@ -1,0 +1,33 @@
+import { useState } from "react";
+import DynamicModal from "../DynamicModal";
+import { Star } from "lucide-react";
+
+const SavedSearched = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div>
+      <button
+        onClick={() => setIsOpen(true)}
+        className="flex items-center gap-2 text-gray-800 hover:text-main"
+      >
+        <Star size={14} />{" "}
+        <span className="hidden md:block"> البحث المحفوظ </span>{" "}
+        <span className="text-[12px]">(4)</span>
+      </button>
+
+      <DynamicModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        title="البحث المحفوظ"
+      >
+        <div className="p-4">
+          <h3 className="text-lg font-medium">المحتوى هنا</h3>
+          <p className="mt-2">يمكنك وضع أي محتوى تريده داخل المودال</p>
+        </div>
+      </DynamicModal>
+    </div>
+  );
+};
+
+export default SavedSearched;

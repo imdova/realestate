@@ -17,14 +17,16 @@
 }
 
 :root {
-  --main-color: #42a5f5;
+  --main-color: #6d0d57;
+  --main-dark-color: #520b42;
   --foreground: #171717;
 }
 
 @theme {
   --color-main: var(--main-color);
+  --main-dark-color: var(--main-dark-color);
   --color-foreground: var(--foreground);
-  --font-raleway: var(--font-raleway);
+  --font-raleway: var(--font-cairo);
 }
 
 @layer components {
@@ -57,7 +59,7 @@
   @apply duration-300;
 }
 body {
-  font-family: var(--font-raleway);
+  font-family: var(--font-cairo);
 }
 
 .box {
