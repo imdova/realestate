@@ -1,3 +1,5 @@
+import { LucideIcon } from "lucide-react";
+
 export interface BaseHeaderProps {
   pathname: string;
 }
@@ -17,3 +19,12 @@ export type linksHeader = {
   url: string;
   isNew?: boolean;
 };
+export interface MenuItem {
+  title: string;
+  href: string;
+  icon: LucideIcon;
+}
+export interface MenuGroup {
+  title?: string;
+  items: MenuItem[];
+}

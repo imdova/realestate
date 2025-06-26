@@ -7,6 +7,7 @@ export default {
       colors: {
         main: "var(--main-color)",
         "main-dark": "var(--main-dark-color)",
+        "main-transparent": "var(--main-transparent-color)",
       },
       animation: {
         "spin-slow": "spin 3s linear infinite",

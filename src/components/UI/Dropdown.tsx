@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { useState, FC, useRef, useEffect } from "react";
+import { useState, FC, useRef, useEffect, JSX } from "react";
 
 interface DropdownOption {
   value: string;
@@ -15,6 +15,7 @@ interface ArabicDropdownProps {
   onChange: (value: string) => void;
   id?: string;
   className?: string;
+  icon?: JSX.Element;
 }
 
 const ArabicDropdown: FC<ArabicDropdownProps> = ({
@@ -24,6 +25,7 @@ const ArabicDropdown: FC<ArabicDropdownProps> = ({
   onChange,
   id,
   className = "",
+  icon,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -62,7 +64,10 @@ const ArabicDropdown: FC<ArabicDropdownProps> = ({
           onClick={() => setIsOpen(!isOpen)}
           className={`flex w-full justify-between rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 shadow-sm hover:border-gray-400 focus:outline-none ${className}`}
         >
-          {selected?.label || "اختر"}
+          <div className="flex items-center gap-1">
+            {icon}
+            {selected?.label || "اختر"}
+          </div>
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
             {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
           </span>

@@ -2,21 +2,22 @@
 
 import { commonLinks } from "@/constants/header";
 import Link from "next/link";
-import { Menu, User } from "lucide-react";
+import { Menu } from "lucide-react";
 import CurrencyAreaDropdown from "../UI/CurrencyAreaDropdown";
 import FavoriteModal from "../UI/Modals/FavoriteModal";
 import SavedSearched from "../UI/Modals/SavedSearched";
 import { Drawer } from "../UI/Drawer";
 import { useState } from "react";
 import IconButton from "../UI/Buttons/IconButton";
+import AuthButton from "../UI/Buttons/AuthButton";
 
 const FullHeader: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
-      <nav className="bg-white px-2">
+      <nav className="bg-gray-100 px-2">
         <div className="container mx-auto lg:max-w-[1550px]">
-          <div className="flex items-center justify-between gap-2 bg-gray-100">
+          <div className="flex items-center justify-between gap-2">
             <div className="items-center gap-3 text-sm font-medium text-gray-800">
               <CurrencyAreaDropdown />
             </div>
@@ -26,7 +27,7 @@ const FullHeader: React.FC = () => {
                 <SavedSearched />
               </div>
               <div className="relative flex items-center gap-2 text-gray-800">
-                تسجيل الدخول <User size={15} />
+                <AuthButton />
               </div>
             </div>
           </div>
@@ -35,7 +36,7 @@ const FullHeader: React.FC = () => {
       <header className="left-0 top-0 z-40 w-full border-b border-gray-200 bg-white transition-all duration-700">
         <div className="relative">
           <div className="container mx-auto px-6 lg:max-w-[1550px]">
-            <div className="flex h-[80px] items-center justify-between">
+            <div className="flex h-[80px] flex-row-reverse items-center justify-between md:flex-row">
               {/* Logo */}
               <div className="flex items-center">
                 <Link

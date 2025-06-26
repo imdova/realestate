@@ -19,6 +19,7 @@
 :root {
   --main-color: #6d0d57;
   --main-dark-color: #520b42;
+  --main-transparent-color: #520b421a;
   --foreground: #171717;
 }
 
