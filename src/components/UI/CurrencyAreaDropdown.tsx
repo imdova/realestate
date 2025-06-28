@@ -37,18 +37,18 @@ const CurrencyAreaDropdown = () => {
 
   // Available options
   const currencies = [
-    { value: "SAR", label: "ريال سعودي" },
-    { value: "USD", label: "دولار أمريكي" },
-    { value: "EUR", label: "يورو" },
-    { value: "EGP", label: "جنيه مصري" },
-    { value: "AED", label: "درهم إماراتي" },
+    { value: "ر.س", label: "ريال سعودي" }, // SAR
+    { value: "د.أ", label: "دولار أمريكي" }, // USD
+    { value: "ي", label: "يورو" }, // EUR
+    { value: "ج.م", label: "جنيه مصري" }, // EGP
+    { value: "د.إ", label: "درهم إماراتي" }, // AED
   ];
 
   const areaUnits = [
-    { value: "sqm", label: "متر مربع" },
-    { value: "sqft", label: "قدم مربع" },
-    { value: "acre", label: "فدان" },
-    { value: "hectare", label: "هكتار" },
+    { value: "م²", label: "متر مربع" }, // sqm
+    { value: "قدم²", label: "قدم مربع" }, // sqft
+    { value: "فدان", label: "فدان" }, // acre
+    { value: "هـ", label: "هكتار" }, // hectare
   ];
 
   // Load settings from localStorage on component mount
@@ -146,7 +146,7 @@ const CurrencyAreaDropdown = () => {
               className="fixed inset-0 transition-opacity"
               aria-hidden="true"
             >
-              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm"></div>
             </div>
             <span
               className="hidden sm:inline-block sm:h-screen sm:align-middle"
@@ -154,7 +154,7 @@ const CurrencyAreaDropdown = () => {
             >
               &#8203;
             </span>
-            <div className="inline-block transform rounded-lg bg-white text-right align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:align-middle">
+            <div className="inline-block transform overflow-hidden rounded-lg bg-white text-right align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:align-middle">
               <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                 <h3 className="mb-4 text-lg font-medium leading-6 text-gray-900">
                   تغيير الإعدادات
@@ -188,7 +188,7 @@ const CurrencyAreaDropdown = () => {
                 <button
                   type="button"
                   onClick={handleSaveSettings}
-                  className="hover:bg-main-dark inline-flex w-full justify-center rounded-md border border-transparent bg-main px-4 py-2 text-base font-medium text-white shadow-sm focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
+                  className="inline-flex w-full justify-center rounded-md border border-transparent bg-main px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-main-dark focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
                 >
                   حفظ
                 </button>

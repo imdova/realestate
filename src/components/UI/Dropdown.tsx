@@ -16,6 +16,7 @@ interface ArabicDropdownProps {
   id?: string;
   className?: string;
   icon?: JSX.Element;
+  insideLabel?: string;
 }
 
 const ArabicDropdown: FC<ArabicDropdownProps> = ({
@@ -25,6 +26,7 @@ const ArabicDropdown: FC<ArabicDropdownProps> = ({
   onChange,
   id,
   className = "",
+  insideLabel,
   icon,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -62,11 +64,11 @@ const ArabicDropdown: FC<ArabicDropdownProps> = ({
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className={`flex w-full justify-between rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 shadow-sm hover:border-gray-400 focus:outline-none ${className}`}
+          className={`flex w-full justify-between rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 shadow-sm focus:outline-none ${className}`}
         >
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 text-xs">
             {icon}
-            {selected?.label || "اختر"}
+            {insideLabel || selected?.label || "اختر"}
           </div>
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
             {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}

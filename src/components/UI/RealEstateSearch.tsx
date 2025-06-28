@@ -1,11 +1,14 @@
 import { useSearchParams, useRouter } from "next/navigation";
-import { Clock, MapPin } from "lucide-react";
+import { Clock, Percent } from "lucide-react";
 import { useState, useEffect } from "react";
 import ArabicDropdown from "./Dropdown";
 import { StatusTabSelect } from "./StatusTabSelect";
 import MultiSelectDropdown from "./MultiSelectDropdown";
 import { MultiChoiceDropdown } from "./MultiChoiceDropdown";
 import { RangeDropdown } from "./RangeDropdown";
+import { useAppSettings } from "@/hooks/useAppSettings";
+import ProgressDropdown from "./ProgressDropdown";
+import LocationSearch from "./LocationSearch";
 
 type OptionType = {
   value: string;
@@ -21,6 +24,12 @@ type OptionGroup = {
     isBathroom?: boolean;
   }[];
 };
+interface Location {
+  id: string;
+  name: string;
+  region?: string;
+  parent?: string;
+}
 
 type TabType = "properties" | "new-projects";
 type TabSubType = "for-sale" | "for-rent";
@@ -28,13 +37,22 @@ type TabSubType = "for-sale" | "for-rent";
 const RealEstateSearch = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const settings = useAppSettings();
   const [activeTab, setActiveTab] = useState<TabType>("properties");
   const [activeSubTab, setActiveSubTab] = useState<TabSubType>("for-sale");
-  const [searchQuery, setSearchQuery] = useState<string>(
-    searchParams.get("query") || "",
+  const [categoryIndex, setCategoryIndex] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(
+    null,
   );
+  console.log(categoryIndex);
+
   const [rentalPeriodType, setRentalPeriodType] = useState<string>(
     searchParams.get("rental_Period") || "all",
+  );
+  const [rentRateType, setRentRateType] = useState<string>("");
+  const [deliveryTimeType, setDeliveryTimeType] = useState<string>(
+    searchParams.get("deliveryTime") || "all",
   );
   const [statusType, setStatusType] = useState<string>(
     searchParams.get("status") || "all",
@@ -43,12 +61,25 @@ const RealEstateSearch = () => {
     searchParams.get("room_bath")?.split(",").filter(Boolean) || [],
   );
   const initialPriceParam = searchParams.get("price");
+  const initialAreaParam = searchParams.get("area");
   const [minPrice, setMinPrice] = useState<number | null>(
     initialPriceParam ? Number(initialPriceParam.split(",")[0]) || null : null,
   );
   const [maxPrice, setMaxPrice] = useState<number | null>(
     initialPriceParam ? Number(initialPriceParam.split(",")[1]) || null : null,
   );
+  const [minArea, setMinArea] = useState<number | null>(
+    initialAreaParam ? Number(initialAreaParam.split(",")[0]) || null : null,
+  );
+  const [maxArea, setMaxArea] = useState<number | null>(
+    initialAreaParam ? Number(initialAreaParam.split(",")[1]) || null : null,
+  );
+  const minRentRate = rentRateType
+    ? Number(rentRateType.split("-")[0]) || ""
+    : null;
+  const maxRentRate = rentRateType
+    ? Number(rentRateType.split("-")[1]) || ""
+    : null;
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
     searchParams.get("categories")?.split(",") || [],
   );
@@ -87,6 +118,26 @@ const RealEstateSearch = () => {
     { value: "monthly", label: "شهري" },
     { value: "yearly", label: "سنوي" },
   ];
+  const deliveryTime: OptionType[] = [
+    { value: "all", label: "الجميع" },
+    { value: "two_for_2025", label: "الربع 2 من عام 2025" },
+    { value: "three_for_2025", label: "الربع 3 من عام 2025" },
+    { value: "four_for_2025", label: "الربع 4 من عام 2025" },
+    { value: "one_for_2026", label: "الربع 1 من عام 2026" },
+    { value: "two_for_2026", label: "الربع 2 من عام 2026" },
+    { value: "three_for_2026", label: "الربع 3 من عام 2026" },
+    { value: "four_for_2026", label: "الربع 4 من عام 2026" },
+    { value: "2027", label: "2027" },
+    { value: "2028", label: "2028" },
+    { value: "2029", label: "2029" },
+  ];
+  const rentRate: OptionType[] = [
+    { value: "all", label: "الجميع" },
+    { value: "0-25", label: "0-25%" },
+    { value: "25-50", label: "25-50%" },
+    { value: "50-75", label: "50-75%" },
+    { value: "75-100", label: "75-100%" },
+  ];
 
   const roomBathOptions: OptionGroup[] = [
     {
@@ -116,8 +167,12 @@ const RealEstateSearch = () => {
   useEffect(() => {
     const params = new URLSearchParams();
     params.set("tab", activeTab);
-    if (searchQuery) params.set("query", searchQuery);
+    if (selectedLocation) params.set("location", selectedLocation.parent || "");
+    if (selectedLocation) params.set("region", selectedLocation.region || "");
+    if (progress) params.set("pre_handover_payment_max", progress.toString());
     if (statusType !== "all") params.set("status", statusType);
+    if (deliveryTimeType !== "all")
+      params.set("deliveryTime", deliveryTimeType);
     if (rentalPeriodType !== "all")
       params.set("rental_Period", rentalPeriodType);
     if (selectedCategories.length > 0) {
@@ -132,17 +187,26 @@ const RealEstateSearch = () => {
     } else {
       params.delete("price");
     }
-    // if (location) params.set("location", location);
+    if (minArea !== null || maxArea !== null) {
+      params.set("area", `${minArea || ""},${maxArea || ""}`);
+    } else {
+      params.delete("price");
+    }
+    if (rentRateType !== "") {
+      params.set("min_rent_rate", `${minRentRate || 0}`);
+    }
+    if (rentRateType !== "") {
+      params.set("max_rent_rate", `${maxRentRate || 0}`);
+    }
   }, [
     activeTab,
     activeSubTab,
-    searchQuery,
     statusType,
     rentalPeriodType,
     selectedCategories,
     selectedRoombath,
-    minPrice, // Add minPrice to dependencies
-    maxPrice, // Add maxPrice to dependencies
+    minPrice,
+    maxPrice,
     router,
   ]);
 
@@ -151,8 +215,11 @@ const RealEstateSearch = () => {
     // Construct search URL with all parameters
     const params = new URLSearchParams();
     params.set("tab", activeTab);
-    if (searchQuery) params.set("query", searchQuery);
+    if (selectedLocation) params.set("location", selectedLocation.parent || "");
+    if (selectedLocation) params.set("region", selectedLocation.region || "");
     if (statusType !== "all") params.set("status", statusType);
+    if (deliveryTimeType !== "all")
+      params.set("deliveryTime", deliveryTimeType);
     if (rentalPeriodType !== "all")
       params.set("rental_Period", rentalPeriodType);
     if (selectedCategories.length > 0) {
@@ -161,11 +228,27 @@ const RealEstateSearch = () => {
     if (selectedRoombath.length > 0) {
       params.set("room_bath", selectedRoombath.join(","));
     }
+    if (progress) params.set("pre_handover_payment_max", progress.toString());
     // Handle Price Range for search submission
-    if (minPrice !== null || maxPrice !== null) {
-      params.set("price", `${minPrice || ""},${maxPrice || ""}`);
+    if (minPrice !== null) {
+      params.set("min_price", `${minPrice || 0}`);
     }
-
+    if (maxPrice !== null) {
+      params.set("max_price", `${maxPrice || 0}`);
+    }
+    // Handle Area Range for search submission
+    if (minArea !== null) {
+      params.set("min_area", `${minArea || 0}`);
+    }
+    if (maxArea !== null) {
+      params.set("max_area", `${maxArea || 0}`);
+    }
+    if (rentRateType !== "") {
+      params.set("min_rent_rate", `${minRentRate || 0}`);
+    }
+    if (rentRateType !== "") {
+      params.set("max_rent_rate", `${maxRentRate || 0}`);
+    }
     // Navigate to search results page
     router.push(`/search?${params.toString()}`);
   };
@@ -174,12 +257,17 @@ const RealEstateSearch = () => {
     setMinPrice(min);
     setMaxPrice(max);
   };
+  const handleApplyAreaRange = (min: number | null, max: number | null) => {
+    setMinArea(min);
+    setMaxArea(max);
+  };
 
   return (
-    <div className="flex h-[450px] w-full items-center justify-center rounded-lg bg-[url(/images/house-key.jpg)] bg-cover bg-center p-4 brightness-90 md:p-6">
-      <div className="mx-auto h-fit w-full max-w-4xl">
+    <div className="bg-r relative flex h-[600px] w-full items-center justify-center rounded-lg bg-[url(/images/building.jpg)] bg-cover md:p-6">
+      <div className="absolute left-0 top-0 h-full w-full rounded-lg bg-black/40"></div>
+      <div className="relative mx-auto h-fit w-full max-w-4xl">
         <h1 className="mb-4 text-center text-xl font-bold text-white md:mb-6 md:text-2xl">
-          استكشف بنك الجديد للبيع او الإيجار
+          استكشف بيتك الجديد للبيع او الايجار
         </h1>
 
         <div className="mb-4 flex justify-center gap-2 md:mb-6">
@@ -211,13 +299,13 @@ const RealEstateSearch = () => {
           onSubmit={handleSearch}
           className="w-full space-y-4 rounded-lg bg-white p-4 shadow-md"
         >
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col items-center gap-2 sm:flex-row">
             {activeTab === "properties" && (
-              <div className="flex items-center justify-center gap-2 rounded-lg border border-gray-300 p-1">
+              <div className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 p-1 sm:w-fit">
                 <button
                   type="button"
                   onClick={() => setActiveSubTab("for-sale")}
-                  className={`rounded-md text-sm md:px-4 md:py-2 ${
+                  className={`w-full rounded-md px-4 py-2 text-sm ${
                     activeSubTab === "for-sale"
                       ? "bg-main-transparent text-main"
                       : "bg-gray-200 text-gray-800 hover:bg-gray-300"
@@ -228,7 +316,7 @@ const RealEstateSearch = () => {
                 <button
                   type="button"
                   onClick={() => setActiveSubTab("for-rent")}
-                  className={`rounded-md text-sm md:px-4 md:py-2 ${
+                  className={`w-full rounded-md px-4 py-2 text-sm ${
                     activeSubTab === "for-rent"
                       ? "bg-main-transparent text-main"
                       : "bg-gray-200 text-gray-800 hover:bg-gray-300"
@@ -238,30 +326,22 @@ const RealEstateSearch = () => {
                 </button>
               </div>
             )}
-            <div className="relative flex-1">
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                <MapPin className="h-4 w-4 text-gray-400 md:h-5 md:w-5" />
-              </div>
-              <input
-                type="text"
-                placeholder="ادخل الموقع"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="block w-full rounded-md border border-gray-300 bg-white py-2.5 pl-3 pr-10 text-sm leading-5 outline-none"
+            <div className="relative w-full flex-1 sm:w-fit">
+              <LocationSearch
+                selectedLocation={selectedLocation}
+                setSelectedLocation={setSelectedLocation}
               />
             </div>
-            <div>
-              <button
-                type="submit"
-                className="w-full min-w-[150px] rounded-md bg-main px-4 py-2.5 text-sm font-medium text-white hover:bg-main focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 md:text-base"
-              >
-                بحث
-              </button>
-            </div>
+            <button
+              type="submit"
+              className="w-full min-w-[150px] rounded-md bg-main px-4 py-2.5 text-sm font-medium text-white hover:bg-main focus:outline-none sm:w-fit md:text-base"
+            >
+              بحث
+            </button>
           </div>
 
           <div className="grid grid-cols-1 items-end gap-3 md:grid-cols-2 md:gap-2 lg:grid-cols-4">
-            {activeTab === "properties" && (
+            {activeTab === "properties" ? (
               <>
                 {activeSubTab === "for-sale" ? (
                   <StatusTabSelect
@@ -274,35 +354,77 @@ const RealEstateSearch = () => {
                     options={rentalPeriods}
                     value={rentalPeriodType}
                     onChange={setRentalPeriodType}
-                    icon={<Clock className="h-4 w-4" />}
+                    icon={<Clock className="h-3 w-3" />}
                   />
                 )}
+                <MultiSelectDropdown
+                  categories={categories}
+                  selectedValues={selectedCategories}
+                  onChange={setSelectedCategories}
+                  setCategoryActive={setCategoryIndex}
+                />
+                {categoryIndex === 0 ? (
+                  <MultiChoiceDropdown
+                    id="rooms-bathrooms"
+                    label="الغرف والحمامات"
+                    optionGroups={roomBathOptions}
+                    selectedValues={selectedRoombath}
+                    onChange={setSelectedRoombath}
+                    placeholder="اختر عدد الغرف والحمامات"
+                    autoMatchBathrooms
+                  />
+                ) : (
+                  <RangeDropdown
+                    id="area-dropdown"
+                    title={`المساحة (${settings.areaUnit})`}
+                    onApply={handleApplyAreaRange}
+                    initialMin={minArea}
+                    initialMax={maxArea}
+                    minPlaceholder="أقل مساحة"
+                    maxPlaceholder="أعلى مساحة"
+                  />
+                )}
+
+                {/* Price Dropdown */}
+                <RangeDropdown
+                  id="price-dropdown"
+                  title={`السعر (${settings.currency})`}
+                  onApply={handleApplyPriceRange}
+                  initialMin={minPrice}
+                  initialMax={maxPrice}
+                  minPlaceholder="أقل سعر"
+                  maxPlaceholder="أعلى سعر"
+                />
+              </>
+            ) : (
+              <>
+                <MultiSelectDropdown
+                  categories={categories}
+                  selectedValues={selectedCategories}
+                  onChange={setSelectedCategories}
+                />
+                <ArabicDropdown
+                  id="deliveryTimeType"
+                  insideLabel="التسليم في"
+                  options={deliveryTime}
+                  value={deliveryTimeType}
+                  onChange={setDeliveryTimeType}
+                  icon={<Clock className="h-3 w-3" />}
+                />
+                <ProgressDropdown
+                  label="خطة السداد"
+                  progress={progress}
+                  setProgress={setProgress}
+                />
+                <ArabicDropdown
+                  id="rentRateType"
+                  options={rentRate}
+                  value={rentRateType}
+                  onChange={setRentRateType}
+                  icon={<Percent className="h-3 w-3" />}
+                />
               </>
             )}
-            <MultiSelectDropdown
-              categories={categories}
-              selectedValues={selectedCategories}
-              onChange={setSelectedCategories}
-            />
-            <MultiChoiceDropdown
-              id="rooms-bathrooms"
-              label="الغرف والحمامات"
-              optionGroups={roomBathOptions}
-              selectedValues={selectedRoombath}
-              onChange={setSelectedRoombath}
-              placeholder="اختر عدد الغرف والحمامات"
-              autoMatchBathrooms
-            />
-            {/* Price Dropdown */}
-            <RangeDropdown
-              id="price-dropdown"
-              title="Price"
-              onApply={handleApplyPriceRange}
-              initialMin={minPrice}
-              initialMax={maxPrice}
-              minPlaceholder="أقل سعر"
-              maxPlaceholder="أعلى سعر"
-            />
           </div>
         </form>
       </div>

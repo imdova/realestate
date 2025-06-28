@@ -128,7 +128,7 @@ export const MultiChoiceDropdown = ({
     <div className={`relative ${className}`} ref={dropdownRef}>
       <button
         type="button"
-        className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 text-right shadow-sm focus:outline-none sm:text-sm"
+        className="relative w-full rounded-md border border-gray-300 bg-white px-2 py-2 pl-3 text-right shadow-sm focus:outline-none sm:text-sm"
         onClick={() => setIsOpen(!isOpen)}
         aria-haspopup="listbox"
         aria-expanded={isOpen}

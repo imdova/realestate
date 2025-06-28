@@ -18,6 +18,7 @@ interface MultiSelectDropdownProps {
   selectedValues?: string[]; // 👈 Add this prop
   onChange?: (selected: string[]) => void;
   defaultCategoryIndex?: number;
+  setCategoryActive?: (index: number) => void;
 }
 
 export default function MultiSelectDropdown({
@@ -25,6 +26,7 @@ export default function MultiSelectDropdown({
   onChange,
   selectedValues,
   defaultCategoryIndex = 0,
+  setCategoryActive,
 }: MultiSelectDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState<string[]>(selectedValues || []);
@@ -62,6 +64,11 @@ export default function MultiSelectDropdown({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const handelActiveTab = (index: number) => {
+    setActiveTab(index);
+    setCategoryActive?.(index);
+  };
+
   return (
     <div
       className="relative inline-block w-full text-right"
@@ -71,7 +78,7 @@ export default function MultiSelectDropdown({
       <button
         type="button"
         onClick={handleToggle}
-        className="flex w-full items-center justify-between rounded-lg border border-gray-300 px-4 py-1.5 text-xs shadow-sm"
+        className="flex w-full items-center justify-between rounded-lg border border-gray-300 px-4 py-2 text-xs shadow-sm"
       >
         {selected.length > 0
           ? `(${selected.length}) تم الاختيار`
@@ -84,14 +91,14 @@ export default function MultiSelectDropdown({
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 z-50 mt-2 max-h-[80vh] w-[400px] overflow-y-auto rounded-xl border border-gray-200 bg-white p-4 shadow-xl">
+        <div className="absolute right-0 z-50 mt-2 max-h-[80vh] w-full min-w-full max-w-[400px] overflow-y-auto rounded-xl border border-gray-200 bg-white p-4 shadow-xl md:min-w-[300px]">
           {/* Tabs */}
           <div className="mb-4 flex border-b">
             {categories.map((cat, index) => (
               <button
                 key={cat.title}
                 type="button"
-                onClick={() => setActiveTab(index)}
+                onClick={() => handelActiveTab(index)}
                 className={`border-b-2 px-4 py-2 text-sm font-semibold transition-colors ${
                   index === activeTab
                     ? "border-main text-main"
@@ -104,7 +111,7 @@ export default function MultiSelectDropdown({
           </div>
 
           {/* Options of active tab */}
-          <div className="grid grid-cols-2 gap-2 text-sm">
+          <div className="grid gap-2 text-sm sm:grid-cols-2">
             {categories[activeTab]?.options.map((option) => (
               <button
                 key={option.id}
@@ -126,7 +133,7 @@ export default function MultiSelectDropdown({
             <button
               type="button"
               onClick={handleReset}
-              className="hover:bg-main-transparent rounded border border-main px-4 py-1 text-main"
+              className="rounded border border-main px-4 py-1 text-main hover:bg-main-transparent"
             >
               إعادة ضبط
             </button>

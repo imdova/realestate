@@ -74,7 +74,7 @@ export const RangeDropdown: React.FC<RangeDropdownProps> = ({
       {/* Dropdown toggle button */}
       <button
         type="button"
-        className="inline-flex w-full items-center justify-between rounded-lg border border-gray-300 bg-white px-4 py-1.5 text-sm font-medium text-gray-700 shadow-sm transition-all duration-300 ease-in-out hover:bg-gray-50 focus:outline-none"
+        className="inline-flex w-full items-center justify-between rounded-lg border border-gray-300 bg-white px-4 py-2 text-xs font-medium text-gray-700 shadow-sm transition-all duration-300 ease-in-out focus:outline-none"
         id={`${id}-menu-button`}
         aria-expanded="true"
         aria-haspopup="true"
@@ -87,15 +87,15 @@ export const RangeDropdown: React.FC<RangeDropdownProps> = ({
       {/* Dropdown panel */}
       {isOpen && (
         <div
-          className="absolute right-0 z-10 mt-2 w-72 origin-top-right scale-100 transform bg-white opacity-100 shadow-lg ring-1 ring-black ring-opacity-5 transition-all duration-300 ease-in-out focus:outline-none"
+          className="absolute right-0 z-10 mt-2 min-w-full origin-top-right scale-100 transform rounded-lg bg-white p-2 opacity-100 shadow-lg transition-all duration-300 ease-in-out focus:outline-none sm:min-w-72"
           role="menu"
           aria-orientation="vertical"
           aria-labelledby={`${id}-menu-button`}
         >
           <div className="p-4 py-1" role="none">
             {/* Min and Max input fields */}
-            <div className="mb-4 flex items-center justify-between gap-3">
-              <div className="mr-2 flex-1">
+            <div className="mb-4 flex flex-col items-center justify-between gap-3 sm:flex-row">
+              <div className="w-full flex-1">
                 <label
                   htmlFor={`${id}-min`}
                   className="mb-1 block text-right text-sm font-medium text-gray-700"
@@ -112,7 +112,7 @@ export const RangeDropdown: React.FC<RangeDropdownProps> = ({
                   onChange={handleMinChange}
                 />
               </div>
-              <div className="ml-2 flex-1">
+              <div className="w-full flex-1">
                 <label
                   htmlFor={`${id}-max`}
                   className="mb-1 block text-right text-sm font-medium text-gray-700"
@@ -132,17 +132,17 @@ export const RangeDropdown: React.FC<RangeDropdownProps> = ({
             </div>
 
             {/* Action buttons */}
-            <div className="mt-4 flex justify-between gap-3">
+            <div className="mt-4 flex flex-col justify-between gap-3 sm:flex-row">
               <button
                 type="button"
-                className="mr-2 inline-flex flex-1 justify-center rounded-lg border border-transparent bg-gray-200 px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 sm:text-sm"
+                className="inline-flex flex-1 justify-center rounded-lg border border-transparent bg-gray-200 px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 sm:text-sm"
                 onClick={handleReset}
               >
                 إعادة ضبط
               </button>
               <button
                 type="button"
-                className="ml-2 inline-flex flex-1 justify-center rounded-lg border border-transparent bg-main px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-main-dark focus:outline-none sm:text-sm"
+                className="inline-flex flex-1 justify-center rounded-lg border border-transparent bg-main px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-main-dark focus:outline-none sm:text-sm"
                 onClick={handleApply}
               >
                 تم
