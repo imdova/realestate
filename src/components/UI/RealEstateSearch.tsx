@@ -263,7 +263,7 @@ const RealEstateSearch = () => {
   };
 
   return (
-    <div className="bg-r relative flex h-[600px] w-full items-center justify-center rounded-lg bg-[url(/images/building.jpg)] bg-cover md:p-6">
+    <div className="relative flex h-[600px] w-full items-center justify-center rounded-lg bg-[url(/images/building.jpg)] bg-cover p-4 md:p-6">
       <div className="absolute left-0 top-0 h-full w-full rounded-lg bg-black/40"></div>
       <div className="relative mx-auto h-fit w-full max-w-4xl">
         <h1 className="mb-4 text-center text-xl font-bold text-white md:mb-6 md:text-2xl">
