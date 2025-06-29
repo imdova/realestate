@@ -10,7 +10,7 @@ export default function DynamicHeaderWrapper({
   return (
     <>
       <DynamicHeader />
-      <main className="h-[1000px]">{children}</main>
+      <main>{children}</main>
     </>
   );
 }

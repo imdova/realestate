@@ -28,3 +28,12 @@ export interface MenuGroup {
   title?: string;
   items: MenuItem[];
 }
+
+// blogs type
+
+export interface BlogPost {
+  id: number;
+  image: string;
+  title: string;
+  description?: string;
+}

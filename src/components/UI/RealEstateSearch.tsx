@@ -270,14 +270,14 @@ const RealEstateSearch = () => {
           استكشف بيتك الجديد للبيع او الايجار
         </h1>
 
-        <div className="mb-4 flex justify-center gap-2 md:mb-6">
+        <div className="mx-auto mb-4 flex w-fit justify-center gap-2 rounded-md bg-white p-2 md:mb-6">
           <button
             type="button"
             onClick={() => setActiveTab("properties")}
             className={`rounded-md px-3 py-1 text-sm md:px-4 md:py-2 md:text-base ${
               activeTab === "properties"
-                ? "bg-main text-white"
-                : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                ? "bg-main-transparent font-bold text-main"
+                : "text-gray-800"
             }`}
           >
             عقارات
@@ -285,13 +285,16 @@ const RealEstateSearch = () => {
           <button
             type="button"
             onClick={() => setActiveTab("new-projects")}
-            className={`rounded-md px-3 py-1 text-sm md:px-4 md:py-2 md:text-base ${
+            className={`relative rounded-md px-3 py-1 text-sm md:px-4 md:py-2 md:text-base ${
               activeTab === "new-projects"
-                ? "bg-main text-white"
-                : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                ? "bg-main-transparent font-bold text-main"
+                : "text-gray-800"
             }`}
           >
             المشاريع الجديدة
+            <span className="absolute -left-2 -top-4 flex h-5 w-10 items-center justify-center rounded-full bg-[#f73131] text-[10px] font-semibold text-white">
+              جديد
+            </span>
           </button>
         </div>
 
