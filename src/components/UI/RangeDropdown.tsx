@@ -10,6 +10,7 @@ interface RangeDropdownProps {
   initialMax?: number | null; // Initial maximum value
   minPlaceholder: string; // Placeholder for the min input field
   maxPlaceholder: string; // Placeholder for the max input field
+  className?: string; // Placeholder for the max input field
 }
 
 export const RangeDropdown: React.FC<RangeDropdownProps> = ({
@@ -20,6 +21,7 @@ export const RangeDropdown: React.FC<RangeDropdownProps> = ({
   initialMax = null,
   minPlaceholder,
   maxPlaceholder,
+  className,
 }) => {
   const [isOpen, setIsOpen] = useState(false); // State to control dropdown visibility
   const [minValue, setMinValue] = useState<number | null>(initialMin); // State for minimum value
@@ -70,11 +72,11 @@ export const RangeDropdown: React.FC<RangeDropdownProps> = ({
   };
 
   return (
-    <div className="relative inline-block text-left" ref={dropdownRef}>
+    <div className="relative inline-block w-full text-left" ref={dropdownRef}>
       {/* Dropdown toggle button */}
       <button
         type="button"
-        className="inline-flex w-full items-center justify-between rounded-lg border border-gray-300 bg-white px-4 py-2 text-xs font-medium text-gray-700 shadow-sm transition-all duration-300 ease-in-out focus:outline-none"
+        className={`inline-flex w-full items-center justify-between rounded-lg border border-gray-300 bg-white px-4 py-2 text-xs font-medium text-gray-700 shadow-sm transition-all duration-300 ease-in-out focus:outline-none ${className}`}
         id={`${id}-menu-button`}
         aria-expanded="true"
         aria-haspopup="true"

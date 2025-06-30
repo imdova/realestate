@@ -125,10 +125,10 @@ export const MultiChoiceDropdown = ({
     .join(", ");
 
   return (
-    <div className={`relative ${className}`} ref={dropdownRef}>
+    <div className={`relative`} ref={dropdownRef}>
       <button
         type="button"
-        className="relative w-full rounded-md border border-gray-300 bg-white px-2 py-2 pl-3 text-right shadow-sm focus:outline-none sm:text-sm"
+        className={`relative w-full rounded-md border border-gray-300 bg-white px-2 py-2 pl-3 text-right shadow-sm focus:outline-none sm:text-sm ${className}`}
         onClick={() => setIsOpen(!isOpen)}
         aria-haspopup="listbox"
         aria-expanded={isOpen}

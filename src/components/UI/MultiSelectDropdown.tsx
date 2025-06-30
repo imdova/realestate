@@ -19,6 +19,7 @@ interface MultiSelectDropdownProps {
   onChange?: (selected: string[]) => void;
   defaultCategoryIndex?: number;
   setCategoryActive?: (index: number) => void;
+  className?: string;
 }
 
 export default function MultiSelectDropdown({
@@ -27,6 +28,7 @@ export default function MultiSelectDropdown({
   selectedValues,
   defaultCategoryIndex = 0,
   setCategoryActive,
+  className,
 }: MultiSelectDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState<string[]>(selectedValues || []);
@@ -78,7 +80,7 @@ export default function MultiSelectDropdown({
       <button
         type="button"
         onClick={handleToggle}
-        className="flex w-full items-center justify-between rounded-lg border border-gray-300 px-4 py-2 text-xs shadow-sm"
+        className={`flex w-full items-center justify-between rounded-lg border border-gray-300 px-4 py-2 text-xs shadow-sm ${className}`}
       >
         {selected.length > 0
           ? `(${selected.length}) تم الاختيار`
