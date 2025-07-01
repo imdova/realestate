@@ -37,7 +37,7 @@ interface Filters {
   downPayment: FilterRange;
   price: FilterRange;
   area: FilterRange;
-  keywords: string;
+  keywords: string[];
   agentType: string | null;
 }
 
@@ -47,21 +47,18 @@ interface Location {
   region?: string;
   parent?: string;
 }
-type TabSubType = "for-sale" | "for-rent";
 
 export default function SearchFilters() {
   const router = useRouter();
   const pathname = usePathname();
   const settings = useAppSettings();
   const searchParams = useSearchParams();
-  const [activeSubTab, setActiveSubTab] = useState<TabSubType>("for-sale");
-
   // State for filters
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(
     null,
   );
   const [propertyType, setPropertyType] = useState<string>(
-    searchParams.get("type") || "all",
+    searchParams.get("property_type") || "for-sale",
   );
   const [statusType, setStatusType] = useState<string>(
     searchParams.get("status") || "all",
@@ -89,6 +86,9 @@ export default function SearchFilters() {
   );
   const [rentalPeriodType, setRentalPeriodType] = useState<string>(
     searchParams.get("rental_Period") || "all",
+  );
+  const [keywords, setKeywords] = useState<string[]>(
+    searchParams.get("keywords")?.split(",").filter(Boolean) || [],
   );
 
   // Initialize state from URL params
@@ -120,7 +120,9 @@ export default function SearchFilters() {
         ? Number(searchParams.get("area_max"))
         : null,
     },
-    keywords: searchParams.get("keywords") || "",
+    keywords: searchParams.get("keywords")
+      ? searchParams.get("keywords")!.split(",")
+      : [],
     agentType: searchParams.get("agent_type") || null,
   });
 
@@ -199,10 +201,10 @@ export default function SearchFilters() {
 
     if (statusType !== "all") params.set("status", statusType);
 
-    if (propertyType !== "all") {
-      params.set("type", propertyType);
+    if (propertyType !== "for-sale") {
+      params.set("property_type", propertyType);
     } else {
-      params.delete("type");
+      params.delete("property_type");
     }
 
     if (minPrice !== null) {
@@ -250,6 +252,12 @@ export default function SearchFilters() {
       params.delete("room_bath");
     }
 
+    if (keywords.length > 0) {
+      params.set("keywords", keywords.join(","));
+    } else {
+      params.delete("keywords");
+    }
+
     router.replace(`${pathname}?${params.toString()}`);
   }, [
     selectedLocation,
@@ -265,6 +273,8 @@ export default function SearchFilters() {
     router,
     searchParams,
     statusType,
+    keywords,
+    rentalPeriodType,
   ]);
 
   const handleFilterChange = (newFilters: Filters) => {
@@ -303,9 +313,12 @@ export default function SearchFilters() {
       params.set("area_max", newFilters.area.max.toString());
     }
 
-    if (newFilters.keywords) {
-      params.set("keywords", newFilters.keywords);
+    if (newFilters.keywords && newFilters.keywords.length > 0) {
+      params.set("keywords", newFilters.keywords.join(","));
+    } else {
+      params.delete("keywords");
     }
+
     if (newFilters.agentType) {
       params.set("agent_type", newFilters.agentType);
     }
@@ -319,139 +332,167 @@ export default function SearchFilters() {
   };
 
   const clearFilters = () => {
+    // إعادة تعيين فلاتر الموقع وأنواع العقارات
     setSelectedLocation(null);
-    setPropertyType("all");
+    setPropertyType("for-sale");
+    setStatusType("all");
+    setRentalPeriodType("all");
+
+    // إعادة تعيين نطاقات السعر والمساحة
     setMinPrice(null);
     setMaxPrice(null);
     setMinArea(null);
     setMaxArea(null);
+
+    // إعادة تعيين خيارات الغرف والفئات
     setBedrooms("all");
     setSelectedCategories([]);
     setSelectedRoombath([]);
+    setKeywords([]);
+
+    // إعادة تعيين الفلاتر المتقدمة
+    setFilters({
+      downPayment: { option: null, min: null, max: null },
+      price: { option: null, min: null, max: null },
+      area: { option: null, min: null, max: null },
+      keywords: [],
+      agentType: null,
+    });
+
+    // إزالة جميع الباراميترات من الرابط (URL)
+    const cleanUrl = `${pathname}`;
+    router.replace(cleanUrl);
   };
 
   return (
     <div className="bg-white py-4">
-      <div className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-8">
-        {/* 1. Tab Switcher */}
-        <div className="lg:col-span-1">
-          <div className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 p-1">
-            <button
-              type="button"
-              onClick={() => setActiveSubTab("for-sale")}
-              className={`w-full rounded-md px-4 py-2 text-sm ${
-                activeSubTab === "for-sale"
-                  ? "bg-main-transparent text-main"
-                  : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-              }`}
-            >
-              للبيع
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveSubTab("for-rent")}
-              className={`w-full rounded-md px-4 py-2 text-sm ${
-                activeSubTab === "for-rent"
-                  ? "bg-main-transparent text-main"
-                  : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-              }`}
-            >
-              للأجار
-            </button>
+      {/* 2. Location Search */}
+      <div className="mb-4 block md:hidden">
+        <LocationSearch
+          selectedLocation={selectedLocation}
+          setSelectedLocation={setSelectedLocation}
+        />
+      </div>
+      <div className="no-scrollbar overflow-x-auto md:overflow-x-visible">
+        <div
+          className={`mb-4 grid min-w-[1440px] ${propertyType === "for-sale" ? "grid-cols-5" : "grid-cols-6"} gap-3 md:min-w-[400px] md:grid-cols-2 lg:grid-cols-8`}
+        >
+          {/* 1. Tab Switcher */}
+          <div className="lg:col-span-1">
+            <div className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 p-1">
+              <button
+                type="button"
+                onClick={() => setPropertyType("for-sale")}
+                className={`w-full rounded-md px-4 py-2 text-sm ${
+                  propertyType === "for-sale"
+                    ? "bg-main-transparent text-main"
+                    : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                }`}
+              >
+                للبيع
+              </button>
+              <button
+                type="button"
+                onClick={() => setPropertyType("for-rent")}
+                className={`w-full rounded-md px-4 py-2 text-sm ${
+                  propertyType === "for-rent"
+                    ? "bg-main-transparent text-main"
+                    : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                }`}
+              >
+                للأجار
+              </button>
+            </div>
           </div>
-        </div>
 
-        {/* 2. Location Search */}
-        <div className="sm:col-span-1 lg:col-span-2">
-          <LocationSearch
-            selectedLocation={selectedLocation}
-            setSelectedLocation={setSelectedLocation}
-          />
-        </div>
-
-        {/* 3. Status Type */}
-        {activeSubTab === "for-sale" && (
-          <div className="lg:col-span-2">
-            <StatusTabSelect
-              options={StatusOptions}
-              onChange={setStatusType}
-              className="w-full justify-between !py-2"
+          {/* 2. Location Search */}
+          <div className="hidden sm:col-span-1 md:block lg:col-span-2">
+            <LocationSearch
+              selectedLocation={selectedLocation}
+              setSelectedLocation={setSelectedLocation}
             />
           </div>
-        )}
 
-        {/* 4. Categories */}
-        <div className="lg:col-span-1">
-          <MultiSelectDropdown
-            categories={categories}
-            selectedValues={selectedCategories}
-            onChange={setSelectedCategories}
-            className="!py-3.5"
-          />
-        </div>
+          {/* 3. Status Type */}
+          {propertyType === "for-sale" && (
+            <div className="lg:col-span-2">
+              <StatusTabSelect
+                options={StatusOptions}
+                onChange={setStatusType}
+                className="w-full justify-between p-2"
+              />
+            </div>
+          )}
 
-        {/* 5. Rooms & Bathrooms */}
-        <div className="lg:col-span-1">
-          <MultiChoiceDropdown
-            id="rooms-bathrooms"
-            label="الغرف والحمامات"
-            optionGroups={roomBathOptions}
-            selectedValues={selectedRoombath}
-            onChange={setSelectedRoombath}
-            placeholder="اختر عدد الغرف والحمامات"
-            autoMatchBathrooms
-            className="!py-3.5"
-          />
-        </div>
-
-        {/* 6. Price Dropdown */}
-        {activeSubTab === "for-rent" && (
+          {/* 4. Categories */}
           <div className="lg:col-span-1">
-            <RangeDropdown
-              id="price-dropdown"
-              title={`السعر (${settings.currency})`}
-              onApply={handleApplyPriceRange}
-              initialMin={minPrice}
-              initialMax={maxPrice}
-              minPlaceholder="أقل سعر"
-              maxPlaceholder="أعلى سعر"
+            <MultiSelectDropdown
+              categories={categories}
+              selectedValues={selectedCategories}
+              onChange={setSelectedCategories}
               className="!py-3.5"
             />
           </div>
-        )}
 
-        {/* 7. Advanced Filters */}
-        <div className="lg:col-span-1">
-          <AdvancedSearchDropdown
-            initialDownPayment={filters.downPayment}
-            initialPrice={filters.price}
-            initialArea={filters.area}
-            initialKeywords={filters.keywords}
-            initialAgentType={filters.agentType}
-            onFilterChange={handleFilterChange}
-            className="!py-3.5"
-          />
-        </div>
-        {/* 8. Rental Period */}
-        {activeSubTab === "for-rent" && (
+          {/* 5. Rooms & Bathrooms */}
           <div className="lg:col-span-1">
-            <ArabicDropdown
-              id="rentalPeriodType"
-              options={rentalPeriods}
-              value={rentalPeriodType}
-              onChange={setRentalPeriodType}
+            <MultiChoiceDropdown
+              id="rooms-bathrooms"
+              label="الغرف والحمامات"
+              optionGroups={roomBathOptions}
+              selectedValues={selectedRoombath}
+              onChange={setSelectedRoombath}
+              placeholder="اختر عدد الغرف والحمامات"
+              autoMatchBathrooms
               className="!py-3.5"
-              icon={<Clock className="h-3 w-3" />}
             />
           </div>
-        )}
+
+          {/* 6. Price Dropdown */}
+          {propertyType === "for-rent" && (
+            <div className="lg:col-span-1">
+              <RangeDropdown
+                id="price-dropdown"
+                title={`السعر (${settings.currency})`}
+                onApply={handleApplyPriceRange}
+                initialMin={minPrice}
+                initialMax={maxPrice}
+                minPlaceholder="أقل سعر"
+                maxPlaceholder="أعلى سعر"
+                className="!py-3.5"
+              />
+            </div>
+          )}
+
+          {/* 7. Advanced Filters */}
+          <div className="lg:col-span-1">
+            <AdvancedSearchDropdown
+              initialDownPayment={filters.downPayment}
+              initialPrice={filters.price}
+              initialArea={filters.area}
+              initialAgentType={filters.agentType}
+              onFilterChange={handleFilterChange}
+              className="!py-3.5"
+            />
+          </div>
+          {/* 8. Rental Period */}
+          {propertyType === "for-rent" && (
+            <div className="lg:col-span-1">
+              <ArabicDropdown
+                id="rentalPeriodType"
+                options={rentalPeriods}
+                value={rentalPeriodType}
+                onChange={setRentalPeriodType}
+                className="!py-3.5"
+                icon={<Clock className="h-3 w-3" />}
+              />
+            </div>
+          )}
+        </div>
       </div>
       <div className="flex justify-between">
         <div></div>
-        <button
-          onClick={clearFilters}
-          className="text-sm text-main transition hover:bg-gray-300"
-        >
+        <button onClick={clearFilters} className="text-sm text-main transition">
           مسح عوامل التصفية
         </button>
       </div>

@@ -61,7 +61,7 @@ export default function Pagination({
       {/* Next Page Button (on the left in RTL) */}
       <Link
         href={createPageUrl(Math.min(totalPages, currentPage + 1))}
-        className={`rounded-md p-2 ${currentPage === totalPages ? "cursor-not-allowed text-gray-400" : "text-main hover:bg-main-transparent"}`}
+        className={`hidden rounded-md p-2 md:block ${currentPage === totalPages ? "cursor-not-allowed text-gray-400" : "text-main hover:bg-main-transparent"}`}
         aria-disabled={currentPage === totalPages}
       >
         {isRTL ? <ChevronLeft size={17} /> : <ChevronRight size={17} />}
@@ -72,7 +72,7 @@ export default function Pagination({
         <>
           <Link
             href={createPageUrl(totalPages)}
-            className="rounded-md px-3 py-1 text-main hover:bg-main-transparent"
+            className="rounded-md text-main hover:bg-main-transparent"
           >
             {totalPages}
           </Link>
@@ -86,7 +86,7 @@ export default function Pagination({
           <Link
             key={pageNum}
             href={createPageUrl(pageNum)}
-            className={`rounded-md px-3 py-1 ${currentPage === pageNum ? "bg-main text-white" : "text-main hover:bg-main-transparent"}`}
+            className={`rounded-md px-2 py-1 md:px-3 ${currentPage === pageNum ? "bg-main text-white" : "text-main hover:bg-main-transparent"}`}
           >
             {new Intl.NumberFormat("ar-EG").format(pageNum)}
           </Link>
@@ -108,7 +108,7 @@ export default function Pagination({
       {/* Previous Page Button (on the right in RTL) */}
       <Link
         href={createPageUrl(Math.max(1, currentPage - 1))}
-        className={`rounded-md p-2 ${currentPage === 1 ? "cursor-not-allowed text-gray-400" : "text-main hover:bg-main-transparent"}`}
+        className={`hidden rounded-md p-2 md:block ${currentPage === 1 ? "cursor-not-allowed text-gray-400" : "text-main hover:bg-main-transparent"}`}
         aria-disabled={currentPage === 1}
       >
         {isRTL ? <ChevronRight size={17} /> : <ChevronLeft size={17} />}

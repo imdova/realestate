@@ -12,11 +12,14 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
-import { RealEstateItem, RealEstateStatus } from "@/types/real-estate";
+import {
+  RealEstateItem,
+  RealEstateStatus,
+  rentalTerm,
+} from "@/types/real-estate";
 import { useAppSettings } from "@/hooks/useAppSettings";
 
 export default function RealEstateCard({
-  id,
   title,
   location,
   price,
@@ -27,6 +30,11 @@ export default function RealEstateCard({
   images,
   status,
   type,
+  dayRent,
+  weeklyRent,
+  monthlyRent,
+  yearlyRent,
+  rentalTerm,
 }: RealEstateItem) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
@@ -48,6 +56,36 @@ export default function RealEstateCard({
     setCurrentImageIndex(index);
   };
 
+  function getRentPriceByTerm(term?: rentalTerm): number | undefined {
+    switch (term || rentalTerm) {
+      case "يومي":
+        return dayRent;
+      case "أسبوعي":
+        return weeklyRent;
+      case "شهري":
+        return monthlyRent;
+      case "سنوي":
+        return yearlyRent;
+      default:
+        return price;
+    }
+  }
+  function getTitleByTerm(term?: rentalTerm): string | undefined {
+    switch (term || rentalTerm) {
+      case "يومي":
+        return "يومياً";
+      case "أسبوعي":
+        return "أسبوعياً";
+      case "شهري":
+        return "شهرياً";
+      case "سنوي":
+        return "سنوياً";
+      default:
+        return;
+    }
+  }
+  const realyPrice = getRentPriceByTerm();
+  console.log(realyPrice);
   const statusColorMap: Record<RealEstateStatus, string> = {
     مميز: "text-red-600 border-red-600 bg-red-50",
     استثنائي: "text-blue-600 border-blue-600 bg-blue-50",
@@ -55,17 +93,18 @@ export default function RealEstateCard({
   };
 
   return (
-    <div
+    <Link
+      href={"#"}
       dir="rtl"
       className="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow duration-300 lg:flex-row"
     >
       {/* Image Slider Section */}
       <div
-        className="relative h-48 w-full overflow-hidden sm:h-64 lg:max-w-[300px]"
+        className="relative h-48 w-full overflow-hidden sm:h-56 lg:max-w-[300px]"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <Link href={`/product-details/${id}`} className="block h-full w-full">
+        <div className="block h-full w-full">
           <Image
             width={400}
             height={400}
@@ -74,7 +113,7 @@ export default function RealEstateCard({
             className="h-full w-full object-cover"
             priority={currentImageIndex === 0}
           />
-        </Link>
+        </div>
 
         {/* Favorite Button */}
         <button className="absolute left-2 top-2 rounded-full bg-white/80 p-2 backdrop-blur-sm">
@@ -90,7 +129,7 @@ export default function RealEstateCard({
                 prevImage();
               }}
               className={`absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/30 p-1.5 text-white transition duration-200 hover:bg-black/50 ${
-                isHovered ? "opacity-100" : "opacity-0"
+                isHovered ? "opacity-100" : "md:opacity-0"
               }`}
             >
               <ChevronLeft className="h-5 w-5" />
@@ -101,7 +140,7 @@ export default function RealEstateCard({
                 nextImage();
               }}
               className={`absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/30 p-1.5 text-white transition duration-200 hover:bg-black/50 ${
-                isHovered ? "opacity-100" : "opacity-0"
+                isHovered ? "opacity-100" : "md:opacity-0"
               }`}
             >
               <ChevronRight className="h-5 w-5" />
@@ -113,7 +152,7 @@ export default function RealEstateCard({
         {(images?.length ?? 0) > 1 && (
           <div
             className={`absolute bottom-2 left-0 right-0 mx-auto flex w-fit justify-center gap-1 rounded-full bg-black/30 px-2 py-1 backdrop-blur-sm transition duration-300 ${
-              isHovered ? "opacity-100" : "opacity-0"
+              isHovered ? "opacity-100" : "md:opacity-0"
             }`}
           >
             {images?.map((_, index) => (
@@ -138,7 +177,9 @@ export default function RealEstateCard({
       {/* Content Section */}
       <div className="flex flex-1 flex-col p-4">
         <div className="mb-2 flex items-start justify-between">
-          <span className="font-bold">{formatCurrency(price)}</span>
+          <span className="font-bold">
+            {formatCurrency(realyPrice || 0)} {getTitleByTerm(rentalTerm)}
+          </span>
           {status && (
             <span
               className={`rounded-md border px-2 py-0.5 text-[10px] font-medium ${statusColorMap[status]}`}
@@ -198,6 +239,6 @@ export default function RealEstateCard({
           </button>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

@@ -1,5 +1,8 @@
-import { useState, useRef, useEffect } from "react";
-import { ChevronDown, X } from "lucide-react";
+"use client";
+
+import { ChevronDown, X, Check } from "lucide-react";
+import { useState, useRef, useEffect, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 type OptionGroup = {
   label: string;
@@ -32,6 +35,18 @@ export const MultiChoiceDropdown = ({
 }: MultiSelectDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if mobile on mount and resize
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkIfMobile();
+    window.addEventListener("resize", checkIfMobile);
+    return () => window.removeEventListener("resize", checkIfMobile);
+  }, []);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -50,6 +65,20 @@ export const MultiChoiceDropdown = ({
     };
   }, []);
 
+  // Memoize selected labels for performance
+  const selectedLabels = useMemo(() => {
+    return selectedValues
+      .map((value) => {
+        for (const group of optionGroups) {
+          const option = group.options.find((opt) => opt.value === value);
+          if (option) return option.label;
+        }
+        return null;
+      })
+      .filter(Boolean)
+      .join(", ");
+  }, [selectedValues, optionGroups]);
+
   const toggleOption = (
     value: string,
     isRoom: boolean | undefined,
@@ -59,16 +88,14 @@ export const MultiChoiceDropdown = ({
     console.log(isRoom);
     console.log(isBathroom);
     if (autoMatchBathrooms) {
-      // Find the option that was clicked
       const clickedOption = optionGroups
         .flatMap((group) => group.options)
         .find((opt) => opt.value === value);
 
       if (clickedOption?.isRoom) {
-        // When a room is selected, find matching bathroom
         const roomNumber = clickedOption.value.match(/\d+/)?.[0];
         if (roomNumber) {
-          // Remove any existing bathroom selections
+          // Remove any matching bathrooms
           newValues = newValues.filter(
             (val) =>
               !optionGroups
@@ -76,7 +103,7 @@ export const MultiChoiceDropdown = ({
                 .find((opt) => opt.value === val && opt.isBathroom),
           );
 
-          // Add matching bathroom if it exists
+          // Find matching bathroom
           const matchingBathroom = optionGroups
             .flatMap((group) => group.options)
             .find((opt) => opt.isBathroom && opt.value === roomNumber);
@@ -94,13 +121,11 @@ export const MultiChoiceDropdown = ({
           }
         }
       } else {
-        // Normal toggle for non-room options
         newValues = newValues.includes(value)
           ? newValues.filter((v) => v !== value)
           : [...newValues, value];
       }
     } else {
-      // Normal toggle when autoMatchBathrooms is false
       newValues = newValues.includes(value)
         ? newValues.filter((v) => v !== value)
         : [...newValues, value];
@@ -109,89 +134,117 @@ export const MultiChoiceDropdown = ({
     onChange(newValues);
   };
 
-  const clearSelection = () => {
+  const clearSelection = (e: React.MouseEvent) => {
+    e.stopPropagation();
     onChange([]);
   };
 
-  const selectedLabels = selectedValues
-    .map((value) => {
-      for (const group of optionGroups) {
-        const option = group.options.find((opt) => opt.value === value);
-        if (option) return option.label;
-      }
-      return null;
-    })
-    .filter(Boolean)
-    .join(", ");
-
   return (
-    <div className={`relative`} ref={dropdownRef}>
-      <button
+    <div className="relative w-full" ref={dropdownRef}>
+      <motion.button
         type="button"
-        className={`relative w-full rounded-md border border-gray-300 bg-white px-2 py-2 pl-3 text-right shadow-sm focus:outline-none sm:text-sm ${className}`}
+        whileTap={{ scale: 0.98 }}
+        className={`flex w-full items-center justify-between rounded-lg border border-gray-300 bg-white px-4 py-2 text-xs text-gray-800 shadow-sm transition-all hover:border-gray-300 hover:bg-gray-50 focus:outline-none ${className} `}
         onClick={() => setIsOpen(!isOpen)}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
       >
-        <span className="block max-w-[120px] truncate text-xs">
+        <span
+          className={`truncate ${selectedValues.length > 0 ? "font-medium" : "text-gray-800"}`}
+        >
           {selectedLabels || placeholder}
         </span>
-        <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center p-1 pl-2">
-          <ChevronDown className="h-4 w-4 text-gray-400" />
-        </span>
-        {selectedValues.length > 0 && (
-          <span
-            className="absolute inset-y-0 left-6 flex items-center pl-2"
-            onClick={(e) => {
-              e.stopPropagation();
-              clearSelection();
-            }}
-          >
-            <X className="h-4 w-4 text-gray-400 hover:text-gray-600" />
-          </span>
-        )}
-      </button>
+        <div className="flex items-center gap-2">
+          {selectedValues.length > 0 && (
+            <motion.span
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              onClick={clearSelection}
+              className="text-gray-400 hover:text-gray-600"
+            >
+              <X className="h-4 w-4" />
+            </motion.span>
+          )}
+          <ChevronDown
+            className={`h-4 w-4 text-gray-400 transition-transform duration-200 ${
+              isOpen ? "rotate-180" : ""
+            }`}
+          />
+        </div>
+      </motion.button>
 
-      {isOpen && (
-        <div className="absolute z-10 mt-1 w-full rounded-md bg-white">
-          <ul
-            role="listbox"
-            className="max-h-60 overflow-auto py-1 focus:outline-none sm:text-sm"
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: isMobile ? 20 : -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: isMobile ? 20 : -10 }}
+            transition={{ duration: 0.2 }}
+            className={
+              isMobile
+                ? "fixed inset-x-0 bottom-0 z-[1000] max-h-[70vh] rounded-t-2xl border-t-4 border-main bg-white shadow-2xl"
+                : "absolute z-20 mt-2 w-full rounded-xl border border-gray-200 bg-white shadow-xl"
+            }
           >
-            {optionGroups.map((group) => (
-              <div key={group.label}>
-                <li className="px-3 py-1 text-right text-sm font-semibold text-gray-500">
-                  {group.label}
-                </li>
-                {group.options.map((option) => (
-                  <li
-                    key={option.value}
-                    className={`relative cursor-default select-none py-2 pl-3 pr-9 text-right ${
-                      selectedValues.includes(option.value)
-                        ? "bg-main-transparent text-main"
-                        : "text-gray-900 hover:bg-gray-100"
-                    }`}
-                    onClick={() =>
-                      toggleOption(
-                        option.value,
-                        option.isRoom,
-                        option.isBathroom,
-                      )
-                    }
-                  >
-                    <span className="block truncate">{option.label}</span>
-                    {selectedValues.includes(option.value) && (
-                      <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-main">
-                        ✓
+            {/* Mobile header */}
+            {isMobile && (
+              <div className="sticky top-0 flex items-center justify-between border-b bg-white p-4">
+                <h3 className="font-semibold text-gray-800">الخيارات</h3>
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(false)}
+                  className="rounded-full p-1 text-gray-500 hover:bg-gray-100"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+            )}
+
+            <div
+              className={`overflow-y-auto ${isMobile ? "max-h-[calc(70vh-56px)]" : "max-h-60"}`}
+            >
+              <ul role="listbox" className="divide-y divide-gray-100">
+                {optionGroups.map((group) => (
+                  <li key={group.label}>
+                    <div className="px-4 py-2">
+                      <span className="text-sm font-semibold text-gray-500">
+                        {group.label}
                       </span>
-                    )}
+                    </div>
+                    <ul>
+                      {group.options.map((option) => (
+                        <motion.li
+                          key={option.value}
+                          whileTap={{ scale: 0.98 }}
+                          className={`relative cursor-pointer px-4 py-2.5 text-right transition-colors ${
+                            selectedValues.includes(option.value)
+                              ? "bg-main-transparent"
+                              : "hover:bg-gray-50"
+                          }`}
+                          onClick={() =>
+                            toggleOption(
+                              option.value,
+                              option.isRoom,
+                              option.isBathroom,
+                            )
+                          }
+                        >
+                          <span className="block truncate">{option.label}</span>
+                          {selectedValues.includes(option.value) && (
+                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-main">
+                              <Check className="h-4 w-4" />
+                            </span>
+                          )}
+                        </motion.li>
+                      ))}
+                    </ul>
                   </li>
                 ))}
-              </div>
-            ))}
-          </ul>
-        </div>
-      )}
+              </ul>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

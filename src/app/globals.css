@@ -63,13 +63,10 @@ body {
   font-family: var(--font-cairo);
 }
 
-.box {
-  @apply rounded-md bg-white p-4 shadow;
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
-.elementskit-dropdown {
-  @apply invisible absolute top-[100%] rounded-md bg-white p-4 opacity-0 shadow transition-all duration-500;
-}
-
-.group:hover .elementskit-dropdown {
-  @apply visible opacity-100;
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

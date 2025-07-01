@@ -13,12 +13,23 @@ export default function RealEstateSearch() {
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
   const currentPage = parseInt(searchParams?.get("page") || "1", 10);
+  const propertyType = searchParams?.get("property_type") || "for-sale";
+  const saleData = realEstateData.filter((realestate) => {
+    return !realestate.rentalTerm;
+  });
+  const rentData = realEstateData.filter((realestate) => {
+    return realestate.rentalTerm;
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        setRealEstates(realEstateData);
+        if (propertyType === "for-rent") {
+          setRealEstates(rentData);
+        } else {
+          setRealEstates(saleData);
+        }
         setTotalPages(10); // Total pages for pagination
       } catch (error) {
         console.error("Error fetching real estates:", error);
@@ -30,7 +41,7 @@ export default function RealEstateSearch() {
     // Simulate network delay
     const timer = setTimeout(fetchData, 500);
     return () => clearTimeout(timer);
-  }, [searchParams]); // Still watch searchParams for potential filtering
+  }, [searchParams, propertyType, rentData, saleData]); // Still watch searchParams for potential filtering
 
   if (loading) return <div className="py-8 text-center">جاري التحميل...</div>;
 

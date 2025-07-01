@@ -32,14 +32,12 @@ interface Location {
 }
 
 type TabType = "properties" | "new-projects";
-type TabSubType = "for-sale" | "for-rent";
 
 const RealEstateSearch = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const settings = useAppSettings();
   const [activeTab, setActiveTab] = useState<TabType>("properties");
-  const [activeSubTab, setActiveSubTab] = useState<TabSubType>("for-sale");
   const [categoryIndex, setCategoryIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(
@@ -47,6 +45,9 @@ const RealEstateSearch = () => {
   );
   console.log(categoryIndex);
 
+  const [PropertyType, setPropertyType] = useState<string>(
+    searchParams.get("property_type") || "for-sale",
+  );
   const [rentalPeriodType, setRentalPeriodType] = useState<string>(
     searchParams.get("rental_Period") || "all",
   );
@@ -175,6 +176,7 @@ const RealEstateSearch = () => {
       params.set("deliveryTime", deliveryTimeType);
     if (rentalPeriodType !== "all")
       params.set("rental_Period", rentalPeriodType);
+    if (PropertyType !== "for-sale") params.set("property_type", PropertyType);
     if (selectedCategories.length > 0) {
       params.set("categories", selectedCategories.join(","));
     }
@@ -200,7 +202,7 @@ const RealEstateSearch = () => {
     }
   }, [
     activeTab,
-    activeSubTab,
+    PropertyType,
     statusType,
     rentalPeriodType,
     selectedCategories,
@@ -208,6 +210,14 @@ const RealEstateSearch = () => {
     minPrice,
     maxPrice,
     router,
+    deliveryTimeType,
+    maxArea,
+    maxRentRate,
+    minArea,
+    minRentRate,
+    progress,
+    rentRateType,
+    selectedLocation,
   ]);
 
   const handleSearch = (e: React.FormEvent) => {
@@ -222,6 +232,7 @@ const RealEstateSearch = () => {
       params.set("deliveryTime", deliveryTimeType);
     if (rentalPeriodType !== "all")
       params.set("rental_Period", rentalPeriodType);
+    if (PropertyType !== "for-sale") params.set("property_type", PropertyType);
     if (selectedCategories.length > 0) {
       params.set("categories", selectedCategories.join(","));
     }
@@ -307,9 +318,9 @@ const RealEstateSearch = () => {
               <div className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 p-1 sm:w-fit">
                 <button
                   type="button"
-                  onClick={() => setActiveSubTab("for-sale")}
+                  onClick={() => setPropertyType("for-sale")}
                   className={`w-full rounded-md px-4 py-2 text-sm ${
-                    activeSubTab === "for-sale"
+                    PropertyType === "for-sale"
                       ? "bg-main-transparent text-main"
                       : "bg-gray-200 text-gray-800 hover:bg-gray-300"
                   }`}
@@ -318,9 +329,9 @@ const RealEstateSearch = () => {
                 </button>
                 <button
                   type="button"
-                  onClick={() => setActiveSubTab("for-rent")}
+                  onClick={() => setPropertyType("for-rent")}
                   className={`w-full rounded-md px-4 py-2 text-sm ${
-                    activeSubTab === "for-rent"
+                    PropertyType === "for-rent"
                       ? "bg-main-transparent text-main"
                       : "bg-gray-200 text-gray-800 hover:bg-gray-300"
                   }`}
@@ -346,10 +357,11 @@ const RealEstateSearch = () => {
           <div className="grid grid-cols-1 items-end gap-3 md:grid-cols-2 md:gap-2 lg:grid-cols-4">
             {activeTab === "properties" ? (
               <>
-                {activeSubTab === "for-sale" ? (
+                {PropertyType === "for-sale" ? (
                   <StatusTabSelect
                     options={StatusOptions}
                     onChange={setStatusType}
+                    className="p-0.5"
                   />
                 ) : (
                   <ArabicDropdown

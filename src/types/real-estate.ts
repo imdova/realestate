@@ -10,6 +10,8 @@ export type RealEstateType =
   | "محل"
   | "مكتب";
 
+export type rentalTerm = "شهري" | "سنوي" | "أسبوعي" | "يومي";
+
 export interface SearchParams {
   page?: string;
   type?: string;
@@ -52,7 +54,7 @@ export interface RealEstateItem {
   id: number;
   title: string;
   location: string;
-  price: number;
+  price?: number;
   area: number;
   bedrooms: number;
   images: string[];
@@ -64,4 +66,9 @@ export interface RealEstateItem {
   bathrooms: number;
   yearBuilt: number | null;
   amenities: string[];
+  rentalTerm?: rentalTerm;
+  dayRent?: number;
+  weeklyRent?: number;
+  monthlyRent?: number;
+  yearlyRent?: number;
 }
