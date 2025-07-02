@@ -20,9 +20,12 @@ const LocationSearch = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth < 768 : false,
+  );
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const mobileInputRef = useRef<HTMLInputElement>(null);
 
   // Memoized location data
   const locations = useMemo(
@@ -63,22 +66,14 @@ const LocationSearch = ({
     );
   }, [locations, searchTerm]);
 
-  // Mobile detection with debounce
+  // Mobile detection
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
     const handleResize = () => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        setIsMobile(window.innerWidth < 768);
-      }, 100);
+      setIsMobile(window.innerWidth < 768);
     };
 
-    handleResize(); // Initial check
     window.addEventListener("resize", handleResize);
-    return () => {
-      clearTimeout(timeoutId);
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   // Event handlers with useCallback
@@ -103,13 +98,9 @@ const LocationSearch = ({
     [setSelectedLocation],
   );
 
-  const handleToggle = useCallback(() => {
-    setIsOpen((prev) => !prev);
-  }, []);
-
-  // Optimized click outside handler
+  // Click outside handler
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
@@ -119,29 +110,40 @@ const LocationSearch = ({
     };
 
     document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
     };
   }, []);
 
-  // Focus management - only focus input when dropdown opens on desktop
+  // Focus management
   useEffect(() => {
-    if (isOpen && inputRef.current && !isMobile) {
-      inputRef.current.focus();
+    if (isOpen) {
+      if (isMobile && mobileInputRef.current) {
+        mobileInputRef.current.focus();
+      } else if (!isMobile && inputRef.current) {
+        inputRef.current.focus();
+      }
     }
   }, [isOpen, isMobile]);
 
-  // Handle input focus to show dropdown
-  const handleInputFocus = useCallback(() => {
+  const handleContainerClick = useCallback(() => {
     setIsOpen(true);
   }, []);
+
+  const handleInputFocus = useCallback(() => {
+    if (!isMobile) {
+      setIsOpen(true);
+    }
+  }, [isMobile]);
 
   return (
     <div className="relative w-full" ref={dropdownRef}>
       {/* Input/Selected Location Display */}
       <div
         className={`flex w-full cursor-text items-center rounded-lg border border-gray-300 bg-white`}
-        onClick={handleToggle}
+        onClick={handleContainerClick}
       >
         {selectedLocation ? (
           <div className="flex w-full items-center justify-between p-1 px-2">
@@ -177,6 +179,7 @@ const LocationSearch = ({
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onFocus={handleInputFocus}
+              aria-label="Search locations"
             />
             <ChevronDown
               className={`h-4 w-4 text-gray-400 transition-transform ${isOpen ? "rotate-180" : ""}`}
@@ -214,26 +217,27 @@ const LocationSearch = ({
               </div>
             )}
 
-            <div className="bg-white p-2">
-              {/* Search input for mobile */}
-              {isMobile && (
-                <div className="sticky top-14 z-50 mt-2 flex items-center rounded-lg border bg-white p-3">
-                  <MapPin className="h-4 w-4 text-gray-400" />
-                  <input
-                    type="text"
-                    placeholder="ابحث عن موقع..."
-                    className="flex-1 bg-transparent px-2 text-right outline-none placeholder:text-sm placeholder:text-gray-400"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    autoFocus
-                  />
-                </div>
-              )}
-            </div>
+            {/* Search input for mobile */}
+            {isMobile && (
+              <div className="sticky top-14 z-50 mt-2 flex items-center rounded-lg border bg-white p-3">
+                <MapPin className="h-4 w-4 text-gray-400" />
+                <input
+                  ref={mobileInputRef}
+                  type="text"
+                  placeholder="ابحث عن موقع..."
+                  className="flex-1 bg-transparent px-2 text-right outline-none placeholder:text-sm placeholder:text-gray-400"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  aria-label="Search locations on mobile"
+                />
+              </div>
+            )}
 
             {/* Location list */}
             <div
-              className={`${isMobile ? "max-h-[calc(60vh-112px)]" : "max-h-60"} overflow-y-auto overscroll-contain`}
+              className={`${
+                isMobile ? "max-h-[calc(60vh-112px)]" : "max-h-60"
+              } overflow-y-auto overscroll-contain`}
             >
               {filteredLocations.length > 0 ? (
                 filteredLocations.map((location) => (

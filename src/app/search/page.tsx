@@ -53,7 +53,7 @@ function SearchContent() {
 
   return (
     <div>
-      <div className="container mx-auto px-4 lg:max-w-[1440px]">
+      <div className="container mx-auto px-4 lg:max-w-[1300px]">
         <div className="sticky top-0 z-10 mb-3 border-b border-gray-200 md:relative lg:sticky">
           <SearchFilters />
         </div>

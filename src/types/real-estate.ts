@@ -11,6 +11,8 @@ export type RealEstateType =
   | "مكتب";
 
 export type rentalTerm = "شهري" | "سنوي" | "أسبوعي" | "يومي";
+export type constructionType = "جاهز" | "قيد الانشاء";
+export type furnishingType = "مفروشة" | "غير مفروشة";
 
 export interface SearchParams {
   page?: string;
@@ -48,10 +50,13 @@ export interface EmployerCompany {
   email: string;
   address: string;
   website?: string;
+  company?: string;
+  rating?: number;
+  reviews?: number;
 }
 
 export interface RealEstateItem {
-  id: number;
+  id: string;
   title: string;
   location: string;
   price?: number;
@@ -61,7 +66,6 @@ export interface RealEstateItem {
   status: RealEstateStatus;
   type: RealEstateType;
   downPayment?: number;
-  employer: EmployerCompany;
   description: string;
   bathrooms: number;
   yearBuilt: number | null;
@@ -71,4 +75,19 @@ export interface RealEstateItem {
   weeklyRent?: number;
   monthlyRent?: number;
   yearlyRent?: number;
+  address: string;
+  purpose: string;
+  agent: EmployerCompany;
+  details: {
+    bedrooms: number;
+    bathrooms: number;
+    area: number;
+    parking: number;
+    yearBuilt: number;
+  };
+  videos: string[];
+  construction?: constructionType;
+  furnishing?: furnishingType;
+  createdAt: string;
+  reference_num?: string;
 }

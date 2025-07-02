@@ -20,6 +20,7 @@ import {
 import { useAppSettings } from "@/hooks/useAppSettings";
 
 export default function RealEstateCard({
+  id,
   title,
   location,
   price,
@@ -94,7 +95,7 @@ export default function RealEstateCard({
 
   return (
     <Link
-      href={"#"}
+      href={`/realestate-details/${id}`}
       dir="rtl"
       className="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow duration-300 lg:flex-row"
     >

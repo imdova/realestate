@@ -16,7 +16,7 @@ const FullHeader: React.FC = () => {
   return (
     <div className="relative">
       <nav className="bg-gray-100 px-2">
-        <div className="container mx-auto sm:px-6 lg:max-w-[1440px]">
+        <div className="container mx-auto sm:px-6 lg:max-w-[1300px]">
           <div className="flex items-center justify-between gap-2">
             <div className="items-center gap-3 text-sm font-medium text-gray-800">
               <CurrencyAreaDropdown />
@@ -35,7 +35,7 @@ const FullHeader: React.FC = () => {
       </nav>
       <header className="left-0 top-0 z-40 w-full bg-white transition-all duration-700">
         <div className="relative">
-          <div className="container mx-auto px-6 lg:max-w-[1440px]">
+          <div className="container mx-auto px-6 lg:max-w-[1300px]">
             <div className="flex h-[80px] flex-row-reverse items-center justify-between md:flex-row">
               {/* Logo */}
               <div className="flex items-center">

@@ -37,3 +37,37 @@ export interface BlogPost {
   title: string;
   description?: string;
 }
+
+//
+export interface Product {
+  id: string;
+  slug: string;
+  title: string;
+  price: string;
+  address: string;
+  type: string;
+  purpose: string;
+  agent: {
+    name: string;
+    company: string;
+    phone: string;
+    image: string;
+  };
+  details: {
+    bedrooms: number;
+    bathrooms: number;
+    area: number;
+    parking: number;
+    yearBuilt: number;
+  };
+  amenities: string[];
+  description: string;
+  images: string[];
+}
+
+export interface Agent {
+  name: string;
+  company: string;
+  phone: string;
+  image: string;
+}
