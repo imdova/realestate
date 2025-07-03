@@ -63,7 +63,7 @@ const CurrencyAreaDropdown = () => {
         console.error("Failed to parse settings", e);
       }
     }
-  }, [areaUnitOptions, currencyOptions]);
+  }, []);
 
   // Only set up storage listener on client
   useEffect(() => {
