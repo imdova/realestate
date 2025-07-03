@@ -204,7 +204,7 @@ export default function RealEstateCard({
         </div>
         <h3 className="mb-2 text-sm font-semibold text-main">{title}</h3>
         <p className="mb-3 flex items-center gap-1 text-xs text-gray-600">
-          <MapPin size={15} /> {location}
+          <MapPin size={15} /> {location.address}
         </p>
 
         {downPayment && (

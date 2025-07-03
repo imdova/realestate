@@ -1,10 +1,23 @@
 "use client";
-import { Bath, Banknote, Heart, Share, BedSingle, Grid2X2 } from "lucide-react";
+import {
+  Bath,
+  Banknote,
+  Heart,
+  Share,
+  BedSingle,
+  Grid2X2,
+  ChevronRight,
+} from "lucide-react";
 import { RealEstateItem } from "@/types/real-estate";
 import { useAppSettings } from "@/hooks/useAppSettings";
 import { useState } from "react";
 import { formatArabicDate } from "@/util";
 import FeaturesAndServices from "./FeaturesAndServices";
+import PriceTrendChart from "../charts/PriceTrendChart";
+import ComparativeAnalysis from "./ComparativeAnalysis";
+import MortgageCalculator from "./MortgageCalculator";
+import PropertyModal from "../Modals/PropertyModal";
+import Image from "next/image";
 
 interface realestateDetailsProps {
   realestate: RealEstateItem;
@@ -13,12 +26,13 @@ interface realestateDetailsProps {
 export default function RealestateDetails({
   realestate,
 }: realestateDetailsProps) {
-  const { formatCurrency, formatArea } = useAppSettings();
+  const { formatCurrency, formatArea, currencyCode } = useAppSettings();
   const [expanded, setExpanded] = useState(false);
   const isLong = realestate.description.length > 150;
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <div className="mb-6 p-6">
+    <div className="mb-6 p-0 sm:p-6">
       <div className="flex flex-col items-start justify-between gap-3 sm:flex-row">
         <div className="flex items-center gap-2">
           <h1 className="mb-2 text-2xl font-bold text-gray-900">
@@ -115,6 +129,58 @@ export default function RealestateDetails({
         )}
       </div>
       <FeaturesAndServices amenities={realestate.amenities} />
+      <h2 className="my-4 text-2xl font-bold text-gray-800">البحث الشائع</h2>
+      <PriceTrendChart
+        prices={[
+          65000000, 60000000, 55000000, 50000000, 45000000, 40000000, 35000000,
+        ]}
+        months={[
+          "يناير 2024",
+          "فبراير 2024",
+          "مارس 2024",
+          "أبريل 2024",
+          "مايو 2024",
+          "يونيو 2024",
+          "يوليو 2024",
+        ]}
+        title="مؤشر أسعار الصفقات"
+        subtitle="عرض مؤشرات أسعار العقارات المشابهة"
+        currency={currencyCode}
+        showGradient={true}
+      />
+      <div className="mt-4">
+        <ComparativeAnalysis
+          ChartTitle="مقارنة معدل السعر/متر مربع*"
+          ChartSubtitle="مع فيلات 4 غرفة نوم في العلمين"
+          TableTitle="المواقع الأكثر بحثاً**"
+          TableSubtitle="لشقق 4 غرفة نوم فيلات في الساحل الشمالي"
+          data={[30000, 20000]}
+        />
+      </div>
+      <div className="mt-6">
+        <MortgageCalculator />
+      </div>
+      <div className="mt-6">
+        <h2 className="my-4 text-2xl font-bold text-gray-800">
+          الموقع والأماكن القريبة
+        </h2>
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="max-w-[220px] overflow-hidden rounded-lg border border-gray-200 text-gray-800 shadow-sm hover:bg-blue-700"
+        >
+          <Image src={"/images/details.png"} width={300} height={300} alt="" />{" "}
+          <div className="flex items-center justify-between gap-3 bg-white p-3">
+            <ChevronRight size={14} /> الموقع
+          </div>
+        </button>{" "}
+        {isModalOpen && (
+          <PropertyModal
+            property={realestate}
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+          />
+        )}{" "}
+      </div>
     </div>
   );
 }

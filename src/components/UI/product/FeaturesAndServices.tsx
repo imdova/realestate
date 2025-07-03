@@ -32,6 +32,7 @@ const getAmenityIcon = (amenity: string) => {
     تكييف: <Snowflake className="h-5 w-5 text-main" />,
     تدفئة: <Sun className="h-5 w-5 text-main" />,
     مصعد: <ArrowBigUp className="h-5 w-5 text-main" />,
+    جيم: <Dumbbell className="h-5 w-5 text-main" />,
   };
 
   return (
@@ -81,7 +82,7 @@ export default function FeaturesAndServices({
         {displayedAmenities.map((amenity, index) => (
           <div
             key={index}
-            className="flex h-32 w-full flex-col items-center justify-center gap-2 bg-gray-100"
+            className="flex h-32 w-full max-w-[200px] flex-col items-center justify-center gap-2 bg-gray-100"
           >
             {getAmenityIcon(amenity)}
             <span className="text-sm font-semibold text-gray-700">

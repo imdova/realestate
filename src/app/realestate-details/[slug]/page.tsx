@@ -37,7 +37,7 @@ export default function RealestatePage({ params }: RealestatePageProps) {
         <RealestateGallery
           videos={realestate.videos}
           images={realestate.images}
-          address={realestate.address}
+          location={realestate.location}
         />
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-7 xl:grid-cols-10">
           {/* Left Column */}

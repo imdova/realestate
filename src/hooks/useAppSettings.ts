@@ -1,10 +1,12 @@
-// hooks/useAppSettings.ts
-import { useEffect, useState, useMemo } from "react";
+"use client";
+import { useEffect, useState, useMemo, useCallback } from "react";
 
 type Settings = {
-  currency: string; // Currency symbol (ر.س)
-  currencyCode: string; // ISO currency code (SAR)
+  currency: string;
+  currencyCode: string;
+  currencyLabel: string;
   areaUnit: string;
+  areaUnitValue: string;
 };
 
 type Formatters = {
@@ -12,58 +14,73 @@ type Formatters = {
   formatArea: (area: number) => string;
 };
 
-export function useAppSettings(): Settings & Formatters {
+export function useAppSettings(): Settings &
+  Formatters & { updateSettings: (newSettings: Partial<Settings>) => void } {
+  const [isMounted, setIsMounted] = useState(false);
   const [settings, setSettings] = useState<Settings>({
-    currency: "ر.س",
-    currencyCode: "SAR",
+    currency: "ج.م",
+    currencyCode: "EGP",
+    currencyLabel: "جنيه مصري",
     areaUnit: "متر مربع",
+    areaUnitValue: "م²",
   });
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("appSettings");
-      if (saved) {
-        try {
-          const parsed = JSON.parse(saved);
-          // Ensure we have required fields
-          setSettings({
-            currency: parsed.currency,
-            currencyCode: parsed.currencyCode,
-            areaUnit: parsed.areaUnit,
-          });
-        } catch {
-          // Invalid JSON fallback to defaults
-        }
+    setIsMounted(true);
+    const saved = localStorage.getItem("appSettings");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setSettings((prev) => ({
+          ...prev,
+          ...parsed,
+          currencyLabel: parsed.currencyLabel || "جنيه مصري",
+          areaUnitValue: parsed.areaUnitValue || "م²",
+        }));
+      } catch (e) {
+        console.error("Failed to parse settings", e);
       }
     }
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted) return;
+    localStorage.setItem("appSettings", JSON.stringify(settings));
+  }, [settings, isMounted]);
+
+  const updateSettings = useCallback((newSettings: Partial<Settings>) => {
+    setSettings((prev) => ({ ...prev, ...newSettings }));
   }, []);
 
   const formatters = useMemo<Formatters>(() => {
     return {
       formatCurrency: (price: number) => {
+        if (!isMounted) return `${price} ${settings.currency}`;
         try {
-          return new Intl.NumberFormat("ar-EG", {
-            style: "currency",
-            currency: settings.currencyCode, // Fallback to SAR
-            currencyDisplay: "symbol",
+          // Format number in English (en-US) but keep Arabic currency symbol
+          const formattedNumber = new Intl.NumberFormat("en-US", {
             maximumFractionDigits: 0,
           }).format(price);
+
+          return `${formattedNumber} ${settings.currency}`;
         } catch (e) {
           console.log(e);
-          // Fallback formatting if Intl fails
-          return ` ${price.toLocaleString("ar-EG")} ${settings.currency} `;
+          // Fallback to English formatting if Intl fails
+          return `${price.toLocaleString("en-US")} ${settings.currency}`;
         }
       },
       formatArea: (area: number) => {
+        // Keep area formatting in Arabic as before
         return `${area.toLocaleString("ar-EG", {
           maximumFractionDigits: 2,
-        })} ${settings.areaUnit}`;
+        })} ${settings.areaUnitValue || settings.areaUnit}`;
       },
     };
-  }, [settings.currencyCode, settings.currency, settings.areaUnit]);
+  }, [settings, isMounted]);
 
   return {
     ...settings,
     ...formatters,
+    updateSettings,
   };
 }

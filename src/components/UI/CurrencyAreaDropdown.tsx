@@ -1,23 +1,144 @@
+"use client";
 import { Settings } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import Dropdown from "./Dropdown";
 
 type Settings = {
   currency: string;
+  currencyCode: string;
+  currencyLabel: string;
   areaUnit: string;
+  areaUnitValue: string;
 };
 
 const CurrencyAreaDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const [settings, setSettings] = useState<Settings>({
-    currency: "SAR",
+    currency: "ج.م",
+    currencyCode: "EGP",
+    currencyLabel: "جنيه مصري",
     areaUnit: "متر مربع",
+    areaUnitValue: "م²",
   });
   const [showModal, setShowModal] = useState(false);
   const [tempSettings, setTempSettings] = useState<Settings>({ ...settings });
-  const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const currencyOptions = [
+    { value: "ر.س", label: "ريال سعودي", code: "SAR" },
+    { value: "$", label: "دولار أمريكي", code: "USD" },
+    { value: "€", label: "يورو", code: "EUR" },
+    { value: "ج.م", label: "جنيه مصري", code: "EGP" },
+    { value: "د.إ", label: "درهم إماراتي", code: "AED" },
+  ];
+
+  const areaUnitOptions = [
+    { value: "م²", label: "متر مربع" },
+    { value: "قدم²", label: "قدم مربع" },
+    { value: "فدان", label: "فدان" },
+    { value: "هـ", label: "هكتار" },
+  ];
+
+  // Set mounted state and load settings
+  useEffect(() => {
+    setIsMounted(true);
+    const savedSettings = localStorage.getItem("appSettings");
+    if (savedSettings) {
+      try {
+        const parsed = JSON.parse(savedSettings);
+        setSettings((prev) => ({
+          ...prev,
+          ...parsed,
+          currencyLabel:
+            parsed.currencyLabel ||
+            currencyOptions.find((c) => c.value === parsed.currency)?.label ||
+            "جنيه مصري",
+          areaUnitValue:
+            parsed.areaUnitValue ||
+            areaUnitOptions.find((a) => a.label === parsed.areaUnit)?.value ||
+            "م²",
+        }));
+      } catch (e) {
+        console.error("Failed to parse settings", e);
+      }
+    }
+  }, [areaUnitOptions, currencyOptions]);
+
+  // Only set up storage listener on client
+  useEffect(() => {
+    if (!isMounted) return;
+
+    const handleStorageChange = () => {
+      const savedSettings = localStorage.getItem("appSettings");
+      if (savedSettings) {
+        try {
+          const parsed = JSON.parse(savedSettings);
+          setSettings((prev) => ({
+            ...prev,
+            ...parsed,
+            currencyLabel:
+              parsed.currencyLabel ||
+              currencyOptions.find((c) => c.value === parsed.currency)?.label ||
+              "جنيه مصري",
+            areaUnitValue:
+              parsed.areaUnitValue ||
+              areaUnitOptions.find((a) => a.label === parsed.areaUnit)?.value ||
+              "م²",
+          }));
+        } catch (e) {
+          console.error("Failed to parse settings", e);
+        }
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, [isMounted, areaUnitOptions, currencyOptions]);
+
+  // Only save to localStorage on client after mount
+  useEffect(() => {
+    if (!isMounted) return;
+    localStorage.setItem("appSettings", JSON.stringify(settings));
+  }, [settings, isMounted]);
+
+  // Rest of your component remains the same...
+  const toggleDropdown = () => setIsOpen(!isOpen);
+
+  const openSettingsModal = () => {
+    setTempSettings({ ...settings });
+    setShowModal(true);
+    setIsOpen(false);
+  };
+
+  const handleSaveSettings = () => {
+    setSettings(tempSettings);
+    setShowModal(false);
+    window.location.reload();
+  };
+
+  const handleCurrencyChange = (value: string) => {
+    const selected = currencyOptions.find((c) => c.value === value);
+    if (selected) {
+      setTempSettings((prev) => ({
+        ...prev,
+        currency: selected.value,
+        currencyCode: selected.code,
+        currencyLabel: selected.label,
+      }));
+    }
+  };
+
+  const handleAreaUnitChange = (value: string) => {
+    const selected = areaUnitOptions.find((a) => a.value === value);
+    if (selected) {
+      setTempSettings((prev) => ({
+        ...prev,
+        areaUnit: selected.label,
+        areaUnitValue: selected.value,
+      }));
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -30,85 +151,19 @@ const CurrencyAreaDropdown = () => {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Available options
-  const currencies = [
-    { value: "ر.س", label: "ريال سعودي" }, // SAR
-    { value: "د.أ", label: "دولار أمريكي" }, // USD
-    { value: "ي", label: "يورو" }, // EUR
-    { value: "ج.م", label: "جنيه مصري" }, // EGP
-    { value: "د.إ", label: "درهم إماراتي" }, // AED
-  ];
-
-  const areaUnits = [
-    { value: "م²", label: "متر مربع" }, // sqm
-    { value: "قدم²", label: "قدم مربع" }, // sqft
-    { value: "فدان", label: "فدان" }, // acre
-    { value: "هـ", label: "هكتار" }, // hectare
-  ];
-
-  // Load settings from localStorage on component mount
-  useEffect(() => {
-    const savedSettings = localStorage.getItem("appSettings");
-    if (savedSettings) {
-      setSettings(JSON.parse(savedSettings));
-      setTempSettings(JSON.parse(savedSettings));
-    }
-  }, []);
-
-  // Save settings to localStorage when they change
-  useEffect(() => {
-    localStorage.setItem("appSettings", JSON.stringify(settings));
-    // You can add logic here to update the settings globally in your app
-  }, [settings]);
-
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const openSettingsModal = () => {
-    setTempSettings({ ...settings });
-    setShowModal(true);
-    setIsOpen(false);
-  };
-
-  const handleSaveSettings = () => {
-    setSettings(tempSettings);
-    setShowModal(false);
-    // Refresh the page to apply changes globally
-    router.refresh();
-  };
-
-  const handleCurrencyChange = (value: string) => {
-    const selectedCurrency = currencies.find((c) => c.value === value);
-    if (selectedCurrency) {
-      setTempSettings({
-        ...tempSettings,
-        currency: selectedCurrency.value,
-      });
-    }
-  };
-
-  const handleAreaUnitChange = (value: string) => {
-    const selectedAreaUnit = areaUnits.find((a) => a.value === value);
-    if (selectedAreaUnit) {
-      setTempSettings({
-        ...tempSettings,
-        areaUnit: selectedAreaUnit.label,
-      });
-    }
-  };
-
+  // Only render on client to avoid hydration mismatch
+  if (!isMounted) return null;
   return (
     <div ref={dropdownRef} className="inline-block text-right">
       {/* Dropdown button */}
       <button
         onClick={toggleDropdown}
         className="inline-flex w-full items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-main focus:outline-none"
+        aria-expanded={isOpen}
+        aria-haspopup="true"
       >
         <Settings size={15} />
         <span className="ml-2">الإعدادات</span>
@@ -116,21 +171,26 @@ const CurrencyAreaDropdown = () => {
 
       {/* Dropdown menu */}
       {isOpen && (
-        <div className="absolute right-0 z-50 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg focus:outline-none">
+        <div className="absolute right-0 z-50 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1" role="none">
             <div className="border-b px-4 py-2 text-sm text-gray-700">
               <div className="flex items-center">
-                <span className="ml-2 font-medium">العملة الحالية:</span>
-                <span className="mr-auto">{settings.currency}</span>
+                <span className="ml-2 font-medium">العملة:</span>
+                <span className="mr-auto">
+                  {settings.currency} ({settings.currencyLabel})
+                </span>
               </div>
               <div className="mt-1 flex items-center">
                 <span className="ml-2 font-medium">وحدة المساحة:</span>
-                <span className="mr-auto">{settings.areaUnit}</span>
+                <span className="mr-auto">
+                  {settings.areaUnitValue} ({settings.areaUnit})
+                </span>
               </div>
             </div>
             <button
               onClick={openSettingsModal}
               className="block w-full px-4 py-2 text-right text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+              role="menuitem"
             >
               تغيير الإعدادات
             </button>
@@ -140,30 +200,43 @@ const CurrencyAreaDropdown = () => {
 
       {/* Settings Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 overflow-y-auto">
-          <div className="flex min-h-screen items-center justify-center px-4 pb-20 pt-4 text-center sm:block sm:p-0">
+        <div
+          className="fixed inset-0 z-50 overflow-y-auto"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="flex min-h-screen items-end justify-center px-4 pb-20 pt-4 text-center sm:block sm:p-0">
             <div
               className="fixed inset-0 transition-opacity"
               aria-hidden="true"
             >
-              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm"></div>
+              <div
+                className="absolute inset-0 bg-black/30 backdrop-blur-sm"
+                onClick={() => setShowModal(false)}
+              ></div>
             </div>
+
             <span
               className="hidden sm:inline-block sm:h-screen sm:align-middle"
               aria-hidden="true"
             >
               &#8203;
             </span>
+
             <div className="inline-block w-full transform rounded-lg bg-white text-right align-bottom shadow-xl transition-all sm:my-8 sm:max-w-lg sm:align-middle">
               <div className="px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                 <h3 className="mb-4 text-lg font-medium leading-6 text-gray-900">
                   تغيير الإعدادات
                 </h3>
+
                 <div className="mb-4">
                   <Dropdown
                     id="currency"
                     label="اختر العملة"
-                    options={currencies}
+                    options={currencyOptions.map((c) => ({
+                      value: c.value,
+                      label: c.label,
+                    }))}
                     value={tempSettings.currency}
                     onChange={handleCurrencyChange}
                     className="mt-2"
@@ -174,16 +247,14 @@ const CurrencyAreaDropdown = () => {
                   <Dropdown
                     id="area-unit-selector"
                     label="اختر وحدة قياس المساحة"
-                    options={areaUnits}
-                    value={
-                      areaUnits.find((u) => u.label === tempSettings.areaUnit)
-                        ?.value || "sqm"
-                    }
+                    options={areaUnitOptions}
+                    value={tempSettings.areaUnitValue}
                     onChange={handleAreaUnitChange}
                     className="mt-2"
                   />
                 </div>
               </div>
+
               <div className="px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                 <button
                   type="button"
@@ -209,7 +280,3 @@ const CurrencyAreaDropdown = () => {
 };
 
 export default CurrencyAreaDropdown;
-
-// to get settengs data
-// settings.currency and settings.areaUnit will be available
-// const settings = JSON.parse(localStorage.getItem("appSettings") || "{}");

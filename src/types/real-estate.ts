@@ -14,6 +14,14 @@ export type rentalTerm = "شهري" | "سنوي" | "أسبوعي" | "يومي";
 export type constructionType = "جاهز" | "قيد الانشاء";
 export type furnishingType = "مفروشة" | "غير مفروشة";
 
+type NearbyPlace = {
+  id: string;
+  name: string;
+  type: "school" | "restaurant" | "hospital" | "market" | "beach";
+  distance: string;
+  location: [number, number];
+};
+
 export interface SearchParams {
   page?: string;
   type?: string;
@@ -58,7 +66,6 @@ export interface EmployerCompany {
 export interface RealEstateItem {
   id: string;
   title: string;
-  location: string;
   price?: number;
   area: number;
   bedrooms: number;
@@ -90,4 +97,10 @@ export interface RealEstateItem {
   furnishing?: furnishingType;
   createdAt: string;
   reference_num?: string;
+  location: {
+    lat: number;
+    lng: number;
+    address: string;
+  };
+  nearbyPlaces: NearbyPlace[];
 }

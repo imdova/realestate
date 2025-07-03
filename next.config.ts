@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
         hostname: "**",
       },
     ],
+    domains: ["tile.openstreetmap.org"],
   },
 };
 

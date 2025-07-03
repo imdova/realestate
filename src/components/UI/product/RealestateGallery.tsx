@@ -4,16 +4,21 @@ import { useState } from "react";
 import { X, ChevronLeft, ChevronRight, MapPin } from "lucide-react";
 import Image from "next/image";
 import VideoGrid from "./VideoGrid";
+import MapView from "../MapView";
 
 interface RealestateGalleryProps {
   images: string[];
   videos?: string[];
-  address: string;
+  location: {
+    lat: number;
+    lng: number;
+    address: string;
+  };
 }
 
 export default function RealestateGallery({
   images,
-  address,
+  location,
   videos,
 }: RealestateGalleryProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -148,23 +153,20 @@ export default function RealestateGallery({
                 </div>
               </div>
             ) : activeTab === "map" ? (
-              <div className="h-full w-full">
+              <div className="flex h-full w-full items-center justify-center">
                 {/* Google Maps Embed */}
-                <div className="flex h-full w-full items-center justify-center">
+                <div className="m-auto w-full max-w-2xl">
                   <div className="p-4 text-center text-white">
                     <MapPin className="mx-auto mb-4 h-12 w-12" />
-                    <h3 className="mb-2 text-xl font-bold">{address}</h3>
+                    <h3 className="mb-2 text-xl font-bold">
+                      {location.address}
+                    </h3>
                     <p className="mb-4">خريطة تفاعلية للموقع</p>
                     <div className="aspect-video h-full w-full overflow-hidden rounded-lg bg-gray-700">
-                      <iframe
-                        width="100%"
-                        height="100%"
-                        frameBorder="0"
-                        scrolling="no"
-                        marginHeight={0}
-                        marginWidth={0}
-                        src={`https://maps.google.com/maps?q=${encodeURIComponent(address)}&output=embed`}
-                      ></iframe>
+                      <MapView
+                        position={[location.lat, location.lng]}
+                        center={[location.lat, location.lng]}
+                      />
                     </div>
                   </div>
                 </div>

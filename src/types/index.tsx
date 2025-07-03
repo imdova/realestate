@@ -12,6 +12,20 @@ export type UserProps = {
   avatar: string;
 };
 
+declare global {
+  interface Window {
+    customIcons: {
+      [key: string]: L.Icon;
+      school: L.Icon;
+      restaurant: L.Icon;
+      hospital: L.Icon;
+      market: L.Icon;
+      beach: L.Icon;
+      default: L.Icon;
+    };
+  }
+}
+
 // header types
 export type linksHeader = {
   title?: string;
