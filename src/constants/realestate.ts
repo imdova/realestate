@@ -507,7 +507,7 @@ export const realEstateData: RealEstateItem[] = [
     monthlyRent: 14000,
     yearlyRent: 150000,
     address: "التجمع الخامس، القاهرة الجديدة، القاهرة",
-    purpose: "بيع",
+    purpose: "ايجار",
     details: {
       bedrooms: 5,
       bathrooms: 4,
@@ -590,7 +590,7 @@ export const realEstateData: RealEstateItem[] = [
     monthlyRent: 55000,
     yearlyRent: 600000,
     address: "التجمع الخامس، القاهرة الجديدة، القاهرة",
-    purpose: "بيع",
+    purpose: "ايجار",
     details: {
       bedrooms: 5,
       bathrooms: 4,
@@ -673,7 +673,7 @@ export const realEstateData: RealEstateItem[] = [
     monthlyRent: 20000,
     yearlyRent: 220000,
     address: "التجمع الخامس، القاهرة الجديدة، القاهرة",
-    purpose: "بيع",
+    purpose: "ايجار",
     details: {
       bedrooms: 5,
       bathrooms: 4,
@@ -756,7 +756,7 @@ export const realEstateData: RealEstateItem[] = [
     monthlyRent: 9000,
     yearlyRent: 100000,
     address: "التجمع الخامس، القاهرة الجديدة، القاهرة",
-    purpose: "بيع",
+    purpose: "ايجار",
     details: {
       bedrooms: 5,
       bathrooms: 4,

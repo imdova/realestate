@@ -192,7 +192,7 @@ export default function SearchFilters() {
     const params = new URLSearchParams(searchParams.toString());
 
     if (selectedLocation) {
-      params.set("location", selectedLocation.parent || "");
+      params.set("location", selectedLocation.name || "");
       params.set("region", selectedLocation.region || "");
     } else {
       params.delete("location");

@@ -45,9 +45,6 @@ type PropertyModalProps = {
 
 const PropertyModal = ({ property, onClose, isOpen }: PropertyModalProps) => {
   const [activeTab, setActiveTab] = useState<"details" | "nearby">("details");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [name, setName] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [iconsReady, setIconsReady] = useState(false);
   const { formatCurrency } = useAppSettings();
 
@@ -78,13 +75,6 @@ const PropertyModal = ({ property, onClose, isOpen }: PropertyModalProps) => {
 
   if (!iconsReady) return null;
 
-  const handleContactSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitted(true);
-    // Here you would typically send the data to your backend
-    console.log("Form submitted:", { name, phoneNumber });
-  };
-
   const getIcon = (type: string) => {
     switch (type) {
       case "school":
@@ -108,7 +98,7 @@ const PropertyModal = ({ property, onClose, isOpen }: PropertyModalProps) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4"
+      className="fixed inset-0 z-[400] flex items-center justify-center bg-black bg-opacity-50 p-4"
       dir="rtl"
     >
       <div className="flex max-h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-lg bg-white">
@@ -360,65 +350,6 @@ const PropertyModal = ({ property, onClose, isOpen }: PropertyModalProps) => {
                   </div>
                 </div>
               </div>
-            )}
-          </div>
-
-          {/* Contact Form */}
-          <div className="border-t p-4">
-            <h3 className="mb-2 text-lg font-bold">اتصل بالبائع</h3>
-            <div className="mb-4 flex items-center">
-              <span className="ml-2 font-medium">{property.agent.name}:</span>
-              <span className="font-medium text-main">
-                {property.agent.phone}
-              </span>
-            </div>
-
-            {isSubmitted ? (
-              <div className="rounded-lg bg-green-100 p-4 text-green-800">
-                شكراً لتواصلك! سنقوم بالرد عليك في أقرب وقت ممكن.
-              </div>
-            ) : (
-              <form onSubmit={handleContactSubmit} className="space-y-4">
-                <div>
-                  <label htmlFor="name" className="mb-1 block text-gray-700">
-                    اسمك
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="w-full rounded border p-2"
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor="phone" className="mb-1 block text-gray-700">
-                    رقم الهاتف
-                  </label>
-                  <div className="flex">
-                    <select className="rounded-l border bg-gray-100 p-2">
-                      <option>+20</option>
-                      <option>+966</option>
-                      <option>+971</option>
-                    </select>
-                    <input
-                      type="tel"
-                      id="phone"
-                      value={phoneNumber}
-                      onChange={(e) => setPhoneNumber(e.target.value)}
-                      className="flex-1 rounded-r border p-2"
-                      required
-                    />
-                  </div>
-                </div>
-                <button
-                  type="submit"
-                  className="w-full rounded bg-main px-4 py-2 text-white transition hover:bg-[#1a4a7a]"
-                >
-                  إرسال
-                </button>
-              </form>
             )}
           </div>
         </div>

@@ -91,7 +91,7 @@ export default function RealestateGallery({
       {isOpen && (
         <div className="fixed inset-0 z-50 flex flex-col bg-black/90">
           {/* Header */}
-          <div className="flex items-center justify-between bg-black/50 p-2 text-white sm:p-4">
+          <div className="flex items-center justify-between bg-black/50 p-2 text-sm text-white sm:p-4">
             <button onClick={closeModal} className="p-2">
               <X className="h-6 w-6" />
             </button>

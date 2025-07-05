@@ -13,6 +13,7 @@ export type RealEstateType =
 export type rentalTerm = "شهري" | "سنوي" | "أسبوعي" | "يومي";
 export type constructionType = "جاهز" | "قيد الانشاء";
 export type furnishingType = "مفروشة" | "غير مفروشة";
+export type purposeType = "ايجار" | "بيع";
 
 type NearbyPlace = {
   id: string;
@@ -83,7 +84,7 @@ export interface RealEstateItem {
   monthlyRent?: number;
   yearlyRent?: number;
   address: string;
-  purpose: string;
+  purpose: purposeType;
   agent: EmployerCompany;
   details: {
     bedrooms: number;

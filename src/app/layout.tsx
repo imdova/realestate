@@ -3,6 +3,7 @@ import "./globals.css";
 import DynamicHeaderWrapper from "@/components/Header/DynamicHeaderWrapper";
 import { NextAuthProvider } from "@/NextAuthProvider";
 import Footer from "@/components/footer/Footer";
+import StoreProvider from "@/store/StoreProvider";
 
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
@@ -18,12 +19,14 @@ export default function RootLayout({
 }) {
   return (
     <NextAuthProvider>
-      <html lang="ar" dir="rtl" className={cairo.variable}>
-        <body className="antialiased">
-          <DynamicHeaderWrapper>{children}</DynamicHeaderWrapper>
-          <Footer />
-        </body>
-      </html>
+      <StoreProvider>
+        <html lang="ar" dir="rtl" className={cairo.variable}>
+          <body className="antialiased">
+            <DynamicHeaderWrapper>{children}</DynamicHeaderWrapper>
+            <Footer />
+          </body>
+        </html>
+      </StoreProvider>
     </NextAuthProvider>
   );
 }

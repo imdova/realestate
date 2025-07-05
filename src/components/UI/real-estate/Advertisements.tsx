@@ -2,6 +2,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Bell, Truck } from "lucide-react";
+import AdBanner from "../AdBanner";
 
 type Ad = {
   id: number;
@@ -21,20 +22,6 @@ export default function Advertisements() {
       imageUrl: "/images/ads-1.svg",
       url: "#",
       label: "جديد",
-    },
-  ];
-  const adsImage: Ad[] = [
-    {
-      id: 1,
-      title: "أوجد عقارات وفقاً لمدة القيادة",
-      imageUrl: "https://tpc.googlesyndication.com/simgad/8887318428700452890",
-      url: "#",
-    },
-    {
-      id: 2,
-      title: "أوجد عقارات وفقاً لمدة القيادة",
-      imageUrl: "https://tpc.googlesyndication.com/simgad/4679872768599874101",
-      url: "#",
     },
   ];
 
@@ -137,24 +124,16 @@ export default function Advertisements() {
         </ul>
       </div>
       {/*  إعلان صورة */}
-      {adsImage.map((ad) => (
-        <Link className="hidden md:block" href={ad.url} key={ad.id}>
-          <div className="relative w-full">
-            <Image
-              src={ad.imageUrl}
-              alt={ad.title}
-              height={400}
-              width={400}
-              className="object-cover"
-            />
-            {ad.label && (
-              <div className="absolute right-2 top-2 rounded bg-red-600 px-2 py-0.5 text-xs text-white">
-                {ad.label}
-              </div>
-            )}
-          </div>
-        </Link>
-      ))}
+      <AdBanner
+        imageUrl="https://tpc.googlesyndication.com/simgad/8887318428700452890"
+        targetUrl="/promotions/summer-sale"
+        altText="Summer property sale"
+      />
+      <AdBanner
+        imageUrl="https://tpc.googlesyndication.com/simgad/4679872768599874101"
+        targetUrl="/promotions/summer-sale"
+        altText="Summer property sale"
+      />
     </div>
   );
 }

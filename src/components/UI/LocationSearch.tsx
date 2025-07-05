@@ -8,7 +8,6 @@ interface Location {
   id: string;
   name: string;
   region?: string;
-  parent?: string;
 }
 
 const LocationSearch = ({

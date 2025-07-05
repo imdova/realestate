@@ -1,13 +1,19 @@
+"use client";
 import { Phone, MessageSquare, Star, ChevronLeft } from "lucide-react";
 import { EmployerCompany } from "@/types/real-estate";
 import Image from "next/image";
 import Link from "next/link";
+import EmailContactForm from "@/components/forms/EmailContactForm";
+import { useState } from "react";
+import ContactUsModal from "../Modals/ContactUsModal";
 
 interface AgentCardProps {
   agent: EmployerCompany;
 }
 
 export default function AgentCard({ agent }: AgentCardProps) {
+  const [emailIsOpen, setEmailIsOpen] = useState(false);
+  const [contactIsOpen, setContactIsOpen] = useState(false);
   return (
     <div className="rounded-lg border border-gray-300 bg-white shadow-sm">
       <div className="p-2">
@@ -33,15 +39,24 @@ export default function AgentCard({ agent }: AgentCardProps) {
           </div>
         </div>
         <div className="flex flex-col gap-2 sm:flex-row">
-          <button className="flex w-full items-center justify-center gap-1 space-x-reverse rounded-lg bg-main px-1 py-2 font-medium text-white hover:bg-main-dark">
+          <button
+            onClick={() => setContactIsOpen(true)}
+            className="flex w-full items-center justify-center gap-1 space-x-reverse rounded-lg bg-main px-1 py-2 font-medium text-white hover:bg-main-dark"
+          >
             <Phone className="h-3 w-3" />
-            <span className="text-xs">اتصل الآن</span>
+            <span className="text-xs">اتصل</span>
           </button>
-          <button className="flex w-full items-center justify-center gap-1 space-x-reverse rounded-lg border border-main px-3 py-1 font-medium text-main">
+          <button
+            onClick={() => setEmailIsOpen(true)}
+            className="flex w-full items-center justify-center gap-1 space-x-reverse rounded-lg border border-main px-3 py-1 font-medium text-main"
+          >
             <MessageSquare className="h-4 w-4" />
-            <span className="text-xs">إرسال رسالة</span>
+            <span className="text-xs">الإيميل</span>
           </button>
-          <button className="flex w-full items-center justify-center gap-1 space-x-reverse rounded-lg border border-main fill-main px-3 py-1 text-xs font-medium text-main">
+          <Link
+            href={`https://wa.me/${agent.phone.replace(/\D/g, "")}`}
+            className="flex w-full items-center justify-center gap-1 space-x-reverse rounded-lg border border-main fill-main px-3 py-1 text-xs font-medium text-main"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               x="0px"
@@ -56,7 +71,7 @@ export default function AgentCard({ agent }: AgentCardProps) {
               ></path>
             </svg>{" "}
             واتس اب
-          </button>
+          </Link>
         </div>
       </div>
 
@@ -71,6 +86,16 @@ export default function AgentCard({ agent }: AgentCardProps) {
           </Link>
         </div>
       </div>
+      <EmailContactForm
+        isModalOpen={emailIsOpen}
+        setIsModalOpen={setEmailIsOpen}
+      />
+      <ContactUsModal
+        isOpen={contactIsOpen}
+        onClose={() => setContactIsOpen(false)}
+        referenceNumber="FixayX-1016"
+        contactPerson={agent}
+      />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-"use client";
+// hooks/useScrollDetection.ts
 import { useState, useEffect } from "react";
 
 const useScrollDetection = (triggerHeight = 2) => {
@@ -9,9 +9,8 @@ const useScrollDetection = (triggerHeight = 2) => {
       setIsScrolled(window.scrollY >= triggerHeight);
     };
 
-    checkScrollPosition(); // Run immediately on mount
+    checkScrollPosition();
     window.addEventListener("scroll", checkScrollPosition);
-
     return () => window.removeEventListener("scroll", checkScrollPosition);
   }, [triggerHeight]);
 
