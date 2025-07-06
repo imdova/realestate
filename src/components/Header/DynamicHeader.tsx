@@ -2,6 +2,7 @@
 import { usePathname } from "next/navigation";
 import { matchRoute } from "./routeConfigs";
 import FullHeader from "./FullHeader";
+import BlogHeader from "./BlogHeader";
 
 const DynamicHeader: React.FC = () => {
   const pathname = usePathname() || "/";
@@ -9,6 +10,7 @@ const DynamicHeader: React.FC = () => {
 
   const headerComponents = {
     full: FullHeader,
+    blog: BlogHeader,
   };
 
   const SelectedHeader = headerComponents[headerType];

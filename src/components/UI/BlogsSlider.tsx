@@ -3,7 +3,7 @@ import { useRef, useState, useEffect, ReactNode } from "react";
 import { useSwipeable } from "react-swipeable";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { blogPosts } from "@/constants/blogs";
+import { DUMMY_BLOG_POSTS } from "@/constants/blogs";
 
 type BlogsSliderProps = {
   children: ReactNode;
@@ -29,7 +29,7 @@ const BlogsSlider: React.FC<BlogsSliderProps> = ({ children }) => {
   // Handle navigation
   const handleScrollBy = (direction: "next" | "prev") => {
     if (sliderRef.current) {
-      const cardWidth = sliderRef.current.scrollWidth / blogPosts.length;
+      const cardWidth = sliderRef.current.scrollWidth / DUMMY_BLOG_POSTS.length;
       const visibleCards = Math.floor(
         sliderRef.current.clientWidth / cardWidth,
       );

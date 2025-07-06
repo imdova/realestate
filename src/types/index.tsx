@@ -43,16 +43,6 @@ export interface MenuGroup {
   items: MenuItem[];
 }
 
-// blogs type
-
-export interface BlogPost {
-  id: number;
-  image: string;
-  title: string;
-  description?: string;
-}
-
-//
 export interface Product {
   id: string;
   slug: string;
@@ -84,4 +74,11 @@ export interface Agent {
   company: string;
   phone: string;
   image: string;
+}
+
+// type keywords search
+export interface SearchResult {
+  id: string;
+  title: string;
+  type: "recent";
 }

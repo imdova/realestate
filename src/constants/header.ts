@@ -18,6 +18,10 @@ import { userType } from "@/types/next-auth";
 
 export const commonLinks: linksHeader[] = [
   {
+    title: "مدونة عقاري",
+    url: "/blog",
+  },
+  {
     title: "ابحث عن الوكيل",
     url: "#",
     isNew: true,
@@ -25,6 +29,25 @@ export const commonLinks: linksHeader[] = [
   {
     title: "المشاريع الجديدة",
     url: "#",
+  },
+];
+export const BlogLinks: linksHeader[] = [
+  {
+    title: "نصائح",
+    url: "/blog/categories/نصائح",
+  },
+  {
+    title: "منوعات",
+    url: "/blog/categories/منوعات",
+  },
+  {
+    title: "اتجاهات السوق",
+    url: "/blog/categories/اتجاهات-السوق",
+  },
+  {
+    title: "فعاليات واخبار بيوت مصر",
+    url: "/blog/categories/فعاليات-واخبار-بيوت-مصر",
+    isNew: true,
   },
 ];
 

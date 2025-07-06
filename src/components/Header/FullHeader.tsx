@@ -54,7 +54,7 @@ const FullHeader: React.FC = () => {
                     <Link
                       className="flex items-start gap-1 text-sm font-semibold"
                       key={index}
-                      href={"#"}
+                      href={link.url}
                     >
                       {link.title}{" "}
                       {link.isNew && (
@@ -87,7 +87,7 @@ const FullHeader: React.FC = () => {
               <Link
                 className="flex items-start gap-1 rounded-md p-2 text-sm font-semibold hover:bg-gray-100"
                 key={index}
-                href={"#"}
+                href={link.url}
               >
                 {link.title}{" "}
                 {link.isNew && (

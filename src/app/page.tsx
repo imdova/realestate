@@ -1,11 +1,11 @@
 "use client";
 
-import BlogCard from "@/components/UI/BlogCard";
+import BlogCard from "@/components/UI/cards/BlogCard";
 import BlogsSlider from "@/components/UI/BlogsSlider";
 import PropertyTabs from "@/components/UI/PropertyTabs";
 import RealEstateSearch from "@/components/UI/RealEstateSearch";
 import RealEstateSlider from "@/components/UI/RealEstateSlider";
-import { blogPosts } from "@/constants/blogs";
+import { DUMMY_BLOG_POSTS } from "@/constants/blogs";
 import { ChevronLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -77,7 +77,7 @@ export default function Home() {
                 <h2 className="mb-2 text-lg font-bold sm:text-2xl">
                   أختار وسيطك العقاري
                 </h2>
-                <p className="text-md max-w-[200px]">
+                <p className="max-w-[170px] text-sm sm:text-base">
                   اختار من بين أفضل العقارات من أكبر الوسطاء العقاريين
                 </p>
               </div>
@@ -90,7 +90,7 @@ export default function Home() {
                 <h2 className="mb-2 text-lg font-bold sm:text-2xl">
                   سيرتش 2.0
                 </h2>
-                <p className="text-md max-w-[200px]">
+                <p className="max-w-[170px] text-sm sm:text-base">
                   أوجد عقارات وفقاً لمدة القيادة
                 </p>
               </div>
@@ -103,7 +103,7 @@ export default function Home() {
                 <h2 className="mb-2 text-lg font-bold sm:text-2xl">
                   العرض على الخريطة
                 </h2>
-                <p className="text-md max-w-[200px]">
+                <p className="max-w-[170px] text-sm sm:text-base">
                   ابحث عن العقارات في المنطقة التي تناسبك
                 </p>
               </div>
@@ -139,8 +139,12 @@ export default function Home() {
               اعرف المزيد عن سوق العقارات في مَصر
             </h1>
             <BlogsSlider>
-              {blogPosts.map((post) => (
-                <BlogCard key={post.id} post={post} />
+              {DUMMY_BLOG_POSTS.map((post) => (
+                <BlogCard
+                  className="w-[250px] md:w-[350px]"
+                  key={post.slug}
+                  post={post}
+                />
               ))}
             </BlogsSlider>
           </div>

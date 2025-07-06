@@ -1,4 +1,4 @@
-type HeaderType = "full";
+type HeaderType = "full" | "blog";
 
 interface RouteConfig {
   pattern: string;
@@ -6,33 +6,33 @@ interface RouteConfig {
 }
 
 export const routeConfigs: RouteConfig[] = [
-  // default
-  { pattern: "/*", headerType: "full" },
+  { pattern: "/blog", headerType: "blog" },
+  { pattern: "/blog*", headerType: "blog" },
+  { pattern: "/*", headerType: "full" }, // fallback
 ];
 
-// DynamicHeader.tsx
-export const matchRoute = (pathname: string) => {
-  // First, prioritize exact matches (including dynamic segments)
-  const exactMatch = routeConfigs.find((route) => {
-    // Handle dynamic segments (e.g., "/user/[id]")
-    const regexPattern = route.pattern
-      .replace(/\[.*?\]/g, "[^/]+")
+export const matchRoute = (pathname: string): RouteConfig | undefined => {
+  // 1. Exact match or dynamic segment match
+  const exactMatch = routeConfigs.find(({ pattern }) => {
+    if (pattern.includes("*")) return false;
+
+    const regexPattern = pattern
+      .replace(/\[(.*?)\]/g, "[^/]+") // match dynamic params
       .replace(/\//g, "\\/");
+
     const regex = new RegExp(`^${regexPattern}$`);
     return regex.test(pathname);
   });
 
   if (exactMatch) return exactMatch;
 
-  // If no exact match, check for wildcard patterns
-  const wildcardMatch = routeConfigs.find((route) => {
-    if (route.pattern.includes("*")) {
-      // Convert wildcard pattern into a base path regex
-      const wildcardPattern = route.pattern.replace(/\*/g, ".*");
-      const regex = new RegExp(`^${wildcardPattern}`);
-      return regex.test(pathname);
-    }
-    return false;
+  // 2. Wildcard match (e.g., /blog*, /about*)
+  const wildcardMatch = routeConfigs.find(({ pattern }) => {
+    if (!pattern.includes("*")) return false;
+
+    const basePattern = pattern.replace("*", ".*").replace(/\//g, "\\/");
+    const regex = new RegExp(`^${basePattern}`);
+    return regex.test(pathname);
   });
 
   return wildcardMatch;
