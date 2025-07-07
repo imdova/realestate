@@ -97,11 +97,11 @@ const AuthButton = () => {
                       <p className="truncate text-xs text-gray-500">
                         {dummyUserData.email}
                       </p>
-                      {dummyUserData.role !== "user" && (
+                      {dummyUserData.role !== "default" && (
                         <span className="from-primary to-light-primary mt-1 inline-block rounded-full bg-gradient-to-r px-2 py-0.5 text-[10px] font-medium text-white">
                           {dummyUserData.role === "admin"
                             ? "مشرف"
-                            : dummyUserData.role === "seller"
+                            : dummyUserData.role === "broker"
                               ? "بائع"
                               : "مستخدم"}
                         </span>

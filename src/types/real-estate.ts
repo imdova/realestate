@@ -51,13 +51,26 @@ export interface RealEstateResponse {
   totalPages: number;
 }
 
-export interface EmployerCompany {
+export interface Agency {
   id: number;
   name: string;
   logo: string;
   phone: string;
   email: string;
   address: string;
+  website?: string;
+  rating?: number;
+  reviews?: number;
+  jurisdictioAreas?: string[];
+  realestates: number;
+}
+export interface EmployerCompany {
+  id: number;
+  name: string;
+  logo?: string;
+  phone: string;
+  email: string;
+  address?: string;
   website?: string;
   company?: string;
   rating?: number;
@@ -104,4 +117,23 @@ export interface RealEstateItem {
     address: string;
   };
   nearbyPlaces: NearbyPlace[];
+}
+
+export interface Broker {
+  id: number;
+  name: string;
+  description: string;
+  location: string;
+  responseRate: string;
+  rating: number;
+  image: string;
+  featured?: boolean;
+  jurisdictioAreas: string[];
+  language: string[];
+  sale: number;
+  rent: number;
+  badges: string[];
+  agency: Agency;
+  phone: string;
+  email: string;
 }

@@ -23,7 +23,7 @@ export default function AgentCard({ agent }: AgentCardProps) {
             <Image
               width={400}
               height={400}
-              src={agent.logo}
+              src={agent.logo || "/placholder.jpg"}
               alt={agent.name}
               className="h-full w-full object-cover"
             />

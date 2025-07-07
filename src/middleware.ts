@@ -28,18 +28,12 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: [
-    "/checkout",
-    "/checkout/:path*",
-    "/user/:path*",
-    "/seller/:path*",
-    "/admin/:path*",
-  ],
+  matcher: [],
 };
 
 const roleAccessMap: Record<string, string[]> = {
-  user: ["/user", "/user/:path*", "/checkout", "/checkout/:path*"],
-  seller: ["/checkout", "/checkout/:path", "/seller", "/seller/:path*"],
+  default: [],
+  broker: [],
   admin: ["/*"],
 };
 

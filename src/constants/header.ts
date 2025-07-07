@@ -23,7 +23,7 @@ export const commonLinks: linksHeader[] = [
   },
   {
     title: "ابحث عن الوكيل",
-    url: "#",
+    url: "/brokers",
     isNew: true,
   },
   {
@@ -52,7 +52,7 @@ export const BlogLinks: linksHeader[] = [
 ];
 
 export const menuGroups: { [key in userType]: MenuGroup[] } = {
-  user: [
+  default: [
     {
       items: [
         {
@@ -63,7 +63,7 @@ export const menuGroups: { [key in userType]: MenuGroup[] } = {
       ],
     },
   ],
-  seller: [
+  broker: [
     {
       items: [
         {

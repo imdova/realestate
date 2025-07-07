@@ -12,8 +12,6 @@ export const authOptions: AuthOptions = {
       async authorize(credentials) {
         try {
           // In a real app, you would query your database here
-          // This is just a mock implementation
-
           // User credentials
           if (
             credentials?.email === "user@medicova.com" &&
@@ -23,7 +21,7 @@ export const authOptions: AuthOptions = {
               id: "1",
               name: "Regular User",
               email: "user@medicova.com",
-              role: "user",
+              role: "default",
             };
           }
 
@@ -36,7 +34,7 @@ export const authOptions: AuthOptions = {
               id: "2",
               name: "Seller Account",
               email: "seller@medicova.com",
-              role: "seller",
+              role: "broker",
             };
           }
           // Admin credentials
@@ -48,7 +46,7 @@ export const authOptions: AuthOptions = {
               id: "3",
               name: "admin Account",
               email: "admin@medicova.com",
-              role: "admin",
+              role: "default",
             };
           }
 
