@@ -24,7 +24,7 @@ const AuthButton = () => {
   const dummyUserData: UserData = {
     name: session?.user?.name || "Demo User",
     email: session?.user?.email || "demo@example.com",
-    role: (session?.user?.role as userType) || "user",
+    role: (session?.user?.role as userType) || "default",
   };
 
   const currentMenuGroups = menuGroups[dummyUserData.role];

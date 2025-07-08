@@ -68,7 +68,7 @@ const BrokerCard: React.FC<CardProps> = ({ broker }) => {
   return (
     <div
       onClick={handleCardClick}
-      className="max-w-4xl cursor-pointer overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm"
+      className="cursor-pointer overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm"
     >
       <div className="flex flex-col gap-4 lg:flex-row">
         <div>
@@ -147,7 +147,7 @@ const BrokerCard: React.FC<CardProps> = ({ broker }) => {
         </div>
         <Link className="flex items-end p-3" href={"#"}>
           <Image
-            className="w-[120px] object-cover"
+            className="w-[70px] object-cover"
             src={broker.agency.logo}
             alt={broker.agency.name}
             width={200}

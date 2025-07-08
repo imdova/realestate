@@ -1,5 +1,3 @@
-// app/blog/[slug]/page.tsx
-
 import Image from "next/image";
 import ShareButtons from "@/components/UI/Buttons/ShareButtons";
 import { DUMMY_BLOG_POSTS } from "@/constants/blogs";
@@ -12,7 +10,6 @@ interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
 }
 
-// Component for the dynamic blog page (now an async Server Component)
 const BlogPostPage = ({ params }: BlogPostPageProps) => {
   const { slug } = React.use(params);
   const post = DUMMY_BLOG_POSTS.find((post) => post.slug === slug);

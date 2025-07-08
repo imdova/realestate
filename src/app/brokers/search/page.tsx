@@ -417,7 +417,7 @@ function BrokerContent() {
                       className="rounded-lg border border-gray-300"
                       key={agency.id}
                     >
-                      <Link href="/sdfgs" passHref>
+                      <Link href={`/agencies/${agency.id}`} passHref>
                         <div className="block">
                           <div className="flex items-center justify-center border-b border-gray-300 p-3">
                             <Image

@@ -128,7 +128,6 @@ export default function RealEstateCard({
     }
   }
   const realyPrice = getRentPriceByTerm();
-  console.log(realyPrice);
   const statusColorMap: Record<RealEstateStatus, string> = {
     مميز: "text-red-600 border-red-600 bg-red-50",
     استثنائي: "text-blue-600 border-blue-600 bg-blue-50",

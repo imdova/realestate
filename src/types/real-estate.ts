@@ -52,20 +52,24 @@ export interface RealEstateResponse {
 }
 
 export interface Agency {
-  id: number;
+  id: string;
   name: string;
   logo: string;
   phone: string;
   email: string;
-  address: string;
+  address?: string;
   website?: string;
   rating?: number;
   reviews?: number;
   jurisdictioAreas?: string[];
-  realestates: number;
+  realestates?: number;
+  sale?: number;
+  rent?: number;
+  realestateType?: string[];
+  description?: string;
 }
 export interface EmployerCompany {
-  id: number;
+  id: string;
   name: string;
   logo?: string;
   phone: string;
@@ -120,7 +124,7 @@ export interface RealEstateItem {
 }
 
 export interface Broker {
-  id: number;
+  id: string;
   name: string;
   description: string;
   location: string;
@@ -136,4 +140,6 @@ export interface Broker {
   agency: Agency;
   phone: string;
   email: string;
+  practices?: string[];
+  experience?: string;
 }
